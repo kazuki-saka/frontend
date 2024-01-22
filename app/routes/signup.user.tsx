@@ -198,7 +198,9 @@ export async function action({ request }: ActionFunctionArgs) {
     // JSONデータを受信
     const jsonData = await response.json<PRegistActionResponse>();    
     console.log("jsonData=", jsonData);
-    
+    if (jsonData.status !== 200) {
+      return redirect("/signup?ref=error");
+    }
 
     return redirect("/signup/complete");
   }
