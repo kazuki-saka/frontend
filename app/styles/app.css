@@ -1,0 +1,113 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer base {
+  html {
+    font-family: "Noto Sans JP", sans-serif;
+  }
+  
+  *,*:focus,*:hover {
+    outline:none;
+  }
+  
+  article {
+    @apply mx-auto overflow-x-hidden;
+  }
+  
+  form, .wrap {
+    @apply flex flex-col gap-8 py-[10%] px-4 md:px-[20%];
+  }
+  
+  label {
+    @apply block text-gray-400 text-16ptr mb-2 select-none;
+  }
+  
+  input {
+    @apply [transition:_all_.2s_ease];
+  }
+  
+  input[type="text"], input[type="email"], input[type="number"], input[type="password"], textare  {
+    @apply border-solid border-2 border-gray-300 rounded-lg py-3 px-4 w-full text-20ptr;
+  }
+  
+  input[type="file"] {
+    color: rgb(31, 41, 55);
+    cursor: pointer;
+    border: 1px solid rgb(191, 194, 199);
+    padding-right: 0.5rem;
+    width: 24rem;
+  }
+  
+  ::file-selector-button,
+  ::-webkit-file-upload-button {
+    @apply font-notosansjp;
+    background-color: rgb(209, 213, 219);
+    color: rgb(31, 41, 55);
+    border: none;
+    cursor: pointer;
+    border-right: 1px solid rgb(191, 194, 199);
+    padding: 0.25rem 1rem;
+    margin-right: 1rem;
+  }
+  
+  .button {
+    @apply inline-block w-full cursor-pointer rounded-lg py-4 border-solid border-2 text-18ptr text-white text-center [transition:_all_.2s_ease] select-none;
+    &:disabled {
+      @apply opacity-50 cursor-not-allowed;
+    }
+  }
+  
+  .button--primary {
+    @apply border-button bg-button ;
+    &:hover {
+      @apply bg-white text-button;
+    }
+  }
+  
+  .button--secondary {
+    @apply border-button bg-white text-button;
+    &:hover {
+      @apply bg-button text-white;
+    }
+  }
+  
+  .bg-signup {
+    @apply h-[100vh] bg-[url("/assets/images/BgSignup.webp")] bg-cover bg-center bg-no-repeat;
+  }
+  
+  .modal-head {
+    @apply relative h-16 text-center flex justify-center items-center border-b-2 border-gray-200 border-solid;
+    > p {
+      @apply text-18ptr md:text-24ptr font-semibold;
+    }
+  }
+  
+  .modal-cancel-button {
+    @apply absolute left-[5%] cursor-pointer select-none;
+    &:hover {
+      @apply opacity-50;
+    }
+  }
+  
+  .upload-btn-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+  }
+  
+  .upload-btn-wrapper input[type=file] {
+    font-size: 100px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+  }
+  
+  textarea {
+    @apply font-notosansjp;
+    border: 1px solid rgb(191, 194, 199);
+    padding: 0.5rem;
+    resize: none;
+  }
+}
