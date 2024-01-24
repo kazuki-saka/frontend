@@ -2,16 +2,16 @@ import { useState, InputHTMLAttributes } from "react";
 import { useField } from "remix-validated-form";
 import { IconEye, IconEyeOff } from "@tabler/icons-react";
 
-interface PasswordInputProps extends InputHTMLAttributes<HTMLInputElement> {
+interface PassphraseInputProps extends InputHTMLAttributes<HTMLInputElement> {
   isConfirm?: boolean;
 }
-export default function PasswordInput ({ ...props }: PasswordInputProps) {
+export default function PassphraseInput ({ ...props }: PassphraseInputProps) {
   // Props
   const { isConfirm, ...others } = props;
   // States
   const [isReveal, setIsReveal] = useState<boolean>(false);
   // Error
-  const error = useField(isConfirm ? "user.passwordConfirm" : "user.password");
+  const error = useField(isConfirm ? "user.passphraseConfirm" : "user.passphrase");
   return (
     <fieldset className={ "relative" }>
       <label>パスワード{ isConfirm ? "(確認用)" : "" }</label>

@@ -3,9 +3,9 @@ export type Section = {
   value: number;
 };
 
-export const sections: Section[] = [
+const sections: Section[] = [
   {
-    name: "魚屋、問屋",
+    name: "魚屋・問屋",
     value: 1
   },
   {
@@ -17,3 +17,4 @@ export const sections: Section[] = [
     value: 3
   },
 ];
+export default sections;

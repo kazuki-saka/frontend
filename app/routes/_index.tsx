@@ -1,4 +1,5 @@
 import type { MetaFunction } from "@remix-run/cloudflare";
+import { Link } from "@remix-run/react";
 
 export const meta: MetaFunction = () => {
   return [
@@ -10,19 +11,10 @@ export const meta: MetaFunction = () => {
 export default function Page() {
   return (
     <article className={ "container" }>
-      <h1>Welcome to Remix</h1>
-      <ul>
-        <li>
-          <a
-            className={ " text-32ptr" }
-            target="_blank"
-            href="https://remix.run/tutorials/blog"
-            rel="noreferrer"
-          >
-            15m Quickstart Blog Tutorial
-          </a>
-        </li>
-      </ul>
+      <div className={ "wrap" }>
+        <h1 className={ "text-30ptr font-semibold" }>トップページ</h1>
+        <p><Link to={ "/signup" }>サインアップ</Link></p>
+      </div>
     </article>
   );
 }

@@ -1,17 +1,17 @@
 import { SerializeFrom } from "@remix-run/cloudflare";
-import { useNavigate  } from "@remix-run/react";
+import { useNavigate, useNavigation } from "@remix-run/react";
 import { loader as signupLoader, action as signupAction } from "~/routes/signup._index";
-import { userFormValidator_step1 } from "~/validators/signupFormValidator";
+import { signinSchema } from "~/schemas/signin";
 import { ValidatedForm, useField, useFieldArray } from "remix-validated-form";
 import Modal from "~/components/Modal";
-import EmailInput from "../form/EmailInput";
-import PasswordInput from "../form/PasswordInput";
+import UsernameInput from "~/components/signup/form/UsernameInput";
+import PassphraseInput from "~/components/signup/form/PassphraseInput";
+import Submitting from "~/components/signup/form/Submitting";
 
 interface SigninFormModalProps {
   loaderData: SerializeFrom<typeof signupLoader>;
   actionData: SerializeFrom<typeof signupAction>;
 }
-
 export default function SigninFormModal({ ...props }: SigninFormModalProps) {
   return (
     <Modal 
@@ -34,19 +34,27 @@ const _Head = () => {
 };
 
 const _Body = ({ ...props }: { actionData: SerializeFrom<typeof signupAction> }) => {
-
-  const navigate = useNavigate();
+  // Navigate
+  const navigation = useNavigation();
+  
+  // Props
+  const { actionData } = props;
+  //const { error } = actionData!;
   
   return (
-    <ValidatedForm
-      replace
-      validator={ userFormValidator_step1 } 
-      method={ "POST" }
-    >
-      <EmailInput/>
-      <PasswordInput/>
-      <input type={ "hidden" } name={ "form" } value={ "signin" } placeholder={ "" }/>
-      <button type={ "submit" } className={ "button button--primary" }>サインイン</button>
-    </ValidatedForm>
+    <>
+      <ValidatedForm
+        validator={ signinSchema } 
+        method={ "POST" }
+      >
+        <UsernameInput name={ "user[username]" }/>
+        <PassphraseInput name={ "user[passphrase]" }/>
+        { actionData && actionData.error && <p className={ "text-error text-center font-semibold" }>{ actionData.error }</p> }
+        <input type={ "hidden" } name={ "form" } value={ "signin" } placeholder={ "" }/>
+        <button type={ "submit" } className={ "button button--primary" }>サインイン</button>
+      </ValidatedForm>
+      { /* ローディング */ }
+      <Submitting state={ navigation.state } />
+    </>
   );
 };

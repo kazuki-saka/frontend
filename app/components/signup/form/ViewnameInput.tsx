@@ -1,14 +1,14 @@
 import { InputHTMLAttributes } from "react";
 import { useField } from "remix-validated-form";
 
-export default function NameInput ({ ...props }: InputHTMLAttributes<HTMLInputElement>) {
-  const error = useField("user.name");
+export default function ViewnameInput ({ ...props }: InputHTMLAttributes<HTMLInputElement>) {
+  const error = useField("user.viewname");
   return (
     <fieldset>
-      <label>お名前(コメント時に表示されます)</label>
+      <label>店舗名・屋号</label>
       <input 
         type={ "text" } 
-        placeholder={ "福井 太郎" }
+        placeholder={ "福井商店" }
         className={ error.error && "border-error bg-error-100 text-error" }
         { ...props }
       />

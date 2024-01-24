@@ -1,15 +1,12 @@
 import { useState } from "react";
 import { RadioGroup } from "@headlessui/react";
-import { sections } from "~/components/form/Sections";
+import sections from "~/components/signup/form/sections";
 
 interface SectionRadioGroupProps extends React.ComponentProps<typeof RadioGroup>{
   defaultValue?: number;
   setSection: React.Dispatch<React.SetStateAction<number>>;
 }
-
 export default function SectionRadioGroup({ ...props }: SectionRadioGroupProps) {
-
-  console.log("SectionRadioGroup start");
   // Props
   const { defaultValue, setSection, ...others } = props;
   // States

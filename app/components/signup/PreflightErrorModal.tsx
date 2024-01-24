@@ -7,11 +7,11 @@ import Modal from "~/components/Modal";
 import EmailInput from "~/components/signup/form/EmailInput";
 import Submitting from "~/components/signup/form/Submitting";
 
-interface PreflightFormModalProps {
+interface PreflightErrorModalProps {
   loaderData: SerializeFrom<typeof signupLoader>;
   actionData: SerializeFrom<typeof signupAction>;
 }
-export default function PreflightFormModal({ ...props }: PreflightFormModalProps) {
+export default function PreflightErrorModal({ ...props }: PreflightErrorModalProps) {
   return (
     <Modal 
       isOpen={ (props.loaderData && props.loaderData.ref === "preflight") as boolean } 
@@ -35,8 +35,6 @@ const _Head = () => {
 const _Body = ({ ...props }: { actionData: SerializeFrom<typeof signupAction> }) => {
   // Navigate
   const navigation = useNavigation();
-  // ActionData
-  const actionData = props.actionData;
   
   return (
     <>
@@ -46,7 +44,7 @@ const _Body = ({ ...props }: { actionData: SerializeFrom<typeof signupAction> })
         validator={ preflightSchema } 
         method={ "POST" }
       >
-        <EmailInput name={ "preflight[email]"} actionData={ actionData }/>
+        <EmailInput name={ "preflight[email]"}/>
         <input type={ "hidden" } name={ "form" } value={ "preflight" } placeholder={ "" }/>
         <button 
           type={ `${ navigation.state === "idle" ? "submit" : "button" }` } 

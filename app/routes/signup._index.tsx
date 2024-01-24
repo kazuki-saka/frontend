@@ -1,8 +1,9 @@
 import { json, redirect, MetaFunction, LoaderFunctionArgs, ActionFunctionArgs } from "@remix-run/cloudflare";
 import { useLoaderData, useActionData, Link } from "@remix-run/react";
+import { getSession, commitSession, destroySession } from "~/session.server";
 import PreflightFormModal from "~/components/signup/PreflightFormModal";
 import SigninFormModal from "~/components/signup/SigninFormModal";
-import PreflightCompleteModal from "~/components/signup/PreflightCompleteModal";
+//import PreflightCompleteModal from "~/components/signup/PreflightCompleteModal";
 
 /*
   サインイン前のトップ画面
@@ -19,10 +20,16 @@ export const meta: MetaFunction = () => {
   ];
 };
 
+type ActionApiResponse = {
+  status?: number;
+  messages: { message: string };
+  signature?: string;
+};
+
 /**
  * Loader
  */
-export async function loader({ request }: LoaderFunctionArgs) {
+export async function loader({ request, context }: LoaderFunctionArgs) {
   console.log("======signup._index  LOADER======");
   // URLパラメータからrefを取得
   const ref = new URL(request.url).searchParams.get("ref");
@@ -32,15 +39,15 @@ export async function loader({ request }: LoaderFunctionArgs) {
   });
 }
 
-type PreflightActionResponse = {
-  status?: number;
-};
-
 /**
  * Action
  */
-export async function action({ request }: ActionFunctionArgs) {
+export async function action({ request, context }: ActionFunctionArgs) {
   console.log("======signup._index  ACTION======");
+
+  // セッション取得
+  const session = await getSession(request.headers.get("Cookie"));
+
   // フォームデータを取得
   const formData = await request.formData();
   
@@ -50,18 +57,27 @@ export async function action({ request }: ActionFunctionArgs) {
 
     // APIへデータを送信(php spark serve --host 0.0.0.0)
     //const response = await fetch("http://localhost:8080/api/signup/create.preflight", { method: "POST", body: formData });
-    const response = await fetch("http://localhost:8080/UserTempController/Add", { method: "POST", body: formData });
+    //const response = await fetch("http://localhost:8080/UserTempController/Add", { method: "POST", body: formData });
+	const apiResponse = await fetch(`${ context.env.API_URL }/signup/create.preflight`, { method: "POST", body: formData });
 
-    // JSONデータを受信
-    const jsonData = await response.json<PreflightActionResponse>();    
+    // JSONデータに変換
+    const jsonData = await apiResponse.json<ActionApiResponse>();
     console.log("jsonData=", jsonData);
 
     // ステータスが200以外の場合はエラー
     if (jsonData.status !== 200) {
-      return redirect("/signup?ref=error");
+      return json({
+        error: jsonData.messages.message!
+      });
     }
     
-    return redirect("/signup?ref=complete");
+    console.log("OK");
+    // 認証コード確認画面へリダイレクト
+    return redirect(`/signup/preflight?signature=${ jsonData.signature }`, {
+      headers: {
+        "Set-Cookie": await destroySession(session),
+      },
+    });
   }
   
   // サインインフォーム
@@ -69,11 +85,27 @@ export async function action({ request }: ActionFunctionArgs) {
 
     console.log("formData=", formData);
     //console.log("formData.email=", formData.get("signin[email]"));
-    const response = await fetch("http://localhost:8080/SignInController", { method: "POST", body: formData });
+    //const response = await fetch("http://localhost:8080/SignInController", { method: "POST", body: formData });
+	  const apiResponse = await fetch(`${ context.env.API_URL }/signin/auth.user`, { method: "POST", body: formData });
 
     // JSONデータを受信
-    const jsonData = await response.json<PreflightActionResponse>();    
+	  const jsonData = await apiResponse.json<ActionApiResponse>();
     console.log("jsonData=", jsonData);
+    // ステータスが200以外の場合はエラー
+    if (jsonData.status !== 200) {
+      return json({
+        error: jsonData.messages.message
+      });
+    }
+    // セッションに認証署名を保存
+    session.set("signin-auth-user-signature", jsonData.signature);
+    
+    // 認証後ホーム画面へリダイレクト
+    return redirect("/home", {
+      headers: {
+        "Set-Cookie": await commitSession(session),
+      },
+    });
     
   }
 }
@@ -85,7 +117,7 @@ export default function Page() {
   const actionData = useActionData<typeof action>();
   
   return (
-    <article className={ "bg-signup" }>
+    <div className={ "bg-signup" }>
       <div className={ "container" }>
         <div className={ "absolute bottom-20 left-0 w-full px-4 md:px-20" }>
           <div className={ "flex flex-col md:flex-row gap-4" }>
@@ -99,15 +131,11 @@ export default function Page() {
         loaderData={ loaderData! }
         actionData={ actionData! }
       />
-      { /* 仮登録完了モーダル */ }
-      <PreflightCompleteModal 
-        loaderData={ loaderData! }
-      />
       { /* サインインフォームモーダル */ }
       <SigninFormModal 
         loaderData={ loaderData! }
         actionData={ actionData! }
       />
-    </article>
+    </div>
   );
 }

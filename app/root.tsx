@@ -37,6 +37,7 @@ export default function App() {
   );
 }
 
+/*
 export function ErrorBoundary() {
   const error = useRouteError();
   if (isRouteErrorResponse(error)) {
@@ -58,6 +59,67 @@ export function ErrorBoundary() {
           <ScrollRestoration />
           <Scripts />
           <LiveReload />
+        </body>
+      </html>
+    );
+  }
+}
+*/
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+  if (isRouteErrorResponse(error)) {
+    return (
+      <html lang="ja">
+        <head>
+          <meta charSet="utf-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <Meta />
+          <Links />
+          <title>エラー</title>
+        </head>
+        <body>
+          <div className={ "container error-container" }>
+            <h1>{ error.status }</h1>
+            <p>{ error.statusText }</p>
+          </div>
+        </body>
+      </html>
+    );
+  } else if (error instanceof Error) {
+    return (
+      <html lang="ja">
+        <head>
+          <meta charSet="utf-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <Meta />
+          <Links />
+          <title>エラー</title>
+        </head>
+        <body>
+          <div className={ "container error-container" }>
+            <h1>Error</h1>
+            <p>{ error.message }</p>
+            <p>The stack trace is:</p>
+            <pre>{ error.stack }</pre>
+          </div>
+        </body>
+      </html>
+    );
+  } else {
+    return (
+      <html lang="ja">
+        <head>
+          <meta charSet="utf-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <Meta />
+          <Links />
+          <title>エラー</title>
+        </head>
+        <body>
+          <div className={ "container error-container" }>
+            <h1>Unknown Error</h1>
+          </div>
         </body>
       </html>
     );

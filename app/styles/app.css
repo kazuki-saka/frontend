@@ -12,7 +12,17 @@
   }
   
   article {
-    @apply mx-auto overflow-x-hidden;
+    @apply mx-auto overflow-x-hidden min-h-[100vh];
+  }
+  
+  .error-container {
+    @apply h-[100vh] flex flex-col justify-center items-center select-none;
+  }
+  .error-container h1 {
+    @apply text-128ptr text-gray-400 font-semibold;
+  }
+  .error-container p {
+    @apply text-20ptr text-gray-600;
   }
   
   form, .wrap {
@@ -29,6 +39,16 @@
   
   input[type="text"], input[type="email"], input[type="number"], input[type="password"], textare  {
     @apply border-solid border-2 border-gray-300 rounded-lg py-3 px-4 w-full text-20ptr;
+  }
+  
+  
+  .authcode-container {
+    @apply flex gap-8 justify-center items-center;
+  }
+  
+  input.authcode-input {
+    @apply w-20 h-20 p-0 bg-white bg-clip-padding border-solid border-2 border-gray-400 rounded-[4px] text-center text-32ptr text-gray-600 font-bold uppercase select-none;
+    font-family: SF Pro Text,SF Pro Icons,Helvetica Neue,Helvetica,Arial,sans-serif;
   }
   
   input[type="file"] {

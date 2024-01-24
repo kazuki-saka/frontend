@@ -1,45 +1,27 @@
-import { json, MetaFunction, LoaderFunctionArgs } from "@remix-run/cloudflare";
-import { useLoaderData } from "@remix-run/react";
-import RegistCompleteModal from "~/components/signup/RegistCompleteModal";
+import { json, redirect, MetaFunction } from "@remix-run/cloudflare";
+import { Link } from "@remix-run/react";
 
 /**
  * Meta
  */
 export const meta: MetaFunction = () => {
-    return [
-      { title: "利用者登録 | ふくいお魚つながるアプリ" },
-      { name: "description", content: "ふくいお魚つながるアプリ" },
-    ];
-  };
-
- /**
- * Loader
- */
-export async function loader({ request }: LoaderFunctionArgs) {
-  console.log("======LOADER_Complete======");
-  // URLパラメータからrefを取得
-  //const ref = new URL(request.url).searchParams.get("ref");
-  const ref = "complete";
-  // JSON形式で返却
-  return json({
-    ref: ref
-  });
-}
-
+  return [
+    { title: "利用者登録完了 | ふくいお魚つながるアプリ" },
+    { name: "description", content: "ふくいお魚つながるアプリ" },
+  ];
+};
 
 export default function Page() {
 
-    // LOADER
-    const loaderData = useLoaderData<typeof loader>();
-  
-    console.log("======Page_Complete======");
-    return (
-      <article className={ "bg-signup" }>
-        { /* 登録完了モーダル */ }
-        <RegistCompleteModal 
-        loaderData={ loaderData! }
-        />
-      </article>
-    );
-  
+  return (
+    <div className={ "bg-black" }>
+      <div className={ "wrap flex justify-center items-center gap-16 min-h-[100vh]" }>
+        <div className={ "text-white" }>
+          <h2 className={ "text-24ptr font-semibold mb-4" }>FUKUI BRAND FISHにようこそ</h2>
+          <p>アカウント登録が完了しました。</p>
+        </div>
+        <Link to={ "/signup/?ref=signin" } className={ "button button--secondary" }>サインイン</Link>
+      </div>
+    </div>
+  );
 }

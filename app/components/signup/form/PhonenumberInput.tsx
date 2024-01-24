@@ -1,14 +1,15 @@
 import { InputHTMLAttributes } from "react";
 import { useField } from "remix-validated-form";
 
-export default function EmailInput ({ ...props }: InputHTMLAttributes<HTMLInputElement>) {
-  const error = useField("preflight.email");
+export default function PhonenumberInput ({ ...props }: InputHTMLAttributes<HTMLInputElement>) {
+  // Error
+  const error = useField("user.personal.phonenumber");
   return (
     <fieldset>
-      <label>メールアドレス</label>
+      <label>ご連絡先(電話番号)</label>
       <input 
-        type={ "text" } 
-        placeholder={ "mail@example.com" }
+        type={ "number" } 
+        placeholder={ "ハイフンなし半角数字" }
         className={ error.error && "border-error bg-error-100 text-error" }
         { ...props }
       />
