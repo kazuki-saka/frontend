@@ -22,6 +22,10 @@ const config: Config = {
       notosansjp: ["Noto Sans JP", "sans-serif"],
       roboto: ["Roboto", "sans-serif"],
       arial: ["Arial", "sans-serif"],
+      meiryo: ["メイリオ", "sans-serif"],
+      hiraginosans: ["Hiragino Sans", "sans-serif"],
+      hiraginokakugothic: ["ヒラギノ角ゴシック", "sans-serif"],
+      yugothic: ["YuGothic", "Yu Gothic", "sans-serif"],
     },
     colors: {
       transparent: "transparent",

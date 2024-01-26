@@ -5,6 +5,7 @@
 @layer base {
   html {
     font-family: "Noto Sans JP", sans-serif;
+    -webkit-font-smoothing: antialiased;
   }
   
   *,*:focus,*:hover {
@@ -19,7 +20,7 @@
     @apply h-[100vh] flex flex-col justify-center items-center select-none;
   }
   .error-container h1 {
-    @apply text-128ptr text-gray-400 font-semibold;
+    @apply text-128ptr md:text-192ptr text-gray-400 font-hiraginosans font-semibold;
   }
   .error-container p {
     @apply text-20ptr text-gray-600;

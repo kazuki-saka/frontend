@@ -74,7 +74,7 @@ export function Step2({ ...props }: Step2Props) {
       <SectionRadioGroup name={ "user[section]" } defaultValue={ props.signupUserFormData.section } setSection={ setSection }/>
       <input type={ "hidden" } name={ "step" } value={ 2 }/>
       { Number(section) === 3 &&
-      <p className={ "-mt-6 ml-2 text-gray-600" }>※生産者登録の場合、運営側で確認後に本登録となります</p>
+      <p className={ "-mt-6 ml-2 text-gray-600" }>※生産者登録の場合、運営側で確認後に記事投稿可能となります。</p>
       }
       <div className={ "flex gap-2 md:gap-8" }>
         <Link to={ `/signup/user?step=1` } className={ "button button--secondary" }>

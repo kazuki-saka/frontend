@@ -1,6 +1,6 @@
 import { json, redirect, MetaFunction, LoaderFunctionArgs, ActionFunctionArgs } from "@remix-run/cloudflare";
 import { useLoaderData, useActionData, Link } from "@remix-run/react";
-import { getSession, commitSession, destroySession } from "~/session.server";
+import { getSession, commitSession, destroySession } from "~/services/session.server";
 import PreflightFormModal from "~/components/signup/PreflightFormModal";
 import SigninFormModal from "~/components/signup/SigninFormModal";
 //import PreflightCompleteModal from "~/components/signup/PreflightCompleteModal";
@@ -15,8 +15,8 @@ import SigninFormModal from "~/components/signup/SigninFormModal";
  */
 export const meta: MetaFunction = () => {
   return [
-    { title: "サインイン | ふくいお魚つながるアプリ" },
-    { name: "description", content: "ふくいお魚つながるアプリ" },
+    { title: "サインイン | FUKUI BRAND FISH" },
+    { name: "description", content: "FUKUI BRAND FISH" },
   ];
 };
 
@@ -97,7 +97,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
         error: jsonData.messages.message
       });
     }
-    // セッションに認証署名を保存
+    // 認証署名をセッションに保存
     session.set("signin-auth-user-signature", jsonData.signature);
     
     // 認証後ホーム画面へリダイレクト

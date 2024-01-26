@@ -1,7 +1,7 @@
 import { json, redirect, MetaFunction, LoaderFunctionArgs, ActionFunctionArgs, HeadersFunction } from "@remix-run/cloudflare";
 import { useLoaderData, useActionData, Link } from "@remix-run/react";
 import { AnimatePresence } from "framer-motion";
-import { getSession, commitSession, destroySession } from "~/session.server";
+import { getSession, commitSession, destroySession } from "~/services/session.server";
 import { Preflight, User as SignupUserFormData } from "~/types/signup";
 import { userSchema_step1, userSchema_step2, userSchema_step3, userSchema_step4 } from "~/schemas/signup";
 import { Wrap as UserFormWrap, Step1 as UserFormStep1, Step2 as UserFormStep2, Step3 as UserFormStep3, Step4 as UserFormStep4 } from "~/components/signup/UserForm";
@@ -16,8 +16,8 @@ import { Wrap as UserFormWrap, Step1 as UserFormStep1, Step2 as UserFormStep2, S
  */
 export const meta: MetaFunction = () => {
   return [
-    { title: "利用者登録 | ふくいお魚つながるアプリ" },
-    { name: "description", content: "ふくいお魚つながるアプリ" },
+    { title: "利用者登録 | FUKUI BRAND FISH" },
+    { name: "description", content: "FUKUI BRAND FISH" },
   ];
 };
 
@@ -42,11 +42,22 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   const session = await getSession(request.headers.get("Cookie"));
   // セッションから認証署名を取得
   const signature = session.get("signup-auth-preflight-signature");
+  // 認証署名がない場合はエラー
+  if (!signature) {
+    throw new Response(null, {
+      status: 401,
+      statusText: "署名の検証に失敗しました。",
+    });
+  }
+  
   // セッションからフォームデータ取得
   const signupUserFormData = JSON.parse(session.get("signup-user-form-data") || "{}") as SignupUserFormData;
   
   // URLパラメータからstepを取得
   const step = new URL(request.url).searchParams.get("step") || 1;
+
+  console.log("step=", step);
+  
   // STEP1
   if (Number(step) === 1) {
     // FormData作成
@@ -77,7 +88,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
       ...signupUserFormData,
       username: preflight.email // ユーザー名追加
     }
-    // セッションに保存
+    // フォームデータをセッションに保存
     session.set("signup-user-form-data", JSON.stringify(_signupUserFormData));
 
     return json({
@@ -237,6 +248,13 @@ export async function action({ request, context }: ActionFunctionArgs) {
     formData.append("user[personal][name]", String(signupUserFormData.personal.name));
     formData.append("user[personal][phonenumber]", String(signupUserFormData.personal.phonenumber));
     
+    console.log("user[username]=", formData.get("user[username]"));
+    console.log("user[passphrase]=", formData.get("user[passphrase]"));
+    console.log("user[section]=", formData.get("user[section]"));
+    console.log("user[viewname]=", formData.get("user[viewname]"));
+    console.log("user[personal][name]=", formData.get("user[personal][name]"));
+    console.log("user[personal][phonenumber]=", formData.get("user[personal][phonenumber]"));
+
     // バリデーション
     const userValidate_step4 = await userSchema_step4.validate(formData);
     // バリデーションエラー

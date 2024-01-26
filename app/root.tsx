@@ -1,5 +1,6 @@
 import type { LinksFunction } from "@remix-run/cloudflare";
 import {
+  Link,
   Links,
   LiveReload,
   Meta,
@@ -80,8 +81,13 @@ export function ErrorBoundary() {
         </head>
         <body>
           <div className={ "container error-container" }>
-            <h1>{ error.status }</h1>
-            <p>{ error.statusText }</p>
+            <div className={ "wrap flex justify-center items-center gap-8" }>
+              <div>
+                <h1 className={ "text-center" }>{ error.status }</h1>
+                <p>{ error.statusText }</p>
+              </div>
+              <Link to={ "/signup" } className={ "button button--primary" }>サインイン画面</Link>
+            </div>
           </div>
         </body>
       </html>

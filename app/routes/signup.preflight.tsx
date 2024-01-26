@@ -1,7 +1,7 @@
 import { json, redirect, MetaFunction, LoaderFunctionArgs, ActionFunctionArgs, HeadersFunction } from "@remix-run/cloudflare";
 import { useLoaderData, useActionData, useNavigation, useSubmit, Link, Form } from "@remix-run/react";
 import { useState, useEffect, useRef } from "react";
-import { getSession, commitSession, destroySession } from "~/session.server";
+import { getSession, commitSession, destroySession } from "~/services/session.server";
 import { Preflight } from "~/types/signup";
 import AuthcodeInput from "~/components/signup/form/AuthcodeInput";
 import Submitting from "~/components/signup/form/Submitting";
@@ -11,8 +11,8 @@ import Submitting from "~/components/signup/form/Submitting";
  */
 export const meta: MetaFunction = () => {
   return [
-    { title: "メールアドレス認証 | ふくいお魚つながるアプリ" },
-    { name: "description", content: "ふくいお魚つながるアプリ" },
+    { title: "メールアドレス認証 | FUKUI BRAND FISH" },
+    { name: "description", content: "FUKUI BRAND FISH" },
   ];
 };
 
@@ -43,6 +43,9 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 
   // URLパラメータからsignatureを取得
   const signature = new URL(request.url).searchParams.get("signature");
+
+  console.log("signature=", signature);
+
   // FormData作成
   const formData = new FormData();
   formData.append("preflight[signature]", String(signature));
@@ -51,6 +54,9 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   const apiResponse = await fetch(`${ context.env.API_URL }/signup/load.preflight`, { method: "POST", body: formData });
   // APIからデータを受信
   const jsonData = await apiResponse.json<LoaderApiResponse>();
+
+  console.log("jsonData=", jsonData);
+
   // ステータス200以外の場合はエラー
   if (jsonData.status !== 200) {
     throw new Response(null, {
@@ -61,6 +67,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   
   // Preflight取得
   const preflight = jsonData.preflight;
+  console.log("preflight=", preflight);
   
   return json({
     preflight: preflight,
@@ -77,6 +84,9 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
  * Action
  */
 export async function action({ request, context }: ActionFunctionArgs) {
+
+  console.log("======signup.preflight  ACTION======");
+
   // セッション取得
   const session = await getSession(request.headers.get("Cookie"));
   // フォームデータを取得
@@ -88,9 +98,6 @@ export async function action({ request, context }: ActionFunctionArgs) {
   const jsonData = await apiResponse.json<ActionApiResponse>();
   // 403エラーの場合
   if (jsonData.status === 403) {
-    // セッションに保存
-    session.flash("signup-auth-preflight-error", "403");
-    
     return json({
       error: "403"
     }, {

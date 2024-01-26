@@ -6,8 +6,8 @@ import { Link } from "@remix-run/react";
  */
 export const meta: MetaFunction = () => {
   return [
-    { title: "利用者登録完了 | ふくいお魚つながるアプリ" },
-    { name: "description", content: "ふくいお魚つながるアプリ" },
+    { title: "利用者登録完了 | FUKUI BRAND FISH" },
+    { name: "description", content: "FUKUI BRAND FISH" },
   ];
 };
 
