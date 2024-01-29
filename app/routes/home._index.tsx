@@ -19,6 +19,9 @@ type LoaderApiResponse = {
  * Loader
  */
 export async function loader({ request, context }: LoaderFunctionArgs) {
+
+  console.log("======home._index  LOADER======");
+
   // セッション取得
   const session = await getSession(request.headers.get("Cookie"));
   
@@ -28,11 +31,14 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   // FormData作成
   const formData = new FormData();
   formData.append("user[signature]", String(signature));
+  console.log("user[signature]=", formData.get("user[signature]"));
   
   // APIへデータを送信
   const apiResponse = await fetch(`${ context.env.API_URL }/signin/guard.user`, { method: "POST", body: formData });
   // JSONデータを取得
   const jsonData = await apiResponse.json<LoaderApiResponse>();
+  console.log("jsonData=", jsonData);
+
   // ステータス200以外の場合はエラー
   if (jsonData.status !== 200) {
     throw new Response(null, {
@@ -40,6 +46,12 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
       statusText: jsonData.messages.message,
     });
   }
+
+  //PR動画取得
+
+
+
+  //トピックス取得
   
   return json({
   }, {

@@ -58,7 +58,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
     // APIへデータを送信(php spark serve --host 0.0.0.0)
     //const response = await fetch("http://localhost:8080/api/signup/create.preflight", { method: "POST", body: formData });
     //const response = await fetch("http://localhost:8080/UserTempController/Add", { method: "POST", body: formData });
-	const apiResponse = await fetch(`${ context.env.API_URL }/signup/create.preflight`, { method: "POST", body: formData });
+	  const apiResponse = await fetch(`${ context.env.API_URL }/signup/create.preflight`, { method: "POST", body: formData });
 
     // JSONデータに変換
     const jsonData = await apiResponse.json<ActionApiResponse>();
@@ -84,6 +84,9 @@ export async function action({ request, context }: ActionFunctionArgs) {
   if (formData.get("form") === "signin") {
 
     console.log("formData=", formData);
+    console.log("formData.email=", formData.get("user[username]"));
+    console.log("formData.pass=", formData.get("user[passphrase]"));
+    
     //console.log("formData.email=", formData.get("signin[email]"));
     //const response = await fetch("http://localhost:8080/SignInController", { method: "POST", body: formData });
 	  const apiResponse = await fetch(`${ context.env.API_URL }/signin/auth.user`, { method: "POST", body: formData });
