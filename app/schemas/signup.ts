@@ -3,9 +3,10 @@ import { z } from "zod";
 import email from "~/schemas/email";
 import passphrase, { passphraseConfirm } from "~/schemas/passphrase";
 import section from "~/schemas/section";
+import shopname from "~/schemas/shopname";
 import viewname from "~/schemas/viewname";
 import name from "~/schemas/name";
-import phonenumber from "~/schemas/phonenumber";
+//import phonenumber from "~/schemas/phonenumber";
 
 /**
  * 仮登録フォームのスキーマ
@@ -55,11 +56,11 @@ export const userSchema_step3 = withZod(
   z.object({
     user: z
       .object({
+        shopname: shopname,
         viewname: viewname,
         personal: z
           .object({
             name: name,
-            phonenumber: phonenumber
           }),
       }),
   })
@@ -75,11 +76,11 @@ export const userSchema_step4 = withZod(
         username: email,
         passphrase: passphrase,
         section: section,
+        shopname: shopname,
         viewname: viewname,
         personal: z
           .object({
             name: name,
-            phonenumber: phonenumber,
           }),
       }),
   })

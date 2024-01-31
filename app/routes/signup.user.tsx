@@ -217,10 +217,11 @@ export async function action({ request, context }: ActionFunctionArgs) {
     // フォームデータ再構築
     const _signupUserFormData = {
       ...signupUserFormData,
-      viewname: String(formData.get("user[viewname]")), // 店舗名・屋号追加
+      shopname: String(formData.get("user[shopname]")), // 店舗名・屋号追加
+      viewname: String(formData.get("user[viewname]")), // ニックネーム追加
       personal: {
         name: String(formData.get("user[personal][name]")), // 名前追加
-        phonenumber: String(formData.get("user[personal][phonenumber]")) // 連絡先追加
+        //phonenumber: String(formData.get("user[personal][phonenumber]")) // 連絡先追加
       }
     }
     // セッションに保存
@@ -244,16 +245,18 @@ export async function action({ request, context }: ActionFunctionArgs) {
     formData.append("user[username]", String(signupUserFormData.username));
     formData.append("user[passphrase]", String(signupUserFormData.passphrase));
     formData.append("user[section]", String(signupUserFormData.section));
+    formData.append("user[shopname]", String(signupUserFormData.shopname));
     formData.append("user[viewname]", String(signupUserFormData.viewname));
     formData.append("user[personal][name]", String(signupUserFormData.personal.name));
-    formData.append("user[personal][phonenumber]", String(signupUserFormData.personal.phonenumber));
+    //formData.append("user[personal][phonenumber]", String(signupUserFormData.personal.phonenumber));
     
     console.log("user[username]=", formData.get("user[username]"));
     console.log("user[passphrase]=", formData.get("user[passphrase]"));
     console.log("user[section]=", formData.get("user[section]"));
+    console.log("user[shopname]=", formData.get("user[shopname]"));
     console.log("user[viewname]=", formData.get("user[viewname]"));
     console.log("user[personal][name]=", formData.get("user[personal][name]"));
-    console.log("user[personal][phonenumber]=", formData.get("user[personal][phonenumber]"));
+    //console.log("user[personal][phonenumber]=", formData.get("user[personal][phonenumber]"));
 
     // バリデーション
     const userValidate_step4 = await userSchema_step4.validate(formData);

@@ -4,6 +4,7 @@ export type Preflight = {
 }
 
 export type User = {
+  shopname: string;
   username: string;
   passphrase: string;
   viewname: string;

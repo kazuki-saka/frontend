@@ -13,6 +13,8 @@ export const meta: MetaFunction = () => {
 type LoaderApiResponse = {
   status: number;
   messages: { message: string };
+  like: {cnt: number, id:Array<string>};
+  comment: {cnt: number, id:Array<string>};
 };
 
 /**
@@ -38,6 +40,8 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   // JSONデータを取得
   const jsonData = await apiResponse.json<LoaderApiResponse>();
   console.log("jsonData=", jsonData);
+  console.log("jsonData.Like=", jsonData.like);
+  console.log("jsonData.comment=", jsonData.comment);
 
   // ステータス200以外の場合はエラー
   if (jsonData.status !== 200) {
@@ -46,6 +50,16 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
       statusText: jsonData.messages.message,
     });
   }
+
+  //いいねとコメントした記事IDのリストをセッションに保存
+  if (jsonData.like.cnt !== 0){
+    session.set("home-user-like", jsonData.like.id);
+  }
+
+  if (jsonData.comment.cnt !== 0){
+    session.set("home-user-comment", jsonData.comment.id);
+  }
+  
 
   //PR動画取得
 

@@ -5,10 +5,9 @@ export default function ViewnameInput ({ ...props }: InputHTMLAttributes<HTMLInp
   const error = useField("user.viewname");
   return (
     <fieldset>
-      <label>店舗名・屋号</label>
+      <label>ニックネーム（コメント時に表示される名前）</label>
       <input 
         type={ "text" } 
-        placeholder={ "福井商店" }
         className={ error.error && "border-error bg-error-100 text-error" }
         { ...props }
       />

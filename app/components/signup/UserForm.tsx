@@ -7,9 +7,10 @@ import { User as SignupUserFormData } from "~/types/signup";
 import sections from "~/components/signup/form/sections";
 import PassphraseInput from "~/components/signup/form/PassphraseInput";
 import SectionRadioGroup from "~/components/signup/form/SectionRadioGroup";
+import ShopNameInput from "~/components/signup/form/ShopnameInput";
 import ViewnameInput from "~/components/signup/form/ViewnameInput";
 import NameInput from "~/components/signup/form/NameInput";
-import PhonenumberInput from "~/components/signup/form/PhonenumberInput";
+//import PhonenumberInput from "~/components/signup/form/PhonenumberInput";
 import Submitting from "~/components/signup/form/Submitting";
 
 export function Wrap({ ...props }: HTMLMotionProps<"div">) {
@@ -73,9 +74,6 @@ export function Step2({ ...props }: Step2Props) {
       <h2 className={ "text-gray-600 text-22ptr md:text-28ptr font-bold mb-4" }>STEP2: 利用者区分を設定してください</h2>
       <SectionRadioGroup name={ "user[section]" } defaultValue={ props.signupUserFormData.section } setSection={ setSection }/>
       <input type={ "hidden" } name={ "step" } value={ 2 }/>
-      { Number(section) === 3 &&
-      <p className={ "-mt-6 ml-2 text-gray-600" }>※生産者登録の場合、運営側で確認後に記事投稿可能となります。</p>
-      }
       <div className={ "flex gap-2 md:gap-8" }>
         <Link to={ `/signup/user?step=1` } className={ "button button--secondary" }>
           前へ
@@ -107,9 +105,10 @@ export function Step3({ ...props }: Step3Props) {
       action={ `?step=3` }
     >
       <h2 className={ "text-gray-600 text-22ptr md:text-28ptr font-bold mb-4" }>STEP3: 登録情報を設定してください</h2>
-      <ViewnameInput name={ "user[viewname]" } defaultValue={ signupUserFormData.viewname }/>
+      <ShopNameInput name={"user[shopname]"}defaultValue={ signupUserFormData.shopname }/>
       <NameInput name={ "user[personal][name]" } defaultValue={ personal ? personal.name : "" }/>
-      <PhonenumberInput name={ "user[personal][phonenumber]" } defaultValue={ personal ? personal.phonenumber : "" }/>
+      <ViewnameInput name={ "user[viewname]" } defaultValue={ signupUserFormData.viewname }/>
+
       <input type={ "hidden" } name={ "step" } value={ 3 }/>
       <div className={ "flex gap-2 md:gap-8" }>
         <Link to={ `/signup/user?step=2` } className={ "button button--secondary" }>
@@ -162,7 +161,7 @@ export function Step4({ ...props }: Step4Props) {
       
       <fieldset className={ "border-b-2 border-solid pb-2" }>
         <label>店舗名・屋号</label>
-        <p className={ "text-20ptr md:text-22ptr text-gray-600 font-semibold" }>{ signupUserFormData.viewname }</p>
+        <p className={ "text-20ptr md:text-22ptr text-gray-600 font-semibold" }>{ signupUserFormData.shopname }</p>
       </fieldset>
       
       <fieldset className={ "border-b-2 border-solid pb-2" }>
@@ -171,9 +170,10 @@ export function Step4({ ...props }: Step4Props) {
       </fieldset>
       
       <fieldset className={ "border-b-2 border-solid pb-2" }>
-        <label>ご連絡先</label>
-        <p className={ "text-20ptr md:text-22ptr text-gray-600 font-semibold font-roboto" }>{ personal.phonenumber }</p>
+        <label>ニックネーム</label>
+        <p className={ "text-20ptr md:text-22ptr text-gray-600 font-semibold" }>{ signupUserFormData.viewname }</p>
       </fieldset>
+
       
       <input type={ "hidden" } name={ "step" } value={ 4 }/>
       <div className={ "flex gap-2 md:gap-8" }>
