@@ -17,6 +17,12 @@ type LoaderApiResponse = {
   comment: {cnt: number, id:Array<string>};
 };
 
+type LoaderPrApiResponse = {
+  status: number;
+  messages: { message: string };
+  prurl: string;
+}
+
 /**
  * Loader
  */
@@ -61,11 +67,21 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   }
   
 
-  //PR動画取得
+  //PR動画・トピックス取得
+  // APIへデータを送信
+  const apiPrResponse = await fetch(`${ context.env.API_URL }/top/view`, { method: "POST", body: formData });
+  // JSONデータを取得
+  const jsonPrData = await apiPrResponse.json<LoaderPrApiResponse>();
+  console.log("jsonPrData=", jsonPrData);
+  // ステータス200以外の場合はエラー
+  if (jsonPrData.status !== 200) {
+    throw new Response(null, {
+      status: jsonPrData.status,
+      statusText: jsonPrData.messages.message,
+    });
+  }
 
 
-
-  //トピックス取得
   
   return json({
   }, {
@@ -80,6 +96,11 @@ export default function Page() {
     <div className={ "container" }>
       <div className={ "wrap" }>
         <h1 className={ "text-30ptr font-semibold" }>認証後トップページ</h1>
+        <p><Link to={ "/pickup?ref=salmon" } className={ "button button--primary" }>福井サーモン</Link></p>
+        <p><Link to={ "/pickup?ref=fugu" } className={ "button button--primary" }>若狭フグ</Link></p>
+        <p><Link to={ "/pickup?ref=seabream" } className={ "button button--primary" }>敦賀真鯛</Link></p>
+        <p><Link to={ "/pickup?ref=mahata" } className={ "button button--primary" }>若狭まはた</Link></p>
+        <p>PR動画を入れる予定</p>
         <p><Link to={ "/signout" }>サインアウト</Link></p>
       </div>
     </div>
