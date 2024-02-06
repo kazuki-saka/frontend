@@ -1,5 +1,5 @@
 import type { LoaderFunctionArgs, MetaFunction , ActionFunctionArgs } from "@remix-run/cloudflare";
-import { json, Link } from "@remix-run/react";
+import { json, useLoaderData, useActionData, Link } from "@remix-run/react";
 import { getSession, commitSession } from "~/services/session.server";
 import authenticate from "~/services/authenticate.user.server";
 
@@ -13,8 +13,8 @@ export const meta: MetaFunction = () => {
 type LoaderApiResponse = {
     status: number;
     messages: { message: string };
-    topics: {cnt: number, id:string, data:string};
-    report: {cnt: number, id:string, nickname:string, updatetime:Date, title:string, detail:string};
+    report: {id:string, title:string, detail_m:string, nickname:string, updatedDate:Date };
+    topics: {id:string, detail:string, updatedDate:string};
   }
   
 /**
@@ -37,13 +37,30 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     // FormData作成
     const formData = new FormData();
     formData.append("user[signature]", String(signature));
+    formData.append("user[kind]", String(ref));
     console.log("user[signature]=", formData.get("user[signature]"));
-
+    console.log("user[kind]=", formData.get("user[kind]"));
 
     //魚種にあったトピックスと記事一覧API呼び出し
+    const apiResponse = await fetch(`${ context.env.API_URL }/report/view`, { method: "POST", body: formData });
+    // JSONデータを取得
+    const jsonData = await apiResponse.json<LoaderApiResponse>();
+    console.log("jsonData=", jsonData);
+    console.log("jsonData.report=", jsonData.report);
+    console.log("jsonData.topics=", jsonData.topics);
+    // ステータス200以外の場合はエラー
+    if (jsonData.status !== 200) {
+      throw new Response(null, {
+        status: jsonData.status,
+        statusText: jsonData.messages.message,
+      });
+    }
+  
 
-
-    return signature;
+    return json({
+      ref: ref
+    });
+  
 }
   
   /**
@@ -57,8 +74,21 @@ export async function action({ request, context }: ActionFunctionArgs) {
 
 export default function Page() {
 
+  // LOADER
+  const loaderData = useLoaderData<typeof loader>();
 
-    { /* 投稿フォームモーダル */ }
-    { /* コメントフォームモーダル */ }
+  console.log("pickup-page.loader=", loaderData);
+
+  return (
+    <div className={ "container" }>
+      <div className={ "wrap" }>
+        <p>トピックス</p>
+        <p>生産者記事一覧</p>
+      </div>
+
+      { /* 投稿フォームモーダル */ }
+      { /* コメントフォームモーダル */ }
+    </div>
+  );
 
 }
