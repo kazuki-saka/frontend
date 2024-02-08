@@ -14,7 +14,7 @@ type LoaderApiResponse = {
     status: number;
     messages: { message: string };
     report: {id:string, title:string, detail_m:string, nickname:string, updatedDate:Date };
-    topics: {id:string, detail:string, updatedDate:string};
+    topics: {num:number, detail:string, updatedDate:string};
   }
   
 /**
@@ -57,9 +57,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     }
   
 
-    return json({
-      ref: ref
-    });
+    return json({jsonData});
   
 }
   
@@ -74,15 +72,23 @@ export async function action({ request, context }: ActionFunctionArgs) {
 
 export default function Page() {
 
+  console.log("======pickup._index  Page======");
+
   // LOADER
   const loaderData = useLoaderData<typeof loader>();
-
+  const topics = loaderData.jsonData.topics;
+  const report = loaderData.jsonData.report;
+ 
   console.log("pickup-page.loader=", loaderData);
+  console.log("topics=", topics);
 
   return (
     <div className={ "container" }>
       <div className={ "wrap" }>
         <p>トピックス</p>
+          <ul>
+            {<li key={topics.num}>{topics.detail} </li> }
+          </ul>
         <p>生産者記事一覧</p>
       </div>
 
