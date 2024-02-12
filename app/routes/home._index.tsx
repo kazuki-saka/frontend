@@ -73,6 +73,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   // JSONデータを取得
   const jsonPrData = await apiPrResponse.json<LoaderPrApiResponse>();
   console.log("jsonPrData=", jsonPrData);
+  
   // ステータス200以外の場合はエラー
   if (jsonPrData.status !== 200) {
     throw new Response(null, {
@@ -96,10 +97,10 @@ export default function Page() {
     <div className={ "container" }>
       <div className={ "wrap" }>
         <h1 className={ "text-30ptr font-semibold" }>認証後トップページ</h1>
-        <Link to={ "/pickup?ref=salmon" } className={ "button button--secondary rounded-full" }>福井サーモン</Link>
-        <Link to={ "/pickup?ref=fugu" } className={ "button button--secondary rounded-full" }>若狭フグ</Link>
-        <Link to={ "/pickup?ref=seabream" } className={ "button button--secondary rounded-full" }>敦賀真鯛</Link>
-        <Link to={ "/pickup?ref=mahata" } className={ "button button--secondary rounded-full" }>若狭まはた</Link>
+        <Link to={ "/pickup?ref=1" } className={ "button button--primary rounded-full" }>福井サーモン</Link>
+        <Link to={ "/pickup?ref=2" } className={ "button button--secondary rounded-full" }>若狭フグ</Link>
+        <Link to={ "/pickup?ref=3" } className={ "button button--secondary rounded-full" }>敦賀真鯛</Link>
+        <Link to={ "/pickup?ref=4" } className={ "button button--secondary rounded-full" }>若狭まはた</Link>
         <p>PR動画を入れる予定</p>
         <p><Link to={ "/signout" }>サインアウト</Link></p>
       </div>

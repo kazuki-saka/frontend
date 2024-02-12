@@ -1,5 +1,5 @@
 import type { LoaderFunctionArgs, MetaFunction , ActionFunctionArgs } from "@remix-run/cloudflare";
-import { json, useLoaderData, useActionData, Link } from "@remix-run/react";
+import { json, useLoaderData, useActionData, Link, Form } from "@remix-run/react";
 import { getSession, commitSession } from "~/services/session.server";
 import authenticate from "~/services/authenticate.user.server";
 
@@ -30,9 +30,23 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     // 認証処理から認証署名を取得
     const signature = await authenticate({ session: session });
 
+    // 認証署名がない場合はエラー
+    if (!signature) {
+      throw new Response(null, {
+        status: 401,
+        statusText: "署名の検証に失敗しました。",
+      });
+    }
+    
     // URLパラメータからrefを取得
     const ref = new URL(request.url).searchParams.get("ref");
     console.log("ref=", ref);
+
+    const like = session.get("home-user-like");
+    const comment = session.get("home-user-comment");
+
+    console.log("like=", like);
+    console.log("comment=", comment);
 
     // FormData作成
     const formData = new FormData();
@@ -56,8 +70,19 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
       });
     }
   
+    //セッションに魚種を保存
+    session.set("home-user-kind", ref);
 
-    return json({jsonData});
+    return json(
+      {
+        report:  jsonData.report,
+        topics:  jsonData.topics
+      },
+      {
+        headers: {
+          "Set-Cookie": await commitSession(session),
+        }
+      });
   
 }
   
@@ -76,25 +101,32 @@ export default function Page() {
 
   // LOADER
   const loaderData = useLoaderData<typeof loader>();
-  const topics = loaderData.jsonData.topics;
-  const report = loaderData.jsonData.report;
- 
-  console.log("pickup-page.loader=", loaderData);
-  console.log("topics=", topics);
-
+  const topics = loaderData.topics;
+  const report = loaderData.report;
+  
   return (
+    <Form>
     <div className={ "container" }>
       <div className={ "wrap" }>
         <p>トピックス</p>
           <ul>
-            {<li key={topics.num}>{topics.detail} </li> }
+            {<li key={topics.num}>
+              <Link to={"pickup/${topics.num}"}>{topics.detail}</Link>
+            </li> }
           </ul>
-        <p>生産者記事一覧</p>
+        <p>生産者</p>
+        <ul>
+            {<li key={report.id}>{report.title} </li> }
+          </ul>
+        <p>福井中央卸売市場</p>
+        <p><Link to={ "/newspost" }>投稿</Link></p>
+        <p><Link to={ "/signout" }>サインアウト</Link></p>
       </div>
 
       { /* 投稿フォームモーダル */ }
       { /* コメントフォームモーダル */ }
     </div>
+    </Form>
   );
 
 }
