@@ -28,30 +28,32 @@ interface Step1Props {
   
 export function Step1({ ...props }: Step1Props) {
 
-    return (
-        <ValidatedForm
-          validator={ ReportSchema_step1 } 
-          method={ "POST" }
-          action={ `?step=1` }
-        >
-        <div className={ "container" }>
-          <div className={ "wrap" }>
+  return (
+    <ValidatedForm
+        validator={ ReportSchema_step1 } 
+        method={ "POST" }
+        action={ `?step=1` }
+      >
+      <div className={ "container" }>
+        <div className={ "wrap" }>
           <h2 className={ "text-gray-600 text-22ptr md:text-28ptr font-bold mb-4" }>新規記事投稿</h2>
           <fieldset>
-          <label>魚種</label>
-          <p className={ "text-22ptr md:text-26ptr text-gray-600 font-semibold font-roboto" }>{ props.ReportFormData.kind }</p>
+            <label>魚種</label>
+            <p className={ "text-22ptr md:text-26ptr text-gray-600 font-semibold font-roboto" }>{ props.ReportFormData.kind }</p>
           </fieldset>
-            <TitleInput name={"report[title]"} />
-            <DetailInput name={"report[detail]"} />
-            <button 
-                type={ "submit" }
-                className={ "button button--primary" }
-            >投稿確認画面へ</button>
-          </div>
-    
-        </div>
-      </ValidatedForm>
-    );
+          <TitleInput name={"report[title]"} />
+          <DetailInput name={"report[detail]"} />
+          <input type={ "hidden" } name={ "step" } value={ 1 }/>
+          <button 
+            type={ "submit" }
+            className={ "button button--primary" }
+          >
+            投稿確認画面へ
+          </button>
+        </div>  
+      </div>
+    </ValidatedForm>
+  );
 }
 
 export function Step2({ ...props }: Step1Props) {
@@ -61,34 +63,34 @@ export function Step2({ ...props }: Step1Props) {
   // Navigate
   const navigation = useNavigation();
 
-    return (
-        <Form
-          method={ "POST" }
-          action={ `?step=2` }
-          className={ "confirm-form" }
-        >
-          <h2 className={ "text-gray-600 text-22ptr md:text-28ptr font-bold mb-4" }>投稿記事の確認</h2>
-          <fieldset className={ "border-b-2 border-solid pb-2" }>
-          <label>タイトル</label>
-          <p className={ "text-20ptr md:text-22ptr text-gray-600 font-semibold font-roboto" }>{ ReportFormData.title }</p>
-          </fieldset>
+  return (
+      <Form
+        method={ "POST" }
+        action={ `?step=2` }
+        className={ "confirm-form" }
+      >
+        <h2 className={ "text-gray-600 text-22ptr md:text-28ptr font-bold mb-4" }>投稿記事の確認</h2>
+        <fieldset className={ "border-b-2 border-solid pb-2" }>
+        <label>タイトル</label>
+        <p className={ "text-20ptr md:text-22ptr text-gray-600 font-semibold font-roboto" }>{ ReportFormData.title }</p>
+        </fieldset>
 
-          <fieldset className={ "border-b-2 border-solid pb-2" }>
-          <label>本文</label>
-          <p className={ "text-20ptr md:text-22ptr text-gray-600 font-semibold font-roboto" }>{ ReportFormData.detail }</p>
-          </fieldset>
+        <fieldset className={ "border-b-2 border-solid pb-2" }>
+        <label>本文</label>
+        <p className={ "text-20ptr md:text-22ptr text-gray-600 font-semibold font-roboto" }>{ ReportFormData.detail }</p>
+        </fieldset>
 
-          <div className={ "wrap" }>
-            <Link to={ `/newspost?step=1` } className={ "button button--secondary" }>
-              前へ
-            </Link>
-            <button 
-                type={ "submit" }
-                className={ "button button--primary" }
-            >
-            この内容で投稿</button>
-          </div>
-    
+        <div className={ "wrap" }>
+          <Link to={ `/newspost?step=1` } className={ "button button--secondary" }>
+            前へ
+          </Link>
+          <button 
+              type={ "submit" }
+              className={ "button button--primary" }
+          >
+          この内容で投稿</button>
+        </div>
+  
       </Form>
-    );
+  );
 }

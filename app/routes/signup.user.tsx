@@ -64,8 +64,6 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     const formData = new FormData();
     formData.append("preflight[signature]", String(signature));
     // APIへデータを送信
-    //const apiResponse = await fetch("http://localhost:8080/api/signup/load.preflight", { method: "POST", body: formData });
-    //const apiResponse = await fetch("http://localhost:8080/UserRegistController", { method: "POST", body: formData });
     const apiResponse = await fetch(`${ context.env.API_URL }/signup/load.preflight`, { method: "POST", body: formData });
 
     // APIからデータを受信
@@ -274,21 +272,6 @@ export async function action({ request, context }: ActionFunctionArgs) {
     const jsonData = await apiResponse.json<ActionApiResponse>();
     // ステータス200の場合はエラー
 
-    //formData.append("complete[token]", String(token));
-    //formData.append("complete[pass]", signupUserFormData.password);
-    //formData.append("complete[section]", String(signupUserFormData.section));
-    //formData.append("complete[name]", signupUserFormData.name);
-    //formData.append("complete[tel]", signupUserFormData.phonenumber);
-
-    //console.log("formData.complete[token]=", formData.get("complete[token]"));
-    //console.log("formData.complete[pass]=", formData.get("complete[pass]"));
-    //console.log("formData.complete[section]=", formData.get("complete[section]"));
-    //console.log("formData.complete[name]=", formData.get("complete[name]"));
-    //console.log("formData.complete[tel]=", formData.get("complete[tel]"));
-
-    //const response = await fetch("http://localhost:8080/UserRegistController/Add", { method: "POST", body: formData });
-    // JSONデータを受信
-    //const jsonData = await response.json<PRegistActionResponse>();    
     console.log("jsonData=", jsonData);
     if (jsonData.status !== 200) {
       throw new Response(null, {

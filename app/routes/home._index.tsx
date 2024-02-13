@@ -97,10 +97,10 @@ export default function Page() {
     <div className={ "container" }>
       <div className={ "wrap" }>
         <h1 className={ "text-30ptr font-semibold" }>認証後トップページ</h1>
-        <Link to={ "/pickup?ref=1" } className={ "button button--primary rounded-full" }>福井サーモン</Link>
-        <Link to={ "/pickup?ref=2" } className={ "button button--secondary rounded-full" }>若狭フグ</Link>
-        <Link to={ "/pickup?ref=3" } className={ "button button--secondary rounded-full" }>敦賀真鯛</Link>
-        <Link to={ "/pickup?ref=4" } className={ "button button--secondary rounded-full" }>若狭まはた</Link>
+        <Link to={ "/home/pickup?ref=1" } className={ "button button--primary rounded-full" }>福井サーモン</Link>
+        <Link to={ "/home/pickup?ref=2" } className={ "button button--secondary rounded-full" }>若狭フグ</Link>
+        <Link to={ "/home/pickup?ref=3" } className={ "button button--secondary rounded-full" }>敦賀真鯛</Link>
+        <Link to={ "/home/pickup?ref=4" } className={ "button button--secondary rounded-full" }>若狭まはた</Link>
         <p>PR動画を入れる予定</p>
         <p><Link to={ "/signout" }>サインアウト</Link></p>
       </div>
