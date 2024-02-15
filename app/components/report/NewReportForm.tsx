@@ -7,7 +7,6 @@ import TitleInput from "~/components/report/form/TitleInput";
 import DetailInput from "~/components/report/form/DetailInput";
 
 
-
 export function Wrap({ ...props }: HTMLMotionProps<"div">) {
     return (
       <motion.div
@@ -28,6 +27,8 @@ interface Step1Props {
   
 export function Step1({ ...props }: Step1Props) {
 
+  const { ReportFormData } = props;
+
   return (
     <ValidatedForm
         validator={ ReportSchema_step1 } 
@@ -39,17 +40,19 @@ export function Step1({ ...props }: Step1Props) {
           <h2 className={ "text-gray-600 text-22ptr md:text-28ptr font-bold mb-4" }>新規記事投稿</h2>
           <fieldset>
             <label>魚種</label>
-            <p className={ "text-22ptr md:text-26ptr text-gray-600 font-semibold font-roboto" }>{ props.ReportFormData.kind }</p>
+            <p className={ "text-22ptr md:text-26ptr text-gray-600 font-semibold font-roboto" }>{ ReportFormData.kind }</p>
           </fieldset>
-          <TitleInput name={"report[title]"} />
-          <DetailInput name={"report[detail]"} />
+          <TitleInput name={"report[title]"} defaultValue={ ReportFormData.title} />
+          <DetailInput name={"report[detail]"} defaultValue={ ReportFormData.detail} />
           <input type={ "hidden" } name={ "step" } value={ 1 }/>
-          <button 
-            type={ "submit" }
-            className={ "button button--primary" }
-          >
-            投稿確認画面へ
-          </button>
+          <div className={ "flex gap-2 md:gap-8" }>
+            <button 
+              type={ "submit" }
+              className={ "button button--primary" }
+            >
+              投稿確認画面へ
+            </button>
+          </div>
         </div>  
       </div>
     </ValidatedForm>

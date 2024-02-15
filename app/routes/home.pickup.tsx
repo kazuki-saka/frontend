@@ -10,11 +10,15 @@ export const meta: MetaFunction = () => {
   ];
 };
 
+type report = {id:string, title:string, detail_m:string, nickname:string, updatedDate:Date, like_cnt:number, comment_cnt:number };
+type topic = {num:number, detail:string, updatedDate:string};
+
 type LoaderApiResponse = {
     status: number;
     messages: { message: string };
-    report: {id:string, title:string, detail_m:string, nickname:string, updatedDate:Date };
-    topics: {num:number, detail:string, updatedDate:string};
+    MarketReports: report[];
+    FishmanReports: report[];
+    topics: topic[];
   }
   
 /**
@@ -60,7 +64,8 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   // JSONデータを取得
   const jsonData = await apiResponse.json<LoaderApiResponse>();
   console.log("jsonData=", jsonData);
-  console.log("jsonData.report=", jsonData.report);
+  console.log("jsonData.MarketReports=", jsonData.MarketReports);
+  console.log("jsonData.FishmanReports=", jsonData.FishmanReports);
   console.log("jsonData.topics=", jsonData.topics);
   // ステータス200以外の場合はエラー
   if (jsonData.status !== 200) {
@@ -75,7 +80,8 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 
   return json(
     {
-      report:  jsonData.report,
+      market:  jsonData.MarketReports,
+      fishman: jsonData.FishmanReports,
       topics:  jsonData.topics
     },
     {
@@ -92,8 +98,9 @@ export default function Page() {
   // LOADER
   const loaderData = useLoaderData<typeof loader>();
   const topics = loaderData.topics;
-  const report = loaderData.report;
-  
+  const market = loaderData.market;
+  const fishman = loaderData.fishman;
+
   return (
     <div>
       { /* フォーム */ }
@@ -102,15 +109,37 @@ export default function Page() {
           <div className={ "wrap" }>
             <p>トピックス</p>
               <ul>
-                {<li key={topics.num}>
-                  <Link to={"pickup/${topics.num}"}>{topics.detail}</Link>
-                </li> }
+                {topics.map((topi) => (
+                  <li key={topi.num}>
+                    <p>更新日時：{topi.updatedDate}</p>
+                    <Link to={"pickup/${topi.num}"}>{topi.detail}</Link>
+                  </li>
+                ))}
               </ul>
             <p>生産者</p>
-            <ul>
-                {<li key={report.id}>{report.title} </li> }
+              <ul>
+                {fishman.map((repo) => (
+                  <li key={repo.id}>
+                    <Link to={"pickup/${repo.id}"}>{repo.title}</Link>
+                    <p>更新日時：{repo.updatedDate}</p>
+                    <p>●ニックネーム：{repo.nickname}</p>
+                    <p>★ほしいね：{repo.like_cnt}</p>  
+                    <p>※コメント：{repo.comment_cnt}</p>  
+                  </li>
+                ))}
               </ul>
             <p>福井中央卸売市場</p>
+              <ul>
+                {market.map((repo) => (
+                  <li key={repo.id}>
+                    <Link to={"pickup/${repo.id}"}>{repo.title}</Link>
+                    <p>更新日時：{repo.updatedDate}</p>
+                    <p>●ニックネーム：{repo.nickname}</p>
+                    <p>★ほしいね：{repo.like_cnt}</p>  
+                    <p>※コメント：{repo.comment_cnt}</p>  
+                  </li>
+                ))}
+              </ul>
             <p><Link to={ "/home/newspost" }>投稿</Link></p>
             <p><Link to={ "/signout" }>サインアウト</Link></p>
           </div>

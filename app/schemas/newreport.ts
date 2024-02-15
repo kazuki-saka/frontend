@@ -10,11 +10,8 @@ import reportdetail from "./reportdetail";
  */
  export const ReportSchema_step1 = withZod(
     z.object({
-      user: z
-        .object({
-          title: reporttitle,
-          detail: reportdetail
-        }),
+      title: reporttitle,
+      detail: reportdetail
     })
   );
   

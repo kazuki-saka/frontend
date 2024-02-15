@@ -38,8 +38,9 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     });
   }
 
-  // URLパラメータからstepと魚種を取得
+  // URLパラメータからstepを取得
   const step = new URL(request.url).searchParams.get("step") || 1;
+  // セッションから魚種を取得
   const kind = session.get("home-user-kind");
   console.log("step=", step);
   console.log("kind=", kind);
@@ -116,7 +117,7 @@ export default function Page() {
     // Step取得
     const step = loaderData.step;
     const ReportUserData = loaderData.reportdata;
-    console.log("step=", step);
+    alert("step=" + step);
  
     return (
       <article>
