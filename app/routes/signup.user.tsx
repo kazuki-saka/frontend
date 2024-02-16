@@ -160,9 +160,6 @@ export async function action({ request, context }: ActionFunctionArgs) {
 
     // セッションに保存
     session.set("signup-user-form-data", JSON.stringify(_signupUserFormData));
-    console.log("session2=", session);
-    console.log("session.signup-user-form-data=", session.get("signup-user-form-data"));
-
     
     // STEP2へリダイレクト
     return redirect(`/signup/user?step=2`, {
@@ -293,13 +290,10 @@ export default function Page() {
   console.log("======signup_user_Page======");
   // LOADER
   const loaderData = useLoaderData<typeof loader>();
-  console.log("loaderData=", loaderData);
   // Step取得
   const step = loaderData.step;
-  console.log("step=", step);
   // SignupUserFormData取得
   const signupUserFormData = loaderData.signupUserFormData;
-  console.log("signupUserFormData=", signupUserFormData);
   
   
   return (

@@ -59,7 +59,11 @@ export function Step1({ ...props }: Step1Props) {
   );
 }
 
-export function Step2({ ...props }: Step1Props) {
+interface Step2Props {
+  ReportFormData: ReportFormData;
+}
+
+export function Step2({ ...props }: Step2Props) {
 
   const { ReportFormData } = props;
 
@@ -73,6 +77,11 @@ export function Step2({ ...props }: Step1Props) {
         className={ "confirm-form" }
       >
         <h2 className={ "text-gray-600 text-22ptr md:text-28ptr font-bold mb-4" }>投稿記事の確認</h2>
+        <fieldset>
+            <label>魚種</label>
+            <p className={ "text-22ptr md:text-26ptr text-gray-600 font-semibold font-roboto" }>{ ReportFormData.kind }</p>
+        </fieldset>
+
         <fieldset className={ "border-b-2 border-solid pb-2" }>
         <label>タイトル</label>
         <p className={ "text-20ptr md:text-22ptr text-gray-600 font-semibold font-roboto" }>{ ReportFormData.title }</p>
@@ -83,6 +92,7 @@ export function Step2({ ...props }: Step1Props) {
         <p className={ "text-20ptr md:text-22ptr text-gray-600 font-semibold font-roboto" }>{ ReportFormData.detail }</p>
         </fieldset>
 
+        <input type={ "hidden" } name={ "step" } value={ 2 }/>
         <div className={ "wrap" }>
           <Link to={ `/newspost?step=1` } className={ "button button--secondary" }>
             前へ
@@ -92,8 +102,7 @@ export function Step2({ ...props }: Step1Props) {
               className={ "button button--primary" }
           >
           この内容で投稿</button>
-        </div>
-  
+        </div>  
       </Form>
   );
 }

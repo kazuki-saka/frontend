@@ -76,7 +76,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   }
 
   //セッションに魚種を保存
-  session.set("home-user-kind", ref);
+  session.set("home-report-kind", ref);
 
   return json(
     {
