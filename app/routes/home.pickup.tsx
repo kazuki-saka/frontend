@@ -19,7 +19,7 @@ type LoaderApiResponse = {
     MarketReports: report[];
     FishmanReports: report[];
     topics: topic[];
-  }
+}
   
 /**
  * Loader
@@ -112,7 +112,7 @@ export default function Page() {
                 {topics.map((topi) => (
                   <li key={topi.num}>
                     <p>更新日時：{topi.updatedDate}</p>
-                    <Link to={"pickup/${topi.num}"}>{topi.detail}</Link>
+                    <Link to={`/home/reportview/?ref=view&kind=1&id=${topi.num}`}>{topi.detail}</Link>
                   </li>
                 ))}
               </ul>
@@ -120,7 +120,7 @@ export default function Page() {
               <ul>
                 {fishman.map((repo) => (
                   <li key={repo.id}>
-                    <Link to={"pickup/${repo.id}"}>{repo.title}</Link>
+                    <Link to={`/home/reportview/?ref=view&kind=2&id=${repo.id}`}>{repo.title}</Link>
                     <p>更新日時：{repo.updatedDate}</p>
                     <p>●ニックネーム：{repo.nickname}</p>
                     <p>★ほしいね：{repo.like_cnt}</p>  
@@ -132,7 +132,7 @@ export default function Page() {
               <ul>
                 {market.map((repo) => (
                   <li key={repo.id}>
-                    <Link to={"pickup/${repo.id}"}>{repo.title}</Link>
+                    <Link to={`/home/reportview/?ref=view&kind=2&id=${repo.id}`}>{repo.title}</Link>
                     <p>更新日時：{repo.updatedDate}</p>
                     <p>●ニックネーム：{repo.nickname}</p>
                     <p>★ほしいね：{repo.like_cnt}</p>  
@@ -141,12 +141,11 @@ export default function Page() {
                 ))}
               </ul>
             <p><Link to={ "/home/newspost" }>投稿</Link></p>
+            <p><Link to={ "/home" }>トップに戻る</Link></p>
             <p><Link to={ "/signout" }>サインアウト</Link></p>
           </div>
-
         </div>
       </Form>
-      { /* コメントフォームモーダル */ }
     </div>
   );
 

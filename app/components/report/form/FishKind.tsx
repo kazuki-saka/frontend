@@ -3,7 +3,7 @@ export type FishKind = {
     value: number;
   };
   
-    const fishfind: FishKind[] = [
+    const fishkind: FishKind[] = [
         {
             name: "福井サーモン",
             value: 1
@@ -21,4 +21,4 @@ export type FishKind = {
             value: 4
         },
     ];
-  export default fishfind;
+  export default fishkind;

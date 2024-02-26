@@ -75,7 +75,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
         status: jsonData.status,
         statusText: jsonData.messages.message,
       });
-  }
+    }
   
     // Preflight取得
     const preflight = jsonData.preflight;

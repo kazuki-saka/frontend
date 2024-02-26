@@ -130,9 +130,9 @@ export async function action({ request, context }: ActionFunctionArgs) {
     console.log("report[kind]=", PostFormData.get("report[kind]"));
 
     // バリデーション
-    const userValidate_step4 = await ReportSchema_step2.validate(PostFormData);
+    const ReportValidate_step2 = await ReportSchema_step2.validate(PostFormData);
     // バリデーションエラー
-    if (userValidate_step4.error) {
+    if (ReportValidate_step2.error) {
       throw new Response(null, {
         status: 422,
         statusText: "データが不足しています。",

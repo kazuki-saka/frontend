@@ -82,8 +82,6 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     });
   }
 
-
-  
   return json({
   }, {
     headers: {
