@@ -21,6 +21,7 @@ type LoaderApiResponse = {
   messages: { message: string };
   report: report;
   comment: comment[];
+  likenum:number;
 }
 
 type ActionApiResponse = {
@@ -58,6 +59,11 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   console.log("id=", id);
   console.log("ref=", ref);
 
+//  const FormDat = await request.formData();
+//  console.log("FormDat=", FormDat);
+//  const like = FormDat.get("like");
+//  console.log("like=", like);
+
   if (ref === "view"){
     // FormData作成
     const formData = new FormData();
@@ -87,16 +93,16 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     
     return json(
       {
+        ref: ref,
         report: jsonData.report,
         comments: jsonData.comment,
-        ref: ref
+        likenum:jsonData.likenum
       },
       {
         headers: {
           "Set-Cookie": await commitSession(session),
         }
-      }
-    );      
+      });      
   }
 
   if (ref === "comment"){
@@ -105,9 +111,15 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     return json({
       ref: ref,
       report: null,
-      comments: null
-    })
-  }
+      comments: null,
+      likenum: 0
+    },
+    {
+      headers: {
+        "Set-Cookie": await commitSession(session),
+      }
+    });      
+}
 
 }
 
@@ -122,6 +134,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
 
   // 認証処理から認証署名を取得
   const signature = await authenticate({ session: session });
+  console.log("signature=", signature);
 
   // 認証署名がない場合はエラー
   if (!signature) {
@@ -135,10 +148,44 @@ export async function action({ request, context }: ActionFunctionArgs) {
   const ref = new URL(request.url).searchParams.get("ref");
   const id = new URL(request.url).searchParams.get("id");
 
+  console.log("ref=", ref);
+  console.log("id=", id);
+  
   // フォームデータを取得
   const formData = await request.formData();
 
   console.log("formData.form=", formData.get("form"));
+  const likeid = formData.get("likeid");
+  console.log("likeid=", likeid);
+
+  if (likeid !== null) {
+    //ほしいね
+    console.log("like");
+    formData.append("user[signature]", String(signature));
+    formData.append("report[id]", String(likeid));
+
+    // APIへデータを送信
+    const apiResponse = await fetch(`${ context.env.API_URL }/detail/likeup`, { method: "POST", body: formData });
+
+    // APIからデータを受信
+    const jsonData = await apiResponse.json<ActionApiResponse>();
+
+    // ステータス200の場合はエラー
+    console.log("jsonData=", jsonData);
+    if (jsonData.status !== 200) {
+      throw new Response(null, {
+        status: jsonData.status,
+        statusText: jsonData.messages.message,
+      });
+    }
+    
+    return redirect(`/home/reportview?ref=view&id=${likeid}`, {
+      headers: {
+        "Set-Cookie": await commitSession(session),
+      },
+    });  
+  }
+
 
   if (formData.get("form") === "CommentUpdate") {
     //　コメント登録
@@ -164,15 +211,14 @@ export async function action({ request, context }: ActionFunctionArgs) {
         status: jsonData.status,
         statusText: jsonData.messages.message,
       });
-    }    
+    }
+    
+    return redirect(`/home/reportview?ref=view&id=${id}`, {
+      headers: {
+        "Set-Cookie": await commitSession(session),
+      },
+    });  
   }
-
-  return redirect(`/home/reportview?ref=view&id=${id}`, {
-    headers: {
-      "Set-Cookie": await commitSession(session),
-    },
-  });
-
 }
 
 export default function Page() {
@@ -206,5 +252,5 @@ export default function Page() {
 
     </article>
   );
-  }
+}
   

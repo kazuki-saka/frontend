@@ -27,7 +27,6 @@ interface Step1Props {
 export function Step1({ ...props }: Step1Props) {
 
   const { ReportFormData } = props;
-  //<DetailInput name={"report[detail]"} defaultValue={ ReportFormData.detail} />
 
   return (
     <ValidatedForm
@@ -43,8 +42,7 @@ export function Step1({ ...props }: Step1Props) {
             <p className={ "text-22ptr md:text-26ptr text-gray-600 font-semibold font-roboto" }>{ ReportFormData.kind }</p>
           </fieldset>
           <TitleInput name={"report[title]"} defaultValue={ ReportFormData.title} />
-          <label>本文</label>
-          <textarea name="report[detail]" cols={50} rows={10} defaultValue={ ReportFormData.detail}></textarea>
+          <DetailInput name={"report[detail]"} defaultValue={ ReportFormData.detail} />
           <input type={ "hidden" } name={ "step" } value={ 1 }/>
           <div className={ "flex gap-2 md:gap-8" }>
             <button 
