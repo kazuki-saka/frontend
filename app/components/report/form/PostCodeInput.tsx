@@ -1,14 +1,14 @@
 import { InputHTMLAttributes } from "react";
 import { useField } from "remix-validated-form";
 
-export default function TitleInput ({ ...props }: InputHTMLAttributes<HTMLInputElement>) {
-  const error = useField("report.title");
+export default function PostCodeInput ({ ...props }: InputHTMLAttributes<HTMLInputElement>) {
+  const error = useField("inquiry.postcode");
   return (
     <fieldset>
-      <label>タイトル</label>
+      <label>郵便番号（ハイフン無し）</label>
       <input 
         type={ "text" } 
-        placeholder={ "ここに記事のタイトルを入力して下さい" }
+        placeholder={ "1234567" }
         className={ error.error && "border-error bg-error-100 text-error" }
         { ...props }
       />

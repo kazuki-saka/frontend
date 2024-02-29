@@ -38,8 +38,9 @@ export function View({ ...props }: ReprtViewFormProps){
       { loader.report.title }
       <p>本文</p>
       <p>{ loader.report.detail_modify }</p>
-      <p>ほしいね数：{ loader.likenum }</p>
-      <p>この記事に対するコメント</p>
+      {(loader.kind === '2') ? <p>ほしいね数：{ loader.likenum }</p> : <p></p>}
+      {(loader.kind === '2') ? <p>この記事に対するコメント</p> : <p></p>}
+      
       { loader.comments.map((come) => (
         <li key={come.num}>
           <p>ニックネーム：{come.nickname} </p>
@@ -48,15 +49,19 @@ export function View({ ...props }: ReprtViewFormProps){
         </li>
       ))}
       
-      <p><Link to={ `/home/reportview?ref=comment&id=${loader.report.id}` } className={ "button button--primary rounded-full" }>コメント</Link></p>
+      {(loader.kind === '2') ? 
+        <p><Link to={ `/home/reportview?ref=comment&id=${loader.report.id}` } className={ "button button--primary rounded-full" }>コメント</Link></p>
+        :<p></p>}
+
+      {(loader.kind === '2') ? 
       <button 
-            type={ "submit" }
-            className={ "button button--primary" }
-            name={ "likeid" }
-            value={ loader.report.id }
+        type={ "submit" }
+        className={ "button button--primary" }
+        name={ "likeid" }
+        value={ loader.report.id }
       >
       ほしいね</button>
-
+      :<p></p>}
     </Form>
   );
 }

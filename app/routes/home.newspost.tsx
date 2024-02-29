@@ -1,12 +1,12 @@
 import type { LoaderFunctionArgs, MetaFunction, ActionFunctionArgs } from "@remix-run/cloudflare";
-import { json, redirect, useLoaderData, useActionData, Link } from "@remix-run/react";
-import { getSession, commitSession, destroySession } from "~/services/session.server";
+import { json, redirect, useLoaderData } from "@remix-run/react";
+import { getSession, commitSession } from "~/services/session.server";
 import authenticate from "~/services/authenticate.user.server";
 import { AnimatePresence } from "framer-motion";
-import { Wrap as UserFormWrap, Step1 as UserFormStep1, Step2 as UserFormStep2 } from "~/components/report/NewReportForm";
+import { Wrap as ReportFormWrap, Step1 as ReportFormStep1, Step2 as ReportFormStep2 } from "~/components/report/NewReportForm";
 import { Report as ReportUserFormData } from "~/types/Report";
 import { ReportSchema_step1, ReportSchema_step2} from "~/schemas/newreport";
-import fishkind from "~/components/report/form/FishKind";
+import FishKindAry from "~/components/report/form/FishKind";
 
 export const meta: MetaFunction = () => {
   return [
@@ -51,7 +51,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 
   // セッションからフォームデータ取得
   const ReportUserData = JSON.parse(session.get("report-rejist-form-data") || "{}") as ReportUserFormData;
-  ReportUserData.kind = fishkind[kind - 1].name;
+  ReportUserData.kind = FishKindAry[kind - 1].name;
   console.log("ReportUserData.title=", ReportUserData.title); 
   console.log("ReportUserData.detail=", ReportUserData.detail); 
   console.log("ReportUserData=", ReportUserData);
@@ -97,16 +97,12 @@ export async function action({ request, context }: ActionFunctionArgs) {
       });
     }
 
-    console.log("step=", formData.get("step"));
     console.log("title=", formData.get("report[title]"));
     console.log("detail=", formData.get("report[detail]"));
 
     // セッションに保存
-    console.log("formData=", formData);
     reportUserData.title = String(formData.get("report[title]"));
     reportUserData.detail = String(formData.get("report[detail]"));
-    
-
     session.set("report-rejist-form-data", JSON.stringify(reportUserData));
 
     // STEP2へリダイレクト
@@ -126,9 +122,6 @@ export async function action({ request, context }: ActionFunctionArgs) {
     PostFormData.append("report[kind]", String(session.get("home-report-kind")));
     PostFormData.append("report[detail]", String(reportUserData.detail));
 
-    console.log("formData=", PostFormData);
-    console.log("report[kind]=", PostFormData.get("report[kind]"));
-
     // バリデーション
     const ReportValidate_step2 = await ReportSchema_step2.validate(PostFormData);
     // バリデーションエラー
@@ -139,6 +132,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
       });
     }
 
+    console.log("report[kind]=", PostFormData.get("report[kind]"));
     // APIへデータを送信
     const apiResponse = await fetch(`${ context.env.API_URL }/report/add`, { method: "POST", body: PostFormData });
 
@@ -153,6 +147,11 @@ export async function action({ request, context }: ActionFunctionArgs) {
         statusText: jsonData.messages.message,
       });
     }
+
+    //セッション内の投稿内容をクリアする
+    reportUserData.title = "";
+    reportUserData.detail = "";
+    session.set("report-rejist-form-data", JSON.stringify(reportUserData));
   }
 
   // 投稿完了画面へリダイレクト
@@ -182,15 +181,15 @@ export default function Page() {
         <AnimatePresence initial={ false }>
           { /* フォーム1 */ }
           { Number(step) === 1 &&
-            <UserFormWrap key={ "step1" }>
-              <UserFormStep1 ReportFormData={ ReportUserData }/>
-            </UserFormWrap>
+            <ReportFormWrap key={ "step1" }>
+              <ReportFormStep1 ReportFormData={ ReportUserData }/>
+            </ReportFormWrap>
           }
           { /* フォーム2 */ }
           { Number(step) === 2 &&
-            <UserFormWrap key={ "step2" }>
-              <UserFormStep2 ReportFormData={ ReportUserData }/>
-            </UserFormWrap>
+            <ReportFormWrap key={ "step2" }>
+              <ReportFormStep2 ReportFormData={ ReportUserData }/>
+            </ReportFormWrap>
           }
         </AnimatePresence>
       </article>

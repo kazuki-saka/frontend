@@ -100,6 +100,7 @@ export default function Page() {
         <Link to={ "/home/pickup?ref=3" } className={ "button button--secondary rounded-full" }>敦賀真鯛</Link>
         <Link to={ "/home/pickup?ref=4" } className={ "button button--secondary rounded-full" }>若狭まはた</Link>
         <p>PR動画を入れる予定</p>
+        <Link to={ "/home/inquiry" } className={ "button button--secondary rounded-full" }>問い合わせ</Link>
         <p><Link to={ "/signout" }>サインアウト</Link></p>
       </div>
     </div>

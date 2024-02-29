@@ -94,6 +94,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     return json(
       {
         ref: ref,
+        kind: kind,
         report: jsonData.report,
         comments: jsonData.comment,
         likenum:jsonData.likenum
@@ -110,6 +111,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 
     return json({
       ref: ref,
+      kind: kind,
       report: null,
       comments: null,
       likenum: 0
@@ -153,8 +155,6 @@ export async function action({ request, context }: ActionFunctionArgs) {
   
   // フォームデータを取得
   const formData = await request.formData();
-
-  console.log("formData.form=", formData.get("form"));
   const likeid = formData.get("likeid");
   console.log("likeid=", likeid);
 
@@ -179,13 +179,24 @@ export async function action({ request, context }: ActionFunctionArgs) {
       });
     }
     
+    //セッションに今回いいねした記事IDを追加する
+    const likeary: string[] = session.get("home-user-like");
+    if (likeary != null){
+      likeary.push(String(likeid));    
+      session.set("home-user-like", likeary);  
+    }
+    else{
+      //初回はこちら
+      const tmp :String[] = [String(likeid)];
+      session.set("home-user-like", tmp);  
+    }
+
     return redirect(`/home/reportview?ref=view&id=${likeid}`, {
       headers: {
         "Set-Cookie": await commitSession(session),
       },
     });  
   }
-
 
   if (formData.get("form") === "CommentUpdate") {
     //　コメント登録
@@ -211,6 +222,22 @@ export async function action({ request, context }: ActionFunctionArgs) {
         status: jsonData.status,
         statusText: jsonData.messages.message,
       });
+    }
+    
+    //セッションに今回コメントした記事IDを追加する
+    const commentary: string[] = session.get("home-user-comment");
+
+    if (commentary != null){
+      if (commentary.indexOf(String(id)) == -1){
+        //コメント済みでないなら追加
+        commentary.push(String(id));    
+      }
+      session.set("home-user-comment", commentary);  
+    }
+    else{
+      //初回はこちら
+      const tmp :String[] = [String(id)];
+      session.set("home-user-comment", tmp);
     }
     
     return redirect(`/home/reportview?ref=view&id=${id}`, {
@@ -247,9 +274,8 @@ export default function Page() {
           loaderData={ loaderData! }
           actionData={ actionData! }
         />
-      }
+        }
       </AnimatePresence>
-
     </article>
   );
 }

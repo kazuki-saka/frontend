@@ -2,6 +2,7 @@ import type { LoaderFunctionArgs, MetaFunction , ActionFunctionArgs } from "@rem
 import { json, useLoaderData, useActionData, Link, Form } from "@remix-run/react";
 import { getSession, commitSession } from "~/services/session.server";
 import authenticate from "~/services/authenticate.user.server";
+import { reportcostom as ReportCostom } from "~/types/Report";
 
 export const meta: MetaFunction = () => {
   return [
@@ -16,10 +17,11 @@ type topic = {num:number, detail:string, updatedDate:string};
 type LoaderApiResponse = {
     status: number;
     messages: { message: string };
-    MarketReports: report[];
-    FishmanReports: report[];
+    MarketReports: ReportCostom[];
+    FishmanReports: ReportCostom[];
     topics: topic[];
 }
+
   
 /**
  * Loader
@@ -46,11 +48,11 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   const ref = new URL(request.url).searchParams.get("ref");
   console.log("ref=", ref);
 
-  const like = session.get("home-user-like");
-  const comment = session.get("home-user-comment");
+  const likeAry:string[] = session.get("home-user-like");
+  const commentAry:string[] = session.get("home-user-comment");
 
-  console.log("like=", like);
-  console.log("comment=", comment);
+  console.log("like=", likeAry);
+  console.log("comment=", commentAry);
 
   // FormData作成
   const formData = new FormData();
@@ -78,6 +80,49 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   //セッションに魚種を保存
   session.set("home-report-kind", ref);
 
+  //自分がほしいねした記事にフラグを立てる
+  if (likeAry != null){
+    likeAry.forEach(tmpid => {
+      let lIndex : number;
+  
+      lIndex = jsonData.MarketReports.findIndex(l => l.id = tmpid);
+      if (lIndex >= 0){
+        jsonData.MarketReports[lIndex].like_flg = true;
+      }
+  
+      lIndex = jsonData.FishmanReports.findIndex(l => l.id = tmpid);
+      if (lIndex >= 0){
+        jsonData.FishmanReports[lIndex].like_flg = true;
+      }
+    });      
+  }
+
+  //自分がコメントした記事にフラグを立てる
+  if (commentAry != null){
+    commentAry.forEach(tmpid => {
+      let lIndex : number;
+      
+      console.log("comment.id=", tmpid);
+      lIndex = jsonData.MarketReports.findIndex(l => l.id = tmpid);
+      if (lIndex >= 0){
+        console.log("market comment on");
+        jsonData.MarketReports[lIndex].comment_flg = true;
+      }
+  
+      lIndex = jsonData.FishmanReports.findIndex(l => l.id = tmpid);
+      if (lIndex >= 0){
+        console.log("fishman comment on");
+        jsonData.FishmanReports[lIndex].comment_flg = true;
+      }
+    });  
+  }
+
+  console.log("Fishman");
+  jsonData.FishmanReports.forEach(tmp => {
+    console.log("id=", tmp.id);
+    console.log("comment_flg=", tmp.comment_flg);
+  });
+
   return json(
     {
       market:  jsonData.MarketReports,
@@ -92,8 +137,6 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 }
 
 export default function Page() {
-
-  console.log("======pickup  Page======");
 
   // LOADER
   const loaderData = useLoaderData<typeof loader>();
@@ -123,8 +166,14 @@ export default function Page() {
                     <Link to={`/home/reportview/?ref=view&kind=2&id=${repo.id}`}>{repo.title}</Link>
                     <p>更新日時：{repo.updatedDate}</p>
                     <p>●ニックネーム：{repo.nickname}</p>
-                    <p>★ほしいね：{repo.like_cnt}</p>  
-                    <p>※コメント：{repo.comment_cnt}</p>  
+                    <p>
+                      {repo.like_flg  ? "★ほしいね：" : "☆ほしいね："}
+                      {repo.like_cnt}
+                    </p>
+                    <p>
+                      {repo.comment_flg ? "■コメント：": "□コメント："}
+                      {repo.comment_cnt}
+                    </p>  
                   </li>
                 ))}
               </ul>
@@ -135,8 +184,14 @@ export default function Page() {
                     <Link to={`/home/reportview/?ref=view&kind=2&id=${repo.id}`}>{repo.title}</Link>
                     <p>更新日時：{repo.updatedDate}</p>
                     <p>●ニックネーム：{repo.nickname}</p>
-                    <p>★ほしいね：{repo.like_cnt}</p>  
-                    <p>※コメント：{repo.comment_cnt}</p>  
+                    <p>
+                      {repo.like_flg  ? "★ほしいね：" : "☆ほしいね："}
+                      {repo.like_cnt}
+                    </p>
+                    <p>
+                      {repo.comment_flg ? "■コメント：": "□コメント："}
+                      {repo.comment_cnt}
+                    </p>  
                   </li>
                 ))}
               </ul>
