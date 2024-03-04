@@ -6,7 +6,7 @@ import { AnimatePresence } from "framer-motion";
 import { Wrap as ReportFormWrap, Step1 as ReportFormStep1, Step2 as ReportFormStep2 } from "~/components/report/NewReportForm";
 import { Report as ReportUserFormData } from "~/types/Report";
 import { ReportSchema_step1, ReportSchema_step2} from "~/schemas/newreport";
-import FishKindAry from "~/components/report/form/FishKind";
+import FishKindAry from "~/components/FishKind";
 
 export const meta: MetaFunction = () => {
   return [

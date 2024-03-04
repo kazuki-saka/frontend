@@ -37,7 +37,9 @@ export function View({ ...props }: ReprtViewFormProps){
       <p>タイトル</p>
       { loader.report.title }
       <p>本文</p>
-      <p>{ loader.report.detail_modify }</p>
+      <p className='break-words whitespace-pre'>
+        { loader.report.detail_modify }
+      </p>
       {(loader.kind === '2') ? <p>ほしいね数：{ loader.likenum }</p> : <p></p>}
       {(loader.kind === '2') ? <p>この記事に対するコメント</p> : <p></p>}
       
@@ -45,7 +47,9 @@ export function View({ ...props }: ReprtViewFormProps){
         <li key={come.num}>
           <p>ニックネーム：{come.nickname} </p>
           <p>コメント日時{come.updatedDate.toString()}</p>
-          <p>{come.comment}</p>
+          <p className='break-words whitespace-pre'>
+            {come.comment}
+          </p>
         </li>
       ))}
       

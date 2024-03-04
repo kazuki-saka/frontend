@@ -12,7 +12,7 @@ import address from "./address";
  */
  export const InquirySchema_step1 = withZod(
     z.object({
-      inquiy: z
+      inquiry: z
         .object({
           shopname: shopname,
           rejistname: name,
@@ -28,7 +28,7 @@ import address from "./address";
  */
 export const InquirySchema_step2 = withZod(
   z.object({
-    report: z
+    inquiry: z
       .object({
         shopname: shopname,
         rejistname: name,

@@ -88,7 +88,11 @@ export function Step2({ ...props }: Step2Props) {
 
       <fieldset className={ "border-b-2 border-solid pb-2" }>
       <label>本文</label>
-      <p className={ "text-20ptr md:text-22ptr text-gray-600 font-semibold font-roboto" }>{ ReportFormData.detail }</p>
+      <p className={ "text-20ptr md:text-22ptr text-gray-600 font-semibold font-roboto" }>
+        <div className='break-words whitespace-pre'>
+          { ReportFormData.detail }
+        </div>
+      </p>
       </fieldset>
 
       <input type={ "hidden" } name={ "step" } value={ 2 }/>

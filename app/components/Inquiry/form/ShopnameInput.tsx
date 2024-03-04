@@ -1,15 +1,14 @@
 import { InputHTMLAttributes } from "react";
 import { useField } from "remix-validated-form";
 
-export default function InquiryDetailInput ({ ...props }: InputHTMLAttributes<HTMLTextAreaElement>) {
-  const error = useField("report.title");
+export default function ShopnameInput ({ ...props }: InputHTMLAttributes<HTMLInputElement>) {
+  const error = useField("inquiry.shopname");
   return (
     <fieldset>
-      <label>問い合わせ内容</label>
-      <textarea 
-        cols={100}
-        rows={20}
-        placeholder={ "問い合わせ内容をここに入力して下さい。" }
+      <label>店舗名・屋号</label>
+      <input 
+        type={ "text" } 
+        placeholder={ "福井商店" }
         className={ error.error && "border-error bg-error-100 text-error" }
         { ...props }
       />

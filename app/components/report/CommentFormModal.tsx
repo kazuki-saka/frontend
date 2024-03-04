@@ -49,7 +49,9 @@ const _Body = ({ ...props }: { actionData: SerializeFrom<typeof commentAction> }
         validator={ CommentSchema } 
         method={ "POST" }
       >
-        <CommentInput name={ "report[comment]" }/>
+        <p className='break-words whitespace-normal'>
+          <CommentInput name={ "report[comment]" }/>
+        </p>        
         <input type={ "hidden" } name={ "form" } value={ "CommentUpdate" } placeholder={ "" }/>
         <button type={ "submit" } className={ "button button--primary" }>上記の内容でコメント</button>
       </ValidatedForm>
