@@ -3,6 +3,7 @@ import { json, useLoaderData, useActionData, Link, Form } from "@remix-run/react
 import { getSession, commitSession } from "~/services/session.server";
 import authenticate from "~/services/authenticate.user.server";
 import { reportcostom as ReportCostom } from "~/types/Report";
+import { topic as topic } from "~/types/topic";
 
 export const meta: MetaFunction = () => {
   return [
@@ -10,9 +11,6 @@ export const meta: MetaFunction = () => {
     { name: "description", content: "FUKUI BRAND FISHへようこそ" },
   ];
 };
-
-type report = {id:string, title:string, detail_m:string, nickname:string, updatedDate:Date, like_cnt:number, comment_cnt:number };
-type topic = {num:number, detail:string, updatedDate:string};
 
 type LoaderApiResponse = {
     status: number;
@@ -155,7 +153,7 @@ export default function Page() {
                 {topics.map((topi) => (
                   <li key={topi.num}>
                     <p>更新日時：{topi.updatedDate}</p>
-                    <Link to={`/home/reportview/?ref=view&kind=1&id=${topi.num}`}>{topi.detail}</Link>
+                    <Link to={`/home/reportview/?ref=view&kind=1&id=${topi.num}`}>{topi.title}</Link>
                   </li>
                 ))}
               </ul>

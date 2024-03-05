@@ -36,7 +36,7 @@ export function Step1({ ...props }: Step1Props) {
       >
       <div className={ "container" }>
         <div className={ "wrap" }>
-          <h2 className={ "text-gray-600 text-22ptr md:text-28ptr font-bold mb-4" }>新規記事投稿</h2>
+          <h2 className={ "text-gray-600 text-22ptr md:text-28ptr font-bold mb-4" }>新規投稿</h2>
           <fieldset>
             <label>魚種</label>
             <p className={ "text-22ptr md:text-26ptr text-gray-600 font-semibold font-roboto" }>{ ReportFormData.kind }</p>

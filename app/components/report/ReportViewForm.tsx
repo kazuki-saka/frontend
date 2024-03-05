@@ -1,7 +1,6 @@
 import { Link, Form } from "@remix-run/react";
 import { SerializeFrom } from "@remix-run/cloudflare";
 import { motion, HTMLMotionProps } from "framer-motion";
-import { ReportView as ReportViewFormData } from "~/types/Report";
 import { loader as ReportViewLoader, action as ReportViewAction } from "~/routes/home.reportview";
 
 
@@ -66,6 +65,7 @@ export function View({ ...props }: ReprtViewFormProps){
       >
       ほしいね</button>
       :<p></p>}
+      <p><Link to={ `/home/pickup?ref=${loader.report.fishkind}` }>一覧に戻る</Link></p>
     </Form>
   );
 }

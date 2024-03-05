@@ -1,5 +1,5 @@
 import type { LoaderFunctionArgs, MetaFunction  } from "@remix-run/cloudflare";
-import { json, Link } from "@remix-run/react";
+import { json, useLoaderData, Link } from "@remix-run/react";
 import { getSession, commitSession } from "~/services/session.server";
 import authenticate from "~/services/authenticate.user.server";
 
@@ -17,10 +17,12 @@ type LoaderApiResponse = {
   comment: {cnt: number, id:Array<string>};
 };
 
+type prdata = {num:number, title:string, url:string, updatedDate:string};
+
 type LoaderPrApiResponse = {
   status: number;
   messages: { message: string };
-  prurl: string;
+  prary: prdata[];
 }
 
 /**
@@ -82,7 +84,10 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     });
   }
 
+  console.log("prurl=", jsonPrData.prary[0].url);
+
   return json({
+    prary: jsonPrData.prary
   }, {
     headers: {
       "Set-Cookie": await commitSession(session),
@@ -91,6 +96,11 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 }
 
 export default function Page() {
+
+  // LOADER
+  const loaderData = useLoaderData<typeof loader>();
+  const prary = loaderData.prary;
+
   return (
     <div className={ "container" }>
       <div className={ "wrap" }>
@@ -99,7 +109,14 @@ export default function Page() {
         <Link to={ "/home/pickup?ref=2" } className={ "button button--secondary rounded-full" }>若狭フグ</Link>
         <Link to={ "/home/pickup?ref=3" } className={ "button button--secondary rounded-full" }>敦賀真鯛</Link>
         <Link to={ "/home/pickup?ref=4" } className={ "button button--secondary rounded-full" }>若狭まはた</Link>
-        <p>PR動画を入れる予定</p>
+        <p>PR動画</p>
+        {prary.map((pr) => (
+          <li key={pr.num}>
+            <iframe width="560" height="315" src={pr.url} title="YouTube video player" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" >
+            </iframe>
+          </li>
+        ))}
         <Link to={ "/home/inquiry" } className={ "button button--secondary rounded-full" }>問い合わせ</Link>
         <p><Link to={ "/signout" }>サインアウト</Link></p>
       </div>

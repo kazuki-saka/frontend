@@ -13,7 +13,7 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-type report = {id:string, title:string, detail_modify:string, nickname:string, updatedDate:Date };
+type report = {id:string, fishkind:number, title:string, detail_modify:string, nickname:string, updatedDate:Date };
 type comment = {num:number, nickname:string, comment:string, updatedDate:Date };
 
 type LoaderApiResponse = {
