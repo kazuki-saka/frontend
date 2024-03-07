@@ -51,7 +51,8 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   }
 
   // URLパラメータから記事種別と記事IDを取得
-  const kind = new URL(request.url).searchParams.get("kind");
+  const kindtmp = new URL(request.url).searchParams.get("kind");
+  const kind = kindtmp ? kindtmp: 2;
   const id = new URL(request.url).searchParams.get("id");
   const ref = new URL(request.url).searchParams.get("ref");
 
@@ -94,7 +95,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     return json(
       {
         ref: ref,
-        kind: kind,
+        kind: String(kind),
         report: jsonData.report,
         comments: jsonData.comment,
         likenum:jsonData.likenum
@@ -111,7 +112,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 
     return json({
       ref: ref,
-      kind: kind,
+      kind: String(kind),
       report: null,
       comments: null,
       likenum: 0

@@ -69,7 +69,8 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   }
   
 
-  //PR動画・トピックス取得
+  //PR動画取得
+/*
   // APIへデータを送信
   const apiPrResponse = await fetch(`${ context.env.API_URL }/top/view`, { method: "POST", body: formData });
   // JSONデータを取得
@@ -83,11 +84,9 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
       statusText: jsonPrData.messages.message,
     });
   }
-
-  console.log("prurl=", jsonPrData.prary[0].url);
-
+*/
   return json({
-    prary: jsonPrData.prary
+    //prary: jsonPrData.prary
   }, {
     headers: {
       "Set-Cookie": await commitSession(session),
@@ -99,7 +98,7 @@ export default function Page() {
 
   // LOADER
   const loaderData = useLoaderData<typeof loader>();
-  const prary = loaderData.prary;
+  //const prary = loaderData.prary;
 
   return (
     <div className={ "container" }>
@@ -109,14 +108,6 @@ export default function Page() {
         <Link to={ "/home/pickup?ref=2" } className={ "button button--secondary rounded-full" }>若狭フグ</Link>
         <Link to={ "/home/pickup?ref=3" } className={ "button button--secondary rounded-full" }>敦賀真鯛</Link>
         <Link to={ "/home/pickup?ref=4" } className={ "button button--secondary rounded-full" }>若狭まはた</Link>
-        <p>PR動画</p>
-        {prary.map((pr) => (
-          <li key={pr.num}>
-            <iframe width="560" height="315" src={pr.url} title="YouTube video player" 
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" >
-            </iframe>
-          </li>
-        ))}
         <Link to={ "/home/inquiry" } className={ "button button--secondary rounded-full" }>問い合わせ</Link>
         <p><Link to={ "/signout" }>サインアウト</Link></p>
       </div>

@@ -65,6 +65,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   const jsonData = await apiResponse.json<LoaderApiResponse>();
   console.log("jsonData=", jsonData);
   console.log("jsonData.MarketReports=", jsonData.MarketReports);
+  console.log("jsonData.MarketReports[0]=", jsonData.MarketReports[0]);
   console.log("jsonData.FishmanReports=", jsonData.FishmanReports);
   console.log("jsonData.topics=", jsonData.topics);
   // ステータス200以外の場合はエラー
@@ -83,12 +84,12 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     likeAry.forEach(tmpid => {
       let lIndex : number;
   
-      lIndex = jsonData.MarketReports.findIndex(l => l.id = tmpid);
+      lIndex = jsonData.MarketReports.findIndex(l => l.id == tmpid);
       if (lIndex >= 0){
         jsonData.MarketReports[lIndex].like_flg = true;
       }
   
-      lIndex = jsonData.FishmanReports.findIndex(l => l.id = tmpid);
+      lIndex = jsonData.FishmanReports.findIndex(l => l.id == tmpid);
       if (lIndex >= 0){
         jsonData.FishmanReports[lIndex].like_flg = true;
       }
@@ -101,13 +102,13 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
       let lIndex : number;
       
       console.log("comment.id=", tmpid);
-      lIndex = jsonData.MarketReports.findIndex(l => l.id = tmpid);
+      lIndex = jsonData.MarketReports.findIndex(l => l.id == tmpid);
       if (lIndex >= 0){
         console.log("market comment on");
         jsonData.MarketReports[lIndex].comment_flg = true;
       }
   
-      lIndex = jsonData.FishmanReports.findIndex(l => l.id = tmpid);
+      lIndex = jsonData.FishmanReports.findIndex(l => l.id == tmpid);
       if (lIndex >= 0){
         console.log("fishman comment on");
         jsonData.FishmanReports[lIndex].comment_flg = true;
@@ -115,11 +116,12 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     });  
   }
 
-  console.log("Fishman");
-  jsonData.FishmanReports.forEach(tmp => {
+  console.log("market");
+  jsonData.MarketReports.forEach(tmp => {
     console.log("id=", tmp.id);
     console.log("comment_flg=", tmp.comment_flg);
   });
+  console.log("jsonData.MarketReports[0]=", jsonData.MarketReports[0]);
 
   return json(
     {

@@ -5,6 +5,8 @@ import { ValidatedForm } from "remix-validated-form";
 import { ReportSchema_step1 } from "~/schemas/newreport";
 import TitleInput from "~/components/report/form/TitleInput";
 import DetailInput from "~/components/report/form/DetailInput";
+import { useEffect, useRef, useState } from "react";
+import axios from "axios";
 
 export function Wrap({ ...props }: HTMLMotionProps<"div">) {
     return (
@@ -20,6 +22,24 @@ export function Wrap({ ...props }: HTMLMotionProps<"div">) {
     );
 }
 
+/*
+export async function createUploadImage(file: File) {
+  const formData = new FormData();
+
+  Object.entries({ file }).forEach(([key]) => {
+    formData.append(key, file);
+  });
+
+  const res = await axios.post(`api/detail/view`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return res.data
+}
+*/
+
 interface Step1Props {
     ReportFormData: ReportFormData;
 }
@@ -27,6 +47,31 @@ interface Step1Props {
 export function Step1({ ...props }: Step1Props) {
 
   const { ReportFormData } = props;
+  const navigation = useNavigation();
+  const inputFileRef = useRef<HTMLInputElement>(null);
+  //const handleClickUpload = async () => {
+  //  const fileList = inputFileRef.current?.files;
+  //  if (!fileList) {
+  //      return;
+  //  }
+  //  const file = fileList[0];
+    //const res = await createUploadImage(file);
+    //console.log(res);
+  //};
+
+  const [previewImage, setPreviewImage] = useState("");
+  const handleChangePreview = (ev: React.ChangeEvent<HTMLInputElement>) => {
+    alert("chgevent");
+    if (!ev.target.files) {
+      alert("non files");
+      return;
+    }
+    const file = ev.target.files[0];
+
+    console.log("file=", file);
+    alert("file=" + file);
+    setPreviewImage(URL.createObjectURL(file));
+  };
 
   return (
     <ValidatedForm
@@ -37,6 +82,19 @@ export function Step1({ ...props }: Step1Props) {
       <div className={ "container" }>
         <div className={ "wrap" }>
           <h2 className={ "text-gray-600 text-22ptr md:text-28ptr font-bold mb-4" }>新規投稿</h2>
+          <div>
+            <img alt="画像が選択されていません。" />
+            <input
+              type="file"
+              onChange={handleChangePreview}
+              ref={inputFileRef}
+              accept="image/*"
+              style={{ display: "none" }}
+            />
+            <button onClick={() => inputFileRef.current?.click()}>
+              ファイルを選択
+            </button>
+          </div>
           <fieldset>
             <label>魚種</label>
             <p className={ "text-22ptr md:text-26ptr text-gray-600 font-semibold font-roboto" }>{ ReportFormData.kind }</p>
@@ -65,9 +123,6 @@ interface Step2Props {
 export function Step2({ ...props }: Step2Props) {
 
   const { ReportFormData } = props;
-
-  // Navigate
-  const navigation = useNavigation();
 
   return (
     <Form
