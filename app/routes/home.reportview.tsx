@@ -1,10 +1,10 @@
-import { json, redirect,　useLoaderData, useActionData, Link, Form, useParams } from "@remix-run/react";
+import { json, useLoaderData, useActionData } from "@remix-run/react";
 import type { LoaderFunctionArgs, MetaFunction , ActionFunctionArgs } from "@remix-run/cloudflare";
 import { getSession, commitSession } from "~/services/session.server";
-import authenticate from "~/services/authenticate.user.server";
+import guard from "~/services/guard.user.server";
 import CommentFormModal from "~/components/report/CommentFormModal";
 import { AnimatePresence } from "framer-motion";
-import { Wrap as UserFormWrap, View as ViewProc } from "~/components/report/ReportViewForm";
+import { Wrap as UserFormWrap, Comments, Post } from "~/components/report/ReportViewForm";
 
 export const meta: MetaFunction = () => {
   return [
@@ -39,9 +39,11 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   // セッション取得
   const session = await getSession(request.headers.get("Cookie"));
 
+  const signature = session.get("signin-auth-user-signature");
+  
   // 認証処理から認証署名を取得
-  const signature = await authenticate({ session: session });
-
+  const { user, likes, comments } = await guard({ request: request, context: context });
+  
   // 認証署名がない場合はエラー
   if (!signature) {
     throw new Response(null, {
@@ -65,7 +67,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 //  const like = FormDat.get("like");
 //  console.log("like=", like);
 
-  if (ref === "view"){
+  if (ref === "view") {
     // FormData作成
     const formData = new FormData();
     formData.append("user[signature]", String(signature));
@@ -98,7 +100,8 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
         kind: String(kind),
         report: jsonData.report,
         comments: jsonData.comment,
-        likenum:jsonData.likenum
+        likenum: jsonData.likenum,
+        uploads_url: context.env.UPLOADS_URL,
       },
       {
         headers: {
@@ -107,7 +110,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
       });      
   }
 
-  if (ref === "comment"){
+  if (ref === "comment") {
     console.log("comment");
 
     return json({
@@ -115,15 +118,15 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
       kind: String(kind),
       report: null,
       comments: null,
-      likenum: 0
+      likenum: 0,
+      uploads_url: context.env.UPLOADS_URL,
     },
     {
       headers: {
         "Set-Cookie": await commitSession(session),
       }
     });      
-}
-
+  }
 }
 
 /**
@@ -134,9 +137,11 @@ export async function action({ request, context }: ActionFunctionArgs) {
 
   // セッション取得
   const session = await getSession(request.headers.get("Cookie"));
-
+  
+  const signature = session.get("signin-auth-user-signature");
+  
   // 認証処理から認証署名を取得
-  const signature = await authenticate({ session: session });
+  const { user, likes, comments } = await guard({ request: request, context: context });
   console.log("signature=", signature);
 
   // 認証署名がない場合はエラー
@@ -191,12 +196,24 @@ export async function action({ request, context }: ActionFunctionArgs) {
       const tmp :String[] = [String(likeid)];
       session.set("home-user-like", tmp);  
     }
-
+    
+    /** ページ遷移不要 */
+    /*
     return redirect(`/home/reportview?ref=view&id=${likeid}`, {
       headers: {
         "Set-Cookie": await commitSession(session),
       },
     });  
+    */
+    
+    return json({
+      status: "OK",
+    },
+    {
+      headers: {
+        "Set-Cookie": await commitSession(session),
+      }
+    }); 
   }
 
   if (formData.get("form") === "CommentUpdate") {
@@ -241,35 +258,49 @@ export async function action({ request, context }: ActionFunctionArgs) {
       session.set("home-user-comment", tmp);
     }
     
+    /** ページ遷移不要 */
+    /*
     return redirect(`/home/reportview?ref=view&id=${id}`, {
       headers: {
         "Set-Cookie": await commitSession(session),
       },
-    });  
+    });
+    */
+    
+    return json({
+      status: "OK",
+    },
+    {
+      headers: {
+        "Set-Cookie": await commitSession(session),
+      }
+    }); 
   }
 }
 
 export default function Page() {
-
   // LOADER
   const loaderData = useLoaderData<typeof loader>();
-
+  // Payloads
+  const { ref } = loaderData;
+  
   // ACTION
   const actionData = useActionData<typeof action>();
 
-  const ref = loaderData.ref;
-
+  
   return (
-    <article>
+    <>
       <AnimatePresence initial={ false }>
-      { /* 記事詳細画面 */ }
-        { ref === "view" &&
-        <UserFormWrap key={ "view" }>
-          <ViewProc loaderData={ loaderData }/>
+        { /* 記事詳細画面 */ }
+        <UserFormWrap >
+          { /* コメント送信時再レンダリング不要 */ }
+          <Post loaderData={ loaderData } />
+          <div className={ "bg-gray-400 w-full h-[1px] mt-4" }/>
+          { /* コメント送信時再レンダリング必要 */ }
+          <Comments loaderData={ loaderData } />
         </UserFormWrap>
-        }
-
-      { /* コメントフォームモーダル */ }
+        
+        { /* コメントフォームモーダル(モバイルのみ？) */ }
         { ref === "comment" &&
         <CommentFormModal 
           loaderData={ loaderData! }
@@ -277,7 +308,7 @@ export default function Page() {
         />
         }
       </AnimatePresence>
-    </article>
+    </>
   );
 }
   

@@ -3,7 +3,8 @@ import { useLoaderData, useActionData, Link } from "@remix-run/react";
 import { getSession, commitSession, destroySession } from "~/services/session.server";
 import PreflightFormModal from "~/components/signup/PreflightFormModal";
 import SigninFormModal from "~/components/signup/SigninFormModal";
-//import PreflightCompleteModal from "~/components/signup/PreflightCompleteModal";
+import { useState, useEffect } from "react";
+import { m, domAnimation, LazyMotion, AnimatePresence } from "framer-motion";
 
 /*
   サインイン前のトップ画面
@@ -17,6 +18,11 @@ export const meta: MetaFunction = () => {
   return [
     { title: "サインイン | FUKUI BRAND FISH" },
     { name: "description", content: "FUKUI BRAND FISH" },
+    { name: "preload", content: "/assets/images/signup/Bg_01.webp" },
+    { name: "preload", content: "/assets/images/signup/Bg_02.webp" },
+    { name: "preload", content: "/assets/images/signup/Bg_03.webp" },
+    { name: "preload", content: "/assets/images/signup/Bg_04.webp" },
+    { name: "preload", content: "/assets/images/signup/Bg_05.webp" },
   ];
 };
 
@@ -56,8 +62,6 @@ export async function action({ request, context }: ActionFunctionArgs) {
     console.log("formData.email=", formData.get("preflight[email]"));
 
     // APIへデータを送信(php spark serve --host 0.0.0.0)
-    //const response = await fetch("http://localhost:8080/api/signup/create.preflight", { method: "POST", body: formData });
-    //const response = await fetch("http://localhost:8080/UserTempController/Add", { method: "POST", body: formData });
 	  const apiResponse = await fetch(`${ context.env.API_URL }/signup/create.preflight`, { method: "POST", body: formData });
 
     // JSONデータに変換
@@ -70,8 +74,6 @@ export async function action({ request, context }: ActionFunctionArgs) {
         error: jsonData.messages.message!
       });
     }
-    
-    console.log("OK");
     // 認証コード確認画面へリダイレクト
     return redirect(`/signup/preflight?signature=${ jsonData.signature }`, {
       headers: {
@@ -82,13 +84,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
   
   // サインインフォーム
   if (formData.get("form") === "signin") {
-
-    console.log("formData=", formData);
-    console.log("formData.email=", formData.get("user[username]"));
-    console.log("formData.pass=", formData.get("user[passphrase]"));
-    
-    //console.log("formData.email=", formData.get("signin[email]"));
-    //const response = await fetch("http://localhost:8080/SignInController", { method: "POST", body: formData });
+    // APIへデータを送信(php spark serve --host 0.0.0.0)
 	  const apiResponse = await fetch(`${ context.env.API_URL }/signin/auth.user`, { method: "POST", body: formData });
 
     // JSONデータを受信
@@ -109,7 +105,6 @@ export async function action({ request, context }: ActionFunctionArgs) {
         "Set-Cookie": await commitSession(session),
       },
     });
-    
   }
 }
 
@@ -119,11 +114,42 @@ export default function Page() {
   // ACTION
   const actionData = useActionData<typeof action>();
   
+  // States
+  const [currentImage, setCurrentImage] = useState<number>(0);
+  
+  useEffect(() => {
+    // 一定時間ごとに次の画像に切り替える
+    const interval = setInterval(() => {
+      setCurrentImage((prevImage) => (prevImage + 1) % images.length);
+    }, 5000); // 切り替える間隔（ミリ秒）
+    
+    return () => clearInterval(interval); // アンマウント時にクリアする
+  }, []);
+  
   return (
     <div className={ "bg-signup" }>
+      
+      <LazyMotion features={ domAnimation }>
+        <AnimatePresence>
+          <m.img
+            key={ currentImage }
+            //src={images[currentImage]}
+            src={ images[currentImage] }
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 2 }}
+            className={ "absolute w-full h-full object-cover -z-[2]" }
+          />
+        </AnimatePresence>
+      </LazyMotion>
+      
       <div className={ "container" }>
-        <div className={ "absolute bottom-20 left-0 w-full px-4 md:px-20" }>
-          <div className={ "flex flex-col md:flex-row gap-4" }>
+        <div className={ "flex justify-center items-center pt-16" }>
+          <img src={ "/assets/images/Logo_Blue.svg" } alt={ "ロゴ" } className={ " w-[30%]" } />
+        </div>
+        <div className={ "absolute bottom-32 left-0 w-full px-4 md:px-20 mx-auto" }>
+          <div className={ "flex flex-col justify-center items-center gap-4 md:gap-8 w-full md:w-[50%] mx-auto" }>
             <Link to={ "/signup?ref=preflight" } className={ "button button--primary rounded-full" }>新規登録</Link>
             <Link to={ "/signup?ref=signin" } className={ "button button--secondary rounded-full" }>サインイン</Link>
           </div>
@@ -142,3 +168,11 @@ export default function Page() {
     </div>
   );
 }
+
+const images = [
+  "/assets/images/signup/Bg_01.webp",
+  "/assets/images/signup/Bg_02.webp",
+  "/assets/images/signup/Bg_03.webp",
+  "/assets/images/signup/Bg_04.webp",
+  "/assets/images/signup/Bg_05.webp",
+];

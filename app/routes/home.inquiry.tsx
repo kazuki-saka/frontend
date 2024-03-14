@@ -151,7 +151,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
     PostFormData.append("inquiry[rejistname]", String(InquiryData.rejistname));
     PostFormData.append("inquiry[postcode]", String(InquiryData.postcode));
     PostFormData.append("inquiry[address]", String(InquiryData.address));
-    PostFormData.append("inquiry[kind]", String(session.get("home-report-kind")));
+    PostFormData.append("inquiry[kind]", String(InquiryData.kind));
     PostFormData.append("inquiry[detail]", String(InquiryData.detail));
 
     // バリデーション
@@ -186,6 +186,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
     InquiryData.postcode = "";
     InquiryData.address = "";
     InquiryData.detail = "";
+    InquiryData.kind = "";
     session.set("inquiry-form-data", JSON.stringify(InquiryData));
   }
 

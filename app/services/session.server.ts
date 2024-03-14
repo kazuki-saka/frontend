@@ -14,5 +14,5 @@ const {
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production" ? true : false
   },
-})
+});
 export { getSession, commitSession, destroySession };

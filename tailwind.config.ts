@@ -17,15 +17,25 @@ const config: Config = {
   theme: {
     container: {
       center: true,
+      screens: {
+        sm: "544px",
+        md: "768px",
+        lg: "984px",
+        xl: "1024px",
+        "2xl": "1280px",
+      },
     },
     fontFamily: {
-      notosansjp: ["Noto Sans JP", "sans-serif"],
-      roboto: ["Roboto", "sans-serif"],
-      arial: ["Arial", "sans-serif"],
-      meiryo: ["メイリオ", "sans-serif"],
-      hiraginosans: ["Hiragino Sans", "sans-serif"],
-      hiraginokakugothic: ["ヒラギノ角ゴシック", "sans-serif"],
-      yugothic: ["YuGothic", "Yu Gothic", "sans-serif"],
+      "notosansjp": ["Noto Sans JP", "sans-serif"],
+      "notoserifjp": '"Noto Serif JP", sans-serif',
+      "roboto": ["Roboto", "sans-serif"],
+      "arial": ["Arial", "sans-serif"],
+      "meiryo": ["メイリオ", "sans-serif"],
+      "hiraginosans": ["Hiragino Sans", "sans-serif"],
+      "hiraginokakugothic": ["ヒラギノ角ゴシック", "sans-serif"],
+      "yugothic": ["YuGothic", "Yu Gothic", "sans-serif"],
+      "mincho": '"游明朝体", YuMincho, "游明朝", "Yu Mincho", serif',
+      "gothic": `"游ゴシック体", "Yu Gothic", YuGothic, "ヒラギノ角ゴ Pro", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, "MS Pゴシック", "MS PGothic", sans-serif`,
     },
     colors: {
       transparent: "transparent",

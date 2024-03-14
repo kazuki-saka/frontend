@@ -7,6 +7,7 @@ declare module "@remix-run/server-runtime" {
   export interface AppLoadContext extends OriginalAppLoadContext {
     env: {
       API_URL: string;
+      UPLOADS_URL: string;
     };
   }
 }

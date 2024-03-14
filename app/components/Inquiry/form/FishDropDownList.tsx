@@ -29,6 +29,7 @@ const  FishDropdownList: React.FC = () => {
               onFocus={() => setArrowActive(true)}
               onBlur={() => setArrowActive(false)}
               className={ error.error && "border-error bg-error-100 text-error" }
+              name="inquiry[kind]"
             >
               <option value="">魚種を選択してください</option>
               {FishKindAry.map((item) => (

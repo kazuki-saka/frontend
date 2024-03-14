@@ -21,13 +21,14 @@ export type ReportView = {
 };
 
 export type reportcostom ={
-  id:string,
-  title:string,
-  detail_m:string, 
-  nickname:string, 
-  updatedDate:Date, 
-  like_cnt:number, 
-  comment_cnt:number, 
-  like_flg:boolean, 
-  comment_flg:boolean
+  id:string;
+  imgPath:string;
+  title:string;
+  detail_m:string; 
+  nickname:string; 
+  updatedDate:Date; 
+  like_cnt:number;
+  comment_cnt:number; 
+  like_flg:boolean; 
+  comment_flg:boolean;
 };

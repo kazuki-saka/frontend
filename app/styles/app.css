@@ -1,19 +1,55 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@400;500;600;700&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@layer base {
+/*==============================================================================================
+//
+//  SUPPORTS
+//
+//============================================================================================*/
+@supports (-webkit-touch-callout: none) {
   html {
-    font-family: "Noto Sans JP", sans-serif;
-    -webkit-font-smoothing: antialiased;
+    height: -webkit-fill-available;
+  }
+  body {
+    min-height: 100vh;
+    height: -webkit-fill-available;
+  }
+}
+@layer base {
+  
+  /* ==========================================================================
+    Base
+  ========================================================================== */
+  
+  /* safari 文字落ちバグ */
+  _::-webkit-full-page-media, _:future, :root body {
+    font-feature-settings: "pkna";
+  }
+  
+  *,*:before,*:after {
+    @apply box-border;
   }
   
   *,*:focus,*:hover {
     outline:none;
   }
   
+  html {
+    font-family: "Noto Sans JP", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  body {
+    @apply bg-white text-16ptr;
+  }
+  
   article {
     @apply mx-auto overflow-x-hidden min-h-[100vh];
+  }
+  
+  .wrap {
+    @apply max-w-[1100px] mx-auto;
   }
   
   .error-container {
@@ -26,7 +62,7 @@
     @apply text-20ptr text-gray-600;
   }
   
-  form, .wrap {
+  form, .form {
     @apply flex flex-col gap-8 py-[10%] px-4 md:px-[20%];
   }
   
@@ -94,7 +130,17 @@
   }
   
   .bg-signup {
-    @apply h-[100vh] bg-[url("/assets/images/BgSignup.webp")] bg-cover bg-center bg-no-repeat;
+    @apply h-[100vh] relative z-20;
+  }
+  .bg-signup::before,
+  .bg-signup::after {
+    @apply content-[""] absolute left-0 w-full h-[500px];
+  }
+  .bg-signup::before {
+    @apply [background:linear-gradient(to_top,rgba(255,255,255,0),rgba(255,255,255,1))] -z-[1];
+  }
+  .bg-signup::after {
+    @apply [background:linear-gradient(to_bottom,rgba(255,255,255,0),rgba(255,255,255,1))] bottom-0 top-auto -z-[1];
   }
   
   .modal-head {

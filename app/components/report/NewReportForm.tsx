@@ -5,8 +5,7 @@ import { ValidatedForm } from "remix-validated-form";
 import { ReportSchema_step1 } from "~/schemas/newreport";
 import TitleInput from "~/components/report/form/TitleInput";
 import DetailInput from "~/components/report/form/DetailInput";
-import { useEffect, useRef, useState } from "react";
-import axios from "axios";
+import { useRef, useState } from "react";
 
 export function Wrap({ ...props }: HTMLMotionProps<"div">) {
     return (

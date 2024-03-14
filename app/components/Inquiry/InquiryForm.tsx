@@ -9,6 +9,7 @@ import NameInput from "./form/NameInput";
 import PostCodeInput from "./form/PostCodeInput";
 import AdressInput from "./form/AdressInput";
 import InquiryDetailInput from "./form/InquiryDetailInput"
+import FishKindAry from "../FishKind";
 
 export function Wrap({ ...props }: HTMLMotionProps<"div">) {
   return (
@@ -100,7 +101,7 @@ export function Step2({ ...props }: Step2Props) {
 
       <fieldset>
         <label>魚種</label>
-        <p className={ "text-22ptr md:text-26ptr text-gray-600 font-semibold font-roboto" }>{ InquiryData.kind }</p>
+        <p className={ "text-22ptr md:text-26ptr text-gray-600 font-semibold font-roboto" }>{ FishKindAry[Number(InquiryData.kind) - 1].name  }</p>
       </fieldset>
 
       <fieldset className={ "border-b-2 border-solid pb-2" }>

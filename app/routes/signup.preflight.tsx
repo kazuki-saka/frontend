@@ -2,7 +2,7 @@ import { json, redirect, MetaFunction, LoaderFunctionArgs, ActionFunctionArgs, H
 import { useLoaderData, useActionData, useNavigation, useSubmit, Link, Form } from "@remix-run/react";
 import { useState, useEffect, useRef } from "react";
 import { getSession, commitSession, destroySession } from "~/services/session.server";
-import { Preflight } from "~/types/signup";
+import { Preflight } from "~/types/Preflight";
 import AuthcodeInput from "~/components/signup/form/AuthcodeInput";
 import Submitting from "~/components/signup/form/Submitting";
 

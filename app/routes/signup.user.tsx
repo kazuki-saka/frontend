@@ -2,7 +2,8 @@ import { json, redirect, MetaFunction, LoaderFunctionArgs, ActionFunctionArgs, H
 import { useLoaderData, useActionData, Link } from "@remix-run/react";
 import { AnimatePresence } from "framer-motion";
 import { getSession, commitSession, destroySession } from "~/services/session.server";
-import { Preflight, User as SignupUserFormData } from "~/types/signup";
+import { Preflight } from "~/types/Preflight";
+import { User as SignupUserFormData } from "~/types/User";
 import { userSchema_step1, userSchema_step2, userSchema_step3, userSchema_step4 } from "~/schemas/signup";
 import { Wrap as UserFormWrap, Step1 as UserFormStep1, Step2 as UserFormStep2, Step3 as UserFormStep3, Step4 as UserFormStep4 } from "~/components/signup/UserForm";
 

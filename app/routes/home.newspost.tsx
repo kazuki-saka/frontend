@@ -1,7 +1,7 @@
 import type { LoaderFunctionArgs, MetaFunction, ActionFunctionArgs } from "@remix-run/cloudflare";
 import { json, redirect, useLoaderData } from "@remix-run/react";
 import { getSession, commitSession } from "~/services/session.server";
-import authenticate from "~/services/authenticate.user.server";
+import guard from "~/services/guard.user.server";
 import { AnimatePresence } from "framer-motion";
 import { Wrap as ReportFormWrap, Step1 as ReportFormStep1, Step2 as ReportFormStep2 } from "~/components/report/NewReportForm";
 import { Report as ReportUserFormData } from "~/types/Report";
@@ -31,7 +31,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   const session = await getSession(request.headers.get("Cookie"));
 
   // 認証処理から認証署名を取得
-  const signature = await authenticate({ session: session });
+  const signature = await guard({ request: request, context: context });
   console.log("signature=", signature);
   
   // 認証署名がない場合はエラー
@@ -77,7 +77,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
   const session = await getSession(request.headers.get("Cookie"));
 
   // 認証処理から認証署名を取得
-  const signature = await authenticate({ session: session });
+  const signature = await guard({ request: request, context: context });
 
   // リクエストからフォームデータ取得
   const formData = await request.formData();

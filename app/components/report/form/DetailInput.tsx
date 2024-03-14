@@ -2,7 +2,7 @@ import { InputHTMLAttributes } from "react";
 import { useField } from "remix-validated-form";
 
 export default function DetailInput ({ ...props }: InputHTMLAttributes<HTMLTextAreaElement>) {
-  const error = useField("report.title");
+  const error = useField("report.detail");
   return (
     <fieldset>
       <label>本文</label>

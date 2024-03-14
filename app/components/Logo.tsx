@@ -1,7 +1,7 @@
 const Logo = () => (
   <img 
     src={ "/assets/images/Logo.webp" }
-    alt={ "ふくいお魚つながるアプリ" }
+    alt={ "FUKUI BRAND FISH" }
     className={ "h-full" }
   />
 );

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { ValidatedForm } from "remix-validated-form";
 import { motion, HTMLMotionProps } from "framer-motion";
 import { userSchema_step1, userSchema_step2, userSchema_step3 } from "~/schemas/signup";
-import { User as SignupUserFormData } from "~/types/signup";
+import { User as SignupUserFormData } from "~/types/User";
 import sections from "~/components/signup/form/sections";
 import PassphraseInput from "~/components/signup/form/PassphraseInput";
 import SectionRadioGroup from "~/components/signup/form/SectionRadioGroup";

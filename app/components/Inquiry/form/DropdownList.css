@@ -8,11 +8,14 @@
   background-color: #f9f9f9;
 }
 
+/* 全体にかかってしまっている*/
+/*
 h2 {
   margin-bottom: 16px;
   font-size: 24px;
   color: #333;
 }
+*/
 
 .select-container-downlist {
   position: relative;
@@ -35,6 +38,8 @@ h2 {
   transform: translateY(-50%) rotate(45deg);
 }
 
+/* 全体にかかってしまっている*/
+/*
 select {
   width: 100%;
   padding: 12px;
@@ -46,19 +51,29 @@ select {
   color: #333;
   font-weight: bold;
 }
+*/
 
+/* 全体にかかってしまっている*/
+/*
 select:focus {
   outline: none;
   border-color: #007bff;
   box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.3);
 }
+*/
 
+/* 全体にかかってしまっている*/
+/*
 option {
   background-color: #f9f9f9;
 }
+*/
 
+/* 全体にかかってしまっている*/
+/*
 p {
   margin-top: 12px;
   font-size: 14px;
   color: #777;
 }
+*/
