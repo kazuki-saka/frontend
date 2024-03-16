@@ -1,5 +1,5 @@
 [vars]
-API_URL = "http://fsdev.sakura.ne.jp/public/api"
-#API_URL = "http://localhost:8080/api"
+#API_URL = "http://fsdev.sakura.ne.jp/public/api"
+API_URL = "http://localhost:8080/api"
 #API_URL = "https://kroriv.sakura.ne.jp/public/api"
 UPLOADS_URL = "http://fsdev.sakura.ne.jp/cmsb/uploads"

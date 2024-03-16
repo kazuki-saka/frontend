@@ -10,8 +10,8 @@ const Navbar = () => {
       <div className={ "grid grid-cols-4 h-full md:flex md:flex-col md:gap-16 md:pt-8" }>
         <_Tab to={ "/home" } title={ "ホーム" } icon={ "icon1" } active={ currentPath === "/home/" }/>
         <_Tab to={ "/home/pickup" } title={ "魚種別" } icon={ "icon2" } active={ currentPath.includes("/home/pickup") || currentPath.includes("/home/reportview") }/>
-        <_Tab to={ "/likes" } title={ "ほしいね" } icon={ "icon3" } active={ currentPath.includes("/home/likes") }/>
-        <_Tab to={ "/account" } title={ "アカウント" } icon={ "icon4" } active={ currentPath.includes("/home/account") }/>
+        <_Tab to={ "/home/likes" } title={ "ほしいね" } icon={ "icon3" } active={ currentPath.includes("/home/likes") }/>
+        <_Tab to={ "/home/account" } title={ "アカウント" } icon={ "icon4" } active={ currentPath.includes("/home/account") }/>
       </div>
     </aside>
   );

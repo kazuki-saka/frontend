@@ -1,13 +1,13 @@
 import { AppLoadContext } from "@remix-run/cloudflare";
 import { getSession } from "~/services/session.server";
-import { User } from "~/types/User";
+import { User, Account } from "~/types/User";
 import { Like } from "~/types/Like";
 import { Comment } from "~/types/Comment";
 
 type ApiResponse = {
   status: number;
   messages: { message: string };
-  user: User;
+  user: Account;
   like: Like[];
   comment: Comment[];
 };

@@ -9,3 +9,11 @@ export type User = {
   }
   section: number;
 };
+
+export type Account = {
+  shopname: string;
+  username: string;
+  nickname: string;
+  rejistname: string;
+  section: number;
+};

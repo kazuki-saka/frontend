@@ -20,6 +20,14 @@ export type ReportView = {
   comments: comment[];
 };
 
+export type ReporltLike = {
+  reportid: string;
+  title: string;
+  fishkind: string;
+  nickname:string; 
+  updatedDate:Date; 
+}
+
 export type reportcostom ={
   id:string;
   imgPath:string;
