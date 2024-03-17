@@ -74,7 +74,7 @@ export default function Page() {
       </section>
 
       <div className={ "wrap flex justify-between md:justify-start items-baseline gap-4 mb-8" }>
-        <h2 className={ "text-28ptr font-semibold" }>あなたがいいねした記事一覧</h2>
+        <h2 className={ "text-28ptr font-semibold" }>ほしいねした記事一覧</h2>
       </div>
 
       <div className={ "wrap grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-8" }>

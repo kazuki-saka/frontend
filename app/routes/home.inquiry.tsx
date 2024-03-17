@@ -52,7 +52,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   // URLパラメータからstepを取得
   const step = new URL(request.url).searchParams.get("step") || 1;
   // セッションから魚種を取得
-  const kind = session.get("home-report-kind");
+  const kind = session.get("home-fishkind");
   console.log("step=", step);
   console.log("kind=", kind);
 
@@ -129,7 +129,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
     InquiryData.rejistname = String(formData.get("inquiry[rejistname]"));
     InquiryData.postcode = String(formData.get("inquiry[postcode]"));
     InquiryData.address = String(formData.get("inquiry[address]"));
-    InquiryData.kind = String(formData.get("inquiry[kind]"));
+    InquiryData.kind = String(session.get("home-fishkind"));
     InquiryData.detail = String(formData.get("inquiry[detail]"));
 
     session.set("inquiry-form-data", JSON.stringify(InquiryData));

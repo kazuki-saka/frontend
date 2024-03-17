@@ -8,7 +8,6 @@ import { TbStar, TbStarFilled } from "react-icons/tb";
 
 import { ValidatedForm } from "remix-validated-form";
 import { CommentSchema } from "~/schemas/newcomment";
-import CommentInput from "~/components/report/form/CommentInput";
 import { useRef, useCallback } from "react";
 
 export function Wrap({ ...props }: HTMLMotionProps<"div">) {
@@ -34,7 +33,7 @@ export function Post({ ...props }: ReprtViewFormProps) {
   // LOADER
   const loader = props.loaderData;
   // Payloads
-  const { kind, likenum, comments, report, uploads_url } = loader;
+  const { likenum, likeflg, comments, commentflg, report, uploads_url } = loader;
   const { title, nickname, detail_modify } = report as { title: string, nickname: string, detail_modify: string }; /** 型定義してください */
   
   return (
@@ -47,29 +46,27 @@ export function Post({ ...props }: ReprtViewFormProps) {
       <div>
         <h2 className={ "text-28ptr md:text-36ptr font-semibold" }>{ title }</h2>
         <p className={ "text-gray-500" }>{ nickname }</p>
-        { Number(kind) === 2 && 
         <div className={ "flex justify-start items-center gap-4" }>
           <div className={ "flex justify-start items-center gap-2" }>
             {/* 自分がほしいねしたかの判定でアイコン色の分岐が必要なのでLoaderから取得してください */}
-            { <TbStar className={ "text-gray-500" }/> }
-            <span className={ "text-gray-500" }>{ likenum || 0 }</span>
+            { likeflg && <TbStarFilled className={ "text-[#003371]" }/> }
+            { !likeflg && <TbStar className={ "text-gray-500" }/> }
+            <span className={ likeflg ? "text-[#003371]" : "text-gray-500" }>{ likenum || 0 }</span>
           </div>
           <div className={ "flex justify-start items-center gap-2" }>
             {/* 自分がコメントしたかの判定でアイコン色の分岐が必要なのでLoaderから取得してください */}
-            { <FaRegCommentAlt className={ "text-gray-500" }/> }
-            <span className={ "text-gray-500" }>{ Number(comments!.length) }</span>
+            { commentflg && <FaCommentAlt className={ "text-[#003371]" }/> }
+            { !commentflg && <FaRegCommentAlt className={ "text-gray-500" }/> }
+            <span className={ commentflg ? "text-[#003371]" : "text-gray-500" }>{ Number(comments!.length) }</span>
           </div>
         </div>
-        }
       </div>
       
       {/* 本文エリア */}
       <div className={ "break-words whitespace-pre" }>
         { parse(detail_modify.replace("/cmsb/uploads", uploads_url)) }
       </div>
-      
-      
-      { Number(kind) === 2 && 
+            
       <div className={ "flex justify-start items-center gap-4" }>
         <div className={ "flex justify-start items-center gap-2 " }>
           <Form
@@ -84,18 +81,19 @@ export function Post({ ...props }: ReprtViewFormProps) {
               name={ "likeid" }
               value={ report!.id }
             >
-              { <TbStar className={ "text-gray-500 text-[140%]" }/> }
+              {  likeflg && <TbStarFilled className={ "text-[#003371] text-[140%]" }/> }
+              { !likeflg && <TbStar className={ "text-gray-500 text-[140%]" }/> }
             </button>
           </Form>
-          <span className={ "text-gray-500" }>{ likenum || 0 }</span>
+          <span className={ likeflg ? "text-[#003371]" : "text-gray-500" }>{ likenum || 0 }</span>
         </div>
         <div className={ "flex justify-start items-center gap-2" }>
           {/* 自分がコメントしたかの判定でアイコン色の分岐が必要なのでLoaderから取得してください */}
-          { <FaRegCommentAlt className={ "text-gray-500 text-[120%]" }/> }
-          <span className={ "text-gray-500" }>{ Number(comments!.length) }</span>
+          {  commentflg && <FaCommentAlt className={ "text-[#003371]" }/> }
+          {  !commentflg && <FaRegCommentAlt className={ "text-gray-500 text-[120%]" }/> }
+          <span className={ commentflg ? "text-[#003371]" : "text-gray-500" }>{ Number(comments!.length) }</span>
         </div>
       </div>
-      }
     </div>
   );
 }
@@ -105,7 +103,7 @@ export function Comments({ ...props }: ReprtViewFormProps) {
   // LOADER
   const loader = props.loaderData;
   // Payloads
-  const { kind, likenum, comments, report } = loader;
+  const { likenum, comments, report } = loader;
   // Refs
   const commentRef = useRef<HTMLInputElement>(null);
   // Callbacks
@@ -130,15 +128,12 @@ export function Comments({ ...props }: ReprtViewFormProps) {
       </div>
       
       {/* コメントフォーム::スマホ・タブレットなどの場合 */}
-      { Number(kind) === 2 &&
       <Link to={ `/home/reportview?ref=comment&id=${ report!.id }` } className={ "group flex md:hidden justify-center items-center gap-4 button button--secondary" }>
         <FaCommentAlt className={ "text-[#003371] group-hover:text-white" }/>
         <span>コメントする</span>
       </Link>
-      }
       
       {/* コメントフォーム::大きめ画面の場合 */}
-      { Number(kind) === 2 &&
       <ValidatedForm
         validator={ CommentSchema } 
         method={ "POST" }
@@ -149,15 +144,9 @@ export function Comments({ ...props }: ReprtViewFormProps) {
         <input type={ "hidden" } name={ "form" } value={ "CommentUpdate" } />
         <button type={ "submit" } className={ "button button--primary hidden" }>上記の内容でコメント</button>
       </ValidatedForm>
-      }
       
       <div className={ "px-0 md:px-[10%] pt-8" }>
-        <button 
-          type={ "button" }
-          className={ "button button--primary" }
-        >
-          ご注文・お問い合わせ
-        </button>
+      <Link to={ "/home/inquiry" } className={ "button button--primary" }>ご注文・お問い合わせ</Link>
       </div>
 
       {/* <p><Link to={ `/home/pickup?ref=${report!.fishkind}` }>一覧に戻る</Link></p> */}

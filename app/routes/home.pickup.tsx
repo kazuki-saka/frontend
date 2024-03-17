@@ -106,7 +106,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   }
 
   //セッションに魚種を保存
-  session.set("home-report-kind", ref);
+  session.set("home-fishkind", ref);
 
   //自分がほしいねした記事にフラグを立てる
   if (likeAry != null){
@@ -220,7 +220,7 @@ export default function Page() {
               isCommented={ repo.comment_flg }
               commentCount={ repo.comment_cnt }
               title={ repo.title }
-              uploadsUrl={ uploads_url }
+              uploadsUrl={ uploads_url + repo.imgPath }
             />
             )) }
             { fishman.length === 0 &&
@@ -244,7 +244,7 @@ export default function Page() {
               isCommented={ repo.comment_flg }
               commentCount={ repo.comment_cnt }
               title={ repo.title }
-              uploadsUrl={ uploads_url }
+              uploadsUrl={ uploads_url + repo.imgPath }
             />
             ))}
             { market.length === 0 &&

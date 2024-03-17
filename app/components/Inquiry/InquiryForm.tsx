@@ -41,12 +41,14 @@ export function Step1({ ...props }: Step1Props) {
     >
     <div className={ "container" }>
       <div className={ "wrap" }>
-        <h2 className={ "text-gray-600 text-22ptr md:text-28ptr font-bold mb-4" }>問い合わせたい内容を記入願います。</h2>
+        <h2 className={ "text-gray-600 text-22ptr md:text-28ptr font-bold mb-4" }>
+          <p>問い合わせたい内容を記入願います。</p>
+          <p>魚種：{FishKindAry[Number(InquiryData.kind) - 1].name}</p>
+        </h2>
         <ShopNameInput  name={"inquiry[shopname]"} defaultValue={InquiryData.shopname }/>
         <NameInput  name={"inquiry[rejistname]"} defaultValue={InquiryData.rejistname }/>
         <PostCodeInput name ={"inquiry[postcode]"} defaultValue={InquiryData.postcode}/>
-        <AdressInput name={"inquiry[address]"} defaultValue={InquiryData.address}/>
-        <FishDropdownList />
+        <AdressInput name={"inquiry[address]"} defaultValue={InquiryData.address}/>        
         <InquiryDetailInput name={"inquiry[detail]"} defaultValue={InquiryData.detail}/> 
         <input type={ "hidden" } name={ "step" } value={ 1 }/>
         <div className={ "flex gap-2 md:gap-8" }>
@@ -79,6 +81,11 @@ export function Step2({ ...props }: Step2Props) {
       >
       <h2 className={ "text-gray-600 text-22ptr md:text-28ptr font-bold mb-4" }>問い合わせ内容の確認</h2>
 
+      <fieldset>
+        <label>魚種</label>
+        <p className={ "text-22ptr md:text-26ptr text-gray-600 font-semibold font-roboto" }>{ FishKindAry[Number(InquiryData.kind) - 1].name  }</p>
+      </fieldset>
+
       <fieldset className={ "border-b-2 border-solid pb-2" }>
         <label>店舗・屋号</label>
         <p className={ "text-20ptr md:text-22ptr text-gray-600 font-semibold font-roboto" }>{ InquiryData.shopname }</p>
@@ -97,11 +104,6 @@ export function Step2({ ...props }: Step2Props) {
       <fieldset className={ "border-b-2 border-solid pb-2" }>
         <label>住所</label>
         <p className={ "text-20ptr md:text-22ptr text-gray-600 font-semibold font-roboto" }>{ InquiryData.address }</p>
-      </fieldset>
-
-      <fieldset>
-        <label>魚種</label>
-        <p className={ "text-22ptr md:text-26ptr text-gray-600 font-semibold font-roboto" }>{ FishKindAry[Number(InquiryData.kind) - 1].name  }</p>
       </fieldset>
 
       <fieldset className={ "border-b-2 border-solid pb-2" }>

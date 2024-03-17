@@ -49,7 +49,6 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   const apiResponse = await fetch(`${ context.env.API_URL }/top/view`, { method: "POST", body: formData });
   // JSONデータを取得
   const jsonDataTopics = await apiResponse.json<LoaderApiResponse>();
-  console.log("jsonDataTopics.topics=", jsonDataTopics.topics);
 
   return json({
     user, likes, comments,topics: jsonDataTopics.topics, uploads_url: context.env.UPLOADS_URL,
