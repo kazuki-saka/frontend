@@ -120,7 +120,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
 
     // フォームデータ生成
     const PostFormData = new FormData();
-    PostFormData.append("user[signature]", String(signature));
+    PostFormData.append("user[signature]", String(session.get("signin-auth-user-signature")));
     PostFormData.append("report[title]", String(reportUserData.title));
     PostFormData.append("report[kind]", String(session.get("home-report-kind")));
     PostFormData.append("report[detail]", String(reportUserData.detail));
@@ -135,7 +135,11 @@ export async function action({ request, context }: ActionFunctionArgs) {
       });
     }
 
+    console.log("user[signature]=", PostFormData.get("user[signature]"));
+    console.log("report[title]=", PostFormData.get("report[title]"));
     console.log("report[kind]=", PostFormData.get("report[kind]"));
+    console.log("report[detail]=", PostFormData.get("report[detail]"));
+
     // APIへデータを送信
     const apiResponse = await fetch(`${ context.env.API_URL }/report/add`, { method: "POST", body: PostFormData });
 

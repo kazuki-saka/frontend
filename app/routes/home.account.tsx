@@ -3,7 +3,7 @@ import { json, redirect, useLoaderData, useActionData, Link, Form } from "@remix
 import { getSession, commitSession } from "~/services/session.server";
 import guard from "~/services/guard.user.server";
 import Logo from "~/components/shared/Logo"; 
-import sections from "~/components/signup/form/sections";
+import sectionary from "~/components/report/form/sections";
   
 
 /**
@@ -64,7 +64,7 @@ export default function Page() {
               
         <fieldset className={ "border-b-2 border-solid pb-2" }>
           <label>利用者区分</label>
-          <p className={ "text-20ptr md:text-22ptr text-gray-600 font-semibold" }>{ sections.filter((section) => section.value === account.section)[0].name }</p>
+          <p className={ "text-20ptr md:text-22ptr text-gray-600 font-semibold" }>{ sectionary[Number(account.section) - 1].name }</p>
         </fieldset>
         
         <fieldset className={ "border-b-2 border-solid pb-2" }>
