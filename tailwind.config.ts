@@ -24,6 +24,13 @@ const config: Config = {
         xl: "1024px",
         "2xl": "1280px",
       },
+      padding: {
+        DEFAULT: "1rem",
+        sm: "1rem",
+        lg: "0rem",
+        xl: "0rem",
+        "2xl": "0rem",
+      },
     },
     fontFamily: {
       "notosansjp": ["Noto Sans JP", "sans-serif"],

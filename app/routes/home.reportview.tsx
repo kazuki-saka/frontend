@@ -13,7 +13,7 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-type report = {id:string, fishkind:number, title:string, detail_modify:string, nickname:string, updatedDate:Date };
+type report = {id:string, fishkind:number, title:string, detail_modify:string, nickname:string, updatedDate:Date, filePath:string };
 type comment = {num:number, nickname:string, comment:string, updatedDate:Date };
 
 type LoaderApiResponse = {
@@ -38,11 +38,8 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 
   // セッション取得
   const session = await getSession(request.headers.get("Cookie"));
-
+  // 認証署名取得
   const signature = session.get("signin-auth-user-signature");
-  
-  // 認証処理から認証署名を取得
-  const { user, likes, comments } = await guard({ request: request, context: context });
   
   // 認証署名がない場合はエラー
   if (!signature) {
@@ -52,6 +49,9 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     });
   }
 
+  // 認証処理から認証署名を取得
+  const { user, likes, comments } = await guard({ request: request, context: context });
+  
   // URLパラメータから記事種別と記事IDを取得
   const id = new URL(request.url).searchParams.get("id");
   const ref = new URL(request.url).searchParams.get("ref");
@@ -98,13 +98,18 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     //セッションに魚種を保存
     session.set("home-fishkind", jsonData.report.fishkind);
 
+    console.log("id=", jsonData.report.id);
     //ほしいね済みか判定
     const likeary: string[] = session.get("home-user-like");
-    const likeflg: boolean = likeary && likeary.indexOf(jsonData.report.id) >= 0 ? true:false;
+    console.log("likeary=", likeary);
+    const likeflg: boolean = likeary && likeary.indexOf(String(jsonData.report.id)) >= 0 ? true:false;
+    console.log("likeflg=", likeflg);
 
     //一度でもコメントした記事か判定
     const commentary: string[] = session.get("home-user-comment");
-    const commentflg: boolean = commentary && commentary.indexOf(jsonData.report.id) >= 0 ? true:false;
+    console.log("commentary=", commentary);
+    const commentflg: boolean = commentary && commentary.indexOf(String(jsonData.report.id)) >= 0 ? true:false;
+    console.log("commentflg=", commentflg);
 
     return json(
       {
@@ -238,7 +243,13 @@ export async function action({ request, context }: ActionFunctionArgs) {
     console.log("commentupdate");
     const comment = formData.get("report[comment]");
     formData.append("user[signature]", String(signature));
-    formData.append("report[id]", String(id));
+    if (id === null){
+      //ほしいねした後はidが消えているので
+      formData.append("report[id]", String(session.get("home-report-id")));
+    }
+    else{
+      formData.append("report[id]", String(id));
+    }
     formData.append("report[comment]", String(comment));
 
     console.log("formdata.user[signature]", formData.get("user[signature]"));

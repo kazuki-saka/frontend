@@ -6,6 +6,7 @@ import { reportcostom as ReportCostom } from "~/types/Report";
 import { topic as topic } from "~/types/topic";
 import Logo from "~/components/shared/Logo"; 
 import ThumbPost from "~/components/shared/ThumbPost";
+import PostCursor from "~/components/shared/PostCursor";
 
 export const meta: MetaFunction = () => {
   return [
@@ -45,17 +46,17 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   const session = await getSession(request.headers.get("Cookie"));
   console.log("session=", session);
 
-  // 認証処理から認証署名を取得
-  const user = await guard({ request: request, context: context });
+  // 認証処理から利用者情報を取得
+  const { user, likes, comments } = await guard({ request: request, context: context });
   
-  // 認証署名がない場合はエラー
+  // 利用者情報がない場合はエラー
   if (!user) {
     throw new Response(null, {
       status: 401,
-      statusText: "署名の検証に失敗しました。",
+      statusText: "認証に失敗しました。",
     });
   }
-  
+
   // URLパラメータからrefを取得
   const ref = new URL(request.url).searchParams.get("ref");
   console.log("ref=", ref);
@@ -78,8 +79,6 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   // JSONデータを取得
   const jsonDataFishman = await apiResponseFishman.json<LoaderFishmanApiResponse>();
   console.log("jsonData=", jsonDataFishman);
-  console.log("jsonData.FishmanReports=", jsonDataFishman.FishmanReports);
-  console.log("jsonData.FishmanReports[0]=", jsonDataFishman.FishmanReports[0]);
 
   // ステータス200以外の場合はエラー
   if (jsonDataFishman.status !== 200) {
@@ -94,8 +93,6 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   // JSONデータを取得
   const jsonDataMarket = await apiResponseMarket.json<LoaderMarketApiResponse>();
   console.log("jsonData=", jsonDataMarket);
-  console.log("jsonData.MarketReports=", jsonDataMarket.MarketReports);
-  console.log("jsonData.MarketReports[0]=", jsonDataMarket.MarketReports[0]);
 
   // ステータス200以外の場合はエラー
   if (jsonDataMarket.status !== 200) {
@@ -106,7 +103,8 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   }
 
   //セッションに魚種を保存
-  session.set("home-fishkind", ref);
+  //session.set("home-fishkind", ref);
+  session.set("home-report-kind", ref);
 
   //自分がほしいねした記事にフラグを立てる
   if (likeAry != null){
@@ -153,6 +151,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 
   return json(
     {
+      user,
       market:  jsonDataMarket.MarketReports,
       fishman: jsonDataFishman.FishmanReports,
       ref: ref,
@@ -169,7 +168,7 @@ export default function Page() {
   // LOADER
   const loaderData = useLoaderData<typeof loader>();
   // Payloads
-  const { market, fishman, ref, uploads_url } = loaderData;
+  const { user, market, fishman, ref, uploads_url } = loaderData;
   
   if (ref) {
     return (
@@ -210,7 +209,7 @@ export default function Page() {
             <h2 className={ "text-28ptr font-semibold whitespace-nowrap" }>生産者の声</h2>
           </div>
           <div className={ "wrap grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-8" }>
-            { fishman.map((repo) => (
+            { fishman && fishman.map((repo) => (
             <ThumbPost 
               key={ repo.id }
               to={ `/home/reportview/?ref=view&id=${ repo.id }` }
@@ -220,10 +219,11 @@ export default function Page() {
               isCommented={ repo.comment_flg }
               commentCount={ repo.comment_cnt }
               title={ repo.title }
-              uploadsUrl={ uploads_url + repo.imgPath }
+              uploadsUrl={ uploads_url }
+              imgPath={ repo.imgPath }
             />
             )) }
-            { fishman.length === 0 &&
+            { !fishman || fishman.length === 0 &&
             <p>記事はありません</p>
             }
           </div>
@@ -234,7 +234,7 @@ export default function Page() {
             <h2 className={ "text-28ptr font-semibold whitespace-nowrap" }>福井中央卸売市場からのお知らせ</h2>
           </div>
           <div className={ "wrap grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-8" }>
-            { market.map((repo) => (
+            { market && market.map((repo) => (
             <ThumbPost 
               key={ repo.id }
               to={ `/home/reportview/?ref=view&id=${ repo.id }` }
@@ -244,14 +244,20 @@ export default function Page() {
               isCommented={ repo.comment_flg }
               commentCount={ repo.comment_cnt }
               title={ repo.title }
-              uploadsUrl={ uploads_url + repo.imgPath }
+              uploadsUrl={ uploads_url }
+              imgPath={ repo.imgPath }
             />
             ))}
-            { market.length === 0 &&
+            { !market || market.length === 0 &&
             <p>記事はありません</p>
             }
           </div>
         </section>
+
+        { /** 生産者の場合のみ投稿ボタン表示 */}
+        { Number(user.section) === 3 &&
+          <PostCursor/>
+        }
       </>
     );
   }

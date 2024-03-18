@@ -22,11 +22,10 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 
   // セッション取得
   const session = await getSession(request.headers.get("Cookie"));
-
-  // 認証処理から認証署名を取得
-  const signature = await guard({ request: request, context: context });
-  console.log("signature=", signature);
-
+  
+  // 認証署名取得
+  const signature = session.get("signin-auth-user-signature");
+  
   // 認証署名がない場合はエラー
   if (!signature) {
     throw new Response(null, {
@@ -34,7 +33,9 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     statusText: "署名の検証に失敗しました。",
     });
   }
-
+  // 認証情報取得
+  const { user, likes, comments } = await guard({ request: request, context: context });  
+  
   // FormData作成
   const formData = new FormData();
   formData.append("user[signature]", String(session.get("signin-auth-user-signature")));
@@ -84,6 +85,12 @@ export default function Page() {
             to={ `/home/reportview/?ref=view&id=${ repo.reportid }` }
             title={ repo.title }
             nickname={ repo.nickname }
+            //uploadsUrl={} /** アップロードパスを渡してください */
+            //imgPath={ "" } /** 画像パスを渡してください */
+            //isLiked={} /** ほしいね済みの場合はtrueを渡してください */
+            //isCommented={} /** コメント済みの場合はtrueを渡してください */
+            //likeCount={ repo. } /** ほしいね数を渡してください */
+            //commentCount={ repo. } /** コメント数を渡してください */
           />
         )) }
       </div>

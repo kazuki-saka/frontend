@@ -12,5 +12,9 @@ const sections: Section[] = [
     name: "飲食店",
     value: 2
   },
+  {
+    name: "生産者",
+    value: 3
+  },
 ];
 export default sections;

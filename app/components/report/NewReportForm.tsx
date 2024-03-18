@@ -60,15 +60,11 @@ export function Step1({ ...props }: Step1Props) {
 
   const [previewImage, setPreviewImage] = useState("");
   const handleChangePreview = (ev: React.ChangeEvent<HTMLInputElement>) => {
-    alert("chgevent");
     if (!ev.target.files) {
-      alert("non files");
       return;
     }
     const file = ev.target.files[0];
 
-    console.log("file=", file);
-    alert("file=" + file);
     setPreviewImage(URL.createObjectURL(file));
   };
 

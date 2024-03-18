@@ -33,11 +33,12 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   console.log("user=", user);
 
   // いいねリストをセッションに保存
-  if (likes.length > 0) {
+  if (likes && likes.length > 0) {
+    console.log("likes=", likes);
     session.set("home-user-like", likes);
   }
   // コメントリストをセッションに保存
-  if (comments.length > 0) {
+  if (comments && comments.length > 0) {
     session.set("home-user-comment", comments);
   }
 
@@ -49,6 +50,8 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   const apiResponse = await fetch(`${ context.env.API_URL }/top/view`, { method: "POST", body: formData });
   // JSONデータを取得
   const jsonDataTopics = await apiResponse.json<LoaderApiResponse>();
+  console.log("jsonDataTopics.topics[0]=", jsonDataTopics.topics[0]);
+  console.log("jsonDataTopics.topics[0].like_flg=", jsonDataTopics.topics[0].like_flg);
 
   return json({
     user, likes, comments,topics: jsonDataTopics.topics, uploads_url: context.env.UPLOADS_URL,
@@ -65,6 +68,7 @@ export default function Page() {
   // Payloads
   const { uploads_url } = loaderData;
   const { topics } = loaderData;
+  const { likes } = loaderData;
   
   return (
     <>
@@ -79,25 +83,25 @@ export default function Page() {
             <figure className={ "block relative w-full pt-[110.0%] md:pt-[50.0%] bg-black" }>
               <img src={ "/assets/images/home/salmon.webp" } alt={ "ふくいサーモン" } className={ "absolute top-0 left-0 w-full h-full object-cover opacity-50 group-hover:opacity-70" }/>
             </figure>
-            <span className={ "absolute inset-0 m-auto flex justify-center items-center text-white text-28ptr md:text-40ptr font-semibold drop-shadow-sm" }>ふくいサーモン</span>
+            <span className={ "absolute inset-0 m-auto flex justify-center items-center text-white text-22ptr md:text-40ptr font-semibold whitespace-nowrap drop-shadow-sm" }>ふくいサーモン</span>
           </Link>
           <Link to={ "/home/pickup?ref=2" } className={ "group block relative cursor-pointer" }>
             <figure className={ "block relative w-full pt-[110.0%] md:pt-[50.0%] bg-black" }>
               <img src={ "/assets/images/home/fugu.webp" } alt={ "若狭ふぐ" } className={ "absolute top-0 left-0 w-full h-full object-cover opacity-50 group-hover:opacity-70" }/>
             </figure>
-            <span className={ "absolute inset-0 m-auto flex justify-center items-center text-white text-28ptr md:text-40ptr font-semibold drop-shadow-sm" }>若狭ふぐ</span>
+            <span className={ "absolute inset-0 m-auto flex justify-center items-center text-white text-22ptr md:text-40ptr font-semibold whitespace-nowrap drop-shadow-sm" }>若狭ふぐ</span>
           </Link>
           <Link to={ "/home/pickup?ref=3" } className={ "group block relative cursor-pointer" }>
             <figure className={ "block relative w-full pt-[110.0%] md:pt-[50.0%] bg-black" }>
               <img src={ "/assets/images/home/madai.webp" } alt={ "敦賀真鯛" } className={ "absolute top-0 left-0 w-full h-full object-cover opacity-50 group-hover:opacity-70" }/>
             </figure>
-            <span className={ "absolute inset-0 m-auto flex justify-center items-center text-white text-28ptr md:text-40ptr font-semibold drop-shadow-sm" }>敦賀真鯛</span>
+            <span className={ "absolute inset-0 m-auto flex justify-center items-center text-white text-22ptr md:text-40ptr font-semibold whitespace-nowrap drop-shadow-sm" }>敦賀真鯛</span>
           </Link>
           <Link to={ "/home/pickup?ref=4" } className={ "group block relative cursor-pointer" }>
             <figure className={ "block relative w-full pt-[110.0%] md:pt-[50.0%] bg-black" }>
               <img src={ "/assets/images/home/mahata.webp" } alt={ "若狭まはた" } className={ "absolute top-0 left-0 w-full h-full object-cover opacity-50 group-hover:opacity-70" }/>
             </figure>
-            <span className={ "absolute inset-0 m-auto flex justify-center items-center text-white text-28ptr md:text-40ptr font-semibold drop-shadow-sm" }>若狭まはた</span>
+            <span className={ "absolute inset-0 m-auto flex justify-center items-center text-white text-22ptr md:text-40ptr font-semibold whitespace-nowrap drop-shadow-sm" }>若狭まはた</span>
           </Link>
         </div>
         
@@ -109,7 +113,7 @@ export default function Page() {
         </div>
         {/* 区分なし最新記事20件ほどAPIから取得してください */}
         <div className={ "wrap grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-8" }>
-          { topics.map((repo) => (
+          { topics && topics.map((repo) => (
               <ThumbPost 
                 key={ repo.id }
                 to={ `/home/reportview/?ref=view&id=${ repo.id }` }
@@ -119,7 +123,8 @@ export default function Page() {
                 isCommented={ repo.comment_flg }
                 commentCount={ repo.comment_cnt }
                 title={ repo.title }
-                uploadsUrl={ uploads_url + repo.imgPath }
+                uploadsUrl={ uploads_url }
+                imgPath={ repo.imgPath }
               />
             )) }
         </div>

@@ -17,7 +17,7 @@ const ThumbPost = ({ ...props }: ThumbPostProps) => (
     <figure className={ "block relative w-full pt-[50.0%] md:pt-[50.0%]" }>
       { (props.imgPath && props.uploadsUrl) 
       ?
-      <img src={ props.imgPath.replace("/cmsb/uploads", props.uploadsUrl) } alt={ props.title } className={ "absolute top-0 left-0 w-full h-full object-cover rounded-md " }/>
+      <img src={ props.uploadsUrl + props.imgPath } alt={ props.title } className={ "absolute top-0 left-0 w-full h-full object-cover rounded-md " }/>
       :
       <img src={ "/assets/images/Noimage.png" } alt={ "NoImage" } className={ "absolute top-0 left-0 w-full h-full object-cover rounded-md " }/>
       }

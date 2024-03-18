@@ -41,6 +41,7 @@ export function Post({ ...props }: ReprtViewFormProps) {
       
       <div className={ "bg-gray-300 w-full min-h-[300px] md:min-h-[600px]" }>
         {/* サムネイル画像を入れてください */}
+        <img src= { uploads_url + report?.filePath } alt={ report?.title }></img>
       </div>
       
       <div>
