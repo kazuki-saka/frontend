@@ -8,8 +8,8 @@ type ApiResponse = {
   status: number;
   messages: { message: string };
   user: Account;
-  like: Like[];
-  comment: Comment[];
+  like: string[];
+  comment: string[];
 };
 
 export default async function ({ ...props }: {

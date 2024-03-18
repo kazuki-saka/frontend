@@ -67,6 +67,7 @@ export default function Page() {
   const { uploads_url } = loaderData;
   const { topics } = loaderData;
   const { likes } = loaderData;
+  const { comments } = loaderData;
   
   return (
     <>
@@ -116,9 +117,9 @@ export default function Page() {
                 key={ repo.id }
                 to={ `/home/reportview/?ref=view&id=${ repo.id }` }
                 nickname={ repo.nickname }
-                isLiked={ repo.like_flg }
+                isLiked={ likes.indexOf(String(repo.id)) == -1 ? false:true }
                 likeCount={ repo.like_cnt }
-                isCommented={ repo.comment_flg }
+                isCommented={ comments.indexOf(String(repo.id)) == -1 ? false:true }
                 commentCount={ repo.comment_cnt }
                 title={ repo.title }
                 uploadsUrl={ uploads_url }

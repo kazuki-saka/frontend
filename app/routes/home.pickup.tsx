@@ -279,20 +279,29 @@ export default function Page() {
             <span className={ "text-white text-40ptr font-semibold tracking-wide whitespace-nowrap drop-shadow-lg" }>ふくいサーモン</span>
           </div>
         </Link>
-        <Link to={ "/home/pickup?ref=2" }>
+        <Link to={ "/home/pickup?ref=2" } className={ "block relative" }>
           <figure className={ "block relative w-full pt-[40.0%] md:pt-[30.0%]" }>
             <img src={ "/assets/images/home/fugu.webp" } alt={ "若狭ふぐ" } className={ "absolute top-0 left-0 w-full h-full object-cover" }/>
           </figure>
+          <div className={ "absolute bottom-0 left-0 bg-black/40 w-full h-28 flex justify-center items-center" }>
+            <span className={ "text-white text-40ptr font-semibold tracking-wide whitespace-nowrap drop-shadow-lg" }>若狭ふぐ</span>
+          </div>
         </Link>
-        <Link to={ "/home/pickup?ref=3" }>
+        <Link to={ "/home/pickup?ref=3" } className={ "block relative" }>
           <figure className={ "block relative w-full pt-[40.0%] md:pt-[30.0%]" }>
             <img src={ "/assets/images/home/madai.webp" } alt={ "敦賀真鯛" } className={ "absolute top-0 left-0 w-full h-full object-cover" }/>
           </figure>
+          <div className={ "absolute bottom-0 left-0 bg-black/40 w-full h-28 flex justify-center items-center" }>
+            <span className={ "text-white text-40ptr font-semibold tracking-wide whitespace-nowrap drop-shadow-lg" }>敦賀真鯛</span>
+          </div>
         </Link>
-        <Link to={ "/home/pickup?ref=4" }>
+        <Link to={ "/home/pickup?ref=4" } className={ "block relative" }>
           <figure className={ "block relative w-full pt-[40.0%] md:pt-[30.0%]" }>
             <img src={ "/assets/images/home/mahata.webp" } alt={ "若狭まはた" } className={ "absolute top-0 left-0 w-full h-full object-cover" }/>
           </figure>
+          <div className={ "absolute bottom-0 left-0 bg-black/40 w-full h-28 flex justify-center items-center" }>
+            <span className={ "text-white text-40ptr font-semibold tracking-wide whitespace-nowrap drop-shadow-lg" }>若狭まはた</span>
+          </div>
         </Link>
       </section>
     </>

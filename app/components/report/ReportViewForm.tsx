@@ -40,7 +40,6 @@ export function Post({ ...props }: ReprtViewFormProps) {
     <div className={ "px-0 md:px-[10%] py-0 md:py-[5%] flex flex-col gap-4" }>
       
       <div className={ "bg-gray-300 w-full min-h-[300px] md:min-h-[600px]" }>
-        {/* サムネイル画像を入れてください */}
         <img src= { uploads_url + report?.filePath } alt={ report?.title }></img>
       </div>
       
@@ -49,13 +48,11 @@ export function Post({ ...props }: ReprtViewFormProps) {
         <p className={ "text-gray-500" }>{ nickname }</p>
         <div className={ "flex justify-start items-center gap-4" }>
           <div className={ "flex justify-start items-center gap-2" }>
-            {/* 自分がほしいねしたかの判定でアイコン色の分岐が必要なのでLoaderから取得してください */}
             { likeflg && <TbStarFilled className={ "text-[#003371]" }/> }
             { !likeflg && <TbStar className={ "text-gray-500" }/> }
             <span className={ likeflg ? "text-[#003371]" : "text-gray-500" }>{ likenum || 0 }</span>
           </div>
           <div className={ "flex justify-start items-center gap-2" }>
-            {/* 自分がコメントしたかの判定でアイコン色の分岐が必要なのでLoaderから取得してください */}
             { commentflg && <FaCommentAlt className={ "text-[#003371]" }/> }
             { !commentflg && <FaRegCommentAlt className={ "text-gray-500" }/> }
             <span className={ commentflg ? "text-[#003371]" : "text-gray-500" }>{ Number(comments!.length) }</span>
@@ -75,7 +72,6 @@ export function Post({ ...props }: ReprtViewFormProps) {
             action={ `?ref=view` }
             className={ "border-solid border-[1px] border-gray-400 rounded-full flex justify-center items-center p-3" }
           >
-            {/* 自分がほしいねしたかの判定でアイコン色の分岐が必要なのでLoaderから取得してください */}
             <button 
               type={ "submit" }
               className={ "px-0 py-0" }
@@ -89,7 +85,6 @@ export function Post({ ...props }: ReprtViewFormProps) {
           <span className={ likeflg ? "text-[#003371]" : "text-gray-500" }>{ likenum || 0 }</span>
         </div>
         <div className={ "flex justify-start items-center gap-2" }>
-          {/* 自分がコメントしたかの判定でアイコン色の分岐が必要なのでLoaderから取得してください */}
           {  commentflg && <FaCommentAlt className={ "text-[#003371]" }/> }
           {  !commentflg && <FaRegCommentAlt className={ "text-gray-500 text-[120%]" }/> }
           <span className={ commentflg ? "text-[#003371]" : "text-gray-500" }>{ Number(comments!.length) }</span>
@@ -117,7 +112,7 @@ export function Comments({ ...props }: ReprtViewFormProps) {
   return (
     <div id={ "comments" }>
       <div className={ "flex flex-col gap-4 px-0 md:px-[10%] py-4 md:py-0 md:pt-[5%]" }>
-        { comments!.map((come) => (
+        { comments && comments.map((come) => (
         <div key={ come.num }>
           <p className={ "text-gray-500 text-[86%] whitespace-nowrap leading-none" }>{ come.nickname }</p>
           {/*<p>コメント日時{come.updatedDate.toString()}</p>*/}
