@@ -65,6 +65,7 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 //  console.log("like=", like);
 
   if (ref === "view") {
+
     // FormData作成
     const formData = new FormData();
     formData.append("user[signature]", String(signature));
@@ -285,7 +286,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
       const tmp :String[] = [String(id)];
       session.set("home-user-comment", tmp);
     }
-    
+        
     /** ページ遷移不要 */
     /*
     return redirect(`/home/reportview?ref=view&id=${id}`, {
@@ -326,15 +327,7 @@ export default function Page() {
           <div className={ "bg-gray-400 w-full h-[1px] mt-4" }/>
           { /* コメント送信時再レンダリング必要 */ }
           <Comments loaderData={ loaderData } />
-        </UserFormWrap>
-        
-        { /* コメントフォームモーダル(モバイルのみ？) */ }
-        { ref === "comment" &&
-        <CommentFormModal 
-          loaderData={ loaderData! }
-          actionData={ actionData! }
-        />
-        }
+        </UserFormWrap>        
       </AnimatePresence>
     </>
   );

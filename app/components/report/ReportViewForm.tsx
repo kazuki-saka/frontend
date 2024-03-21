@@ -3,12 +3,13 @@ import { SerializeFrom } from "@remix-run/cloudflare";
 import { motion, HTMLMotionProps } from "framer-motion";
 import parse from "html-react-parser";
 import { loader as ReportViewLoader, action as ReportViewAction } from "~/routes/home.reportview";
-import { FaRegCommentAlt, FaCommentAlt  } from "react-icons/fa";
+import { FaRegCommentAlt, FaCommentAlt, FaPaperPlane } from "react-icons/fa";
 import { TbStar, TbStarFilled } from "react-icons/tb";
 
 import { ValidatedForm } from "remix-validated-form";
 import { CommentSchema } from "~/schemas/newcomment";
 import { useRef, useCallback } from "react";
+import CommentInput from "./form/CommentInput"
 
 export function Wrap({ ...props }: HTMLMotionProps<"div">) {
   return (
@@ -35,7 +36,7 @@ export function Post({ ...props }: ReprtViewFormProps) {
   // Payloads
   const { likenum, likeflg, comments, commentflg, report, uploads_url } = loader;
   const { title, nickname, detail_modify } = report as { title: string, nickname: string, detail_modify: string }; /** 型定義してください */
-  
+
   return (
     <div className={ "px-0 md:px-[10%] py-0 md:py-[5%] flex flex-col gap-4" }>
       
@@ -101,11 +102,12 @@ export function Comments({ ...props }: ReprtViewFormProps) {
   // Payloads
   const { likenum, comments, report } = loader;
   // Refs
-  const commentRef = useRef<HTMLInputElement>(null);
+  const commentRef = useRef<HTMLTextAreaElement>(null);
   // Callbacks
   const clear = useCallback(() => {
     if (commentRef && commentRef.current) {
       commentRef.current.value = "";
+      commentRef.current.blur();  //フォーカスが外れる
     }
   }, [commentRef]);
   
@@ -122,23 +124,16 @@ export function Comments({ ...props }: ReprtViewFormProps) {
         </div>
         ))}
       </div>
-      
-      {/* コメントフォーム::スマホ・タブレットなどの場合 */}
-      <Link to={ `/home/reportview?ref=comment&id=${ report!.id }` } className={ "group flex md:hidden justify-center items-center gap-4 button button--secondary" }>
-        <FaCommentAlt className={ "text-[#003371] group-hover:text-white" }/>
-        <span>コメントする</span>
-      </Link>
-      
+            
       {/* コメントフォーム::大きめ画面の場合 */}
       <ValidatedForm
         validator={ CommentSchema } 
         method={ "POST" }
-        className={ "confirm-form px-0 py-0 md:px-[10%] mt-4 hidden md:block" }
+        className={ /* "confirm-form px-0 py-0 md:px-[10%] mt-4 hidden md:block" */ "confirm-form px-0 py-0 pt-8" }
         onSubmit={ clear }
       >
-        <input type={ "text" } name={ "report[comment]" } placeholder={ "コメントを入力してからEnterボタンを押すと送信します" } className={ "rounded-full bg-[#ededed] placeholder:text-[80%] border-none" } ref={ commentRef }/>        
+        <CommentInput name={ "report[comment]" } className={ "bg-[#ededed] md:px-[0%] " }  />
         <input type={ "hidden" } name={ "form" } value={ "CommentUpdate" } />
-        <button type={ "submit" } className={ "button button--primary hidden" }>上記の内容でコメント</button>
       </ValidatedForm>
       
       <div className={ "px-0 md:px-[10%] pt-8" }>
