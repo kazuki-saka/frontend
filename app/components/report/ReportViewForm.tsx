@@ -9,7 +9,7 @@ import { TbStar, TbStarFilled } from "react-icons/tb";
 import { ValidatedForm } from "remix-validated-form";
 import { CommentSchema } from "~/schemas/newcomment";
 import { useRef, useCallback } from "react";
-import CommentInput from "./form/CommentInput"
+import TextareaAutosize from 'react-textarea-autosize';
 
 export function Wrap({ ...props }: HTMLMotionProps<"div">) {
   return (
@@ -100,7 +100,7 @@ export function Comments({ ...props }: ReprtViewFormProps) {
   // LOADER
   const loader = props.loaderData;
   // Payloads
-  const { likenum, comments, report } = loader;
+  const { comments } = loader;
   // Refs
   const commentRef = useRef<HTMLTextAreaElement>(null);
   // Callbacks
@@ -134,23 +134,22 @@ export function Comments({ ...props }: ReprtViewFormProps) {
       >
         <fieldset className={ "placeholder:text-[100%] md:px-[10%] px-0 py-0 pt-2" } >
           <label>コメント</label>
-          <textarea className={ "bg-[#ededed] px-0 md:px-[0%]" }
+          <TextareaAutosize className={ "bg-[#ededed] px-0" }
             cols={32}
-            rows={2}
             name={"report[comment]"}
             placeholder={ "この記事に対してコメントを残す" }
             defaultValue={""}
             ref={ commentRef }
           />
           <button type={ "submit" }  >
-            <FaPaperPlane  className={ " w-12 h-12" }/>
+            <FaPaperPlane  className={ " w-9 h-9" }/>
           </button>
         </fieldset>
         <input type={ "hidden" } name={ "form" } value={ "CommentUpdate" } />
       </ValidatedForm>
       
       <div className={ "px-0 md:px-[10%] pt-8" }>
-      <Link to={ "/home/inquiry" } className={ "button button--primary" }>ご注文・お問い合わせ</Link>
+        <Link to={ "/home/inquiry" } className={ "button button--primary" }>ご注文・お問い合わせ</Link>
       </div>
 
       {/* <p><Link to={ `/home/pickup?ref=${report!.fishkind}` }>一覧に戻る</Link></p> */}

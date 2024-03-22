@@ -7,8 +7,8 @@ export default function InquiryDetailInput ({ ...props }: InputHTMLAttributes<HT
     <fieldset>
       <label>問い合わせ内容</label>
       <textarea 
-        cols={100}
-        rows={20}
+        cols={32}
+        rows={10}
         placeholder={ "問い合わせ内容をここに入力して下さい。" }
         className={ error.error && "border-error bg-error-100 text-error" }
         { ...props }

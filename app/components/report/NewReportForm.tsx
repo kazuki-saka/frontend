@@ -76,20 +76,25 @@ export function Step1({ ...props }: Step1Props) {
       >
       <div className={ "container" }>
         <div className={ "wrap" }>
-          <h2 className={ "text-gray-600 text-22ptr md:text-28ptr font-bold mb-4" }>新規投稿</h2>
+          <h2 className={ "text-gray-600 text-22ptr md:text-28ptr font-bold mb-4" }>記事を投稿</h2>
           <div>
-            <img alt="画像が選択されていません。" />
+            <img
+              alt="画像が選択されていません。"
+              src={previewImage}
+            />
             <input
               type="file"
+              name="report[imgpath]"
               onChange={handleChangePreview}
               ref={inputFileRef}
               accept="image/*"
               style={{ display: "none" }}
             />
             <button onClick={() => inputFileRef.current?.click()}>
-              ファイルを選択
+              投稿する画像を選択して下さい。
             </button>
           </div>
+          <p></p>
           <fieldset>
             <label>魚種</label>
             <p className={ "text-22ptr md:text-26ptr text-gray-600 font-semibold font-roboto" }>{ ReportFormData.kind }</p>

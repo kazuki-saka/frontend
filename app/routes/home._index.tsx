@@ -108,9 +108,7 @@ export default function Page() {
       <section className={ "container" }>
         <div className={ "wrap flex justify-between md:justify-start items-baseline gap-4 mb-8" }>
           <h2 className={ "text-28ptr font-semibold" }>トピックス</h2>
-          <Link to={ "" } className={ "text-[#003371]" }>すべて見る</Link>{/* 挙動不明 */}
         </div>
-        {/* 区分なし最新記事20件ほどAPIから取得してください */}
         <div className={ "wrap grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-8" }>
           { topics && topics.map((repo) => (
               <ThumbPost 

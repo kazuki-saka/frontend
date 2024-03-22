@@ -49,7 +49,7 @@ export function Step1({ ...props }: Step1Props) {
         <NameInput  name={"inquiry[rejistname]"} defaultValue={InquiryData.rejistname }/>
         <PostCodeInput name ={"inquiry[postcode]"} defaultValue={InquiryData.postcode}/>
         <AdressInput name={"inquiry[address]"} defaultValue={InquiryData.address}/>        
-        <InquiryDetailInput name={"inquiry[detail]"} defaultValue={InquiryData.detail}/> 
+        <InquiryDetailInput name={"inquiry[detail]"} defaultValue={InquiryData.detail} className={"textarea"} /> 
         <input type={ "hidden" } name={ "step" } value={ 1 }/>
         <div className={ "flex gap-2 md:gap-8" }>
           <button 

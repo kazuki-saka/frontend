@@ -8,7 +8,7 @@ export default function AdressInput ({ ...props }: InputHTMLAttributes<HTMLInput
       <label>住所</label>
       <input 
         type={ "text" } 
-        placeholder={ "商品を届ける住所を記入して下さい" }
+        placeholder={ "商品届け先の住所を記入" }
         className={ error.error && "border-error bg-error-100 text-error" }
         { ...props }
       />
