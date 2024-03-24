@@ -49,13 +49,17 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   const step = new URL(request.url).searchParams.get("step") || 1;
   // セッションから魚種を取得
   const kind = session.get("home-report-kind");
+  const imgpath = session.get("report-rejist-form-imgpath");
   console.log("step=", step);
   console.log("kind=", kind);
+  console.log("imgpath=", imgpath);
 
   // セッションからフォームデータ取得
   const ReportUserData = JSON.parse(session.get("report-rejist-form-data") || "{}") as ReportUserFormData;
   ReportUserData.kind = FishKindAry[kind - 1].name;
+  //ReportUserData.imgpath = imgpath;
   console.log("ReportUserData=", ReportUserData);
+  console.log("ReportUserData.imgpath=", ReportUserData.imgpath);
 
   return json({
     step: step ? step : 1,
@@ -78,7 +82,16 @@ export async function action({ request, context }: ActionFunctionArgs) {
   const session = await getSession(request.headers.get("Cookie"));
 
   // 認証処理から認証署名を取得
+/*
   const signature = await guard({ request: request, context: context });
+  // 認証署名がない場合はエラー
+  if (!signature) {
+    throw new Response(null, {
+      status: 401,
+      statusText: "署名の検証に失敗しました。",
+    });
+  }
+*/
 
   // リクエストからフォームデータ取得
   const formData = await request.formData();
@@ -92,15 +105,28 @@ export async function action({ request, context }: ActionFunctionArgs) {
 
   if (ref === "image"){
     // セッションに保存
-    console.log("imgpath=", formData.get("report[imgpath]"));
-    //reportUserData.imgpath = String(formData.get("report[imgpath]"));
-    //console.log("imgpath2=", reportUserData.imgpath);
-    session.set("report-rejist-form-data", JSON.stringify(reportUserData));
+    /*
+    const imgpath = String(formData.get("report[imgpath]"));
+    console.log("imgpath=", imgpath);
+    session.set("report-rejist-form-imgpath", imgpath);
     return json({
         headers: {
-        "Set-Cookie": await commitSession(session),
+          "Set-Cookie": await commitSession(session),
         },
     });
+    */
+
+    const imgpath = String(formData.get("report[imgpath]"));
+    console.log("imgpath=", imgpath);
+    reportUserData.imgpath = imgpath;
+    session.set("report-rejist-form-data", JSON.stringify(reportUserData));
+
+    return redirect(`/home/newspost?step=1`, {
+      headers: {
+        "Set-Cookie": await commitSession(session),
+      },
+    });
+      
   }
 
   if (Number(formData.get("step")) === 1) {
@@ -115,10 +141,12 @@ export async function action({ request, context }: ActionFunctionArgs) {
 
     console.log("title=", formData.get("report[title]"));
     console.log("detail=", formData.get("report[detail]"));
+    console.log("imgpath=", formData.get("report[imgpath]"));
 
     // セッションに保存
     reportUserData.title = String(formData.get("report[title]"));
     reportUserData.detail = String(formData.get("report[detail]"));
+    reportUserData.imgpath = String(formData.get("report[imgpath]"));
     session.set("report-rejist-form-data", JSON.stringify(reportUserData));
 
     // STEP2へリダイレクト

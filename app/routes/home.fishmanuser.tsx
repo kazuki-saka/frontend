@@ -149,7 +149,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
   const formData = await request.formData();
 
   // セッションからフォームデータ取得
-  const signupUserFormData = JSON.parse(session.get("signup-user-form-data") || "{}") as SignupUserFormData;
+  const signupUserFormData = JSON.parse(session.get("fishman-user-form-data") || "{}") as SignupUserFormData;
   console.log("signupUserFormData=", signupUserFormData);
   console.log("step=", formData.get("step"));
   

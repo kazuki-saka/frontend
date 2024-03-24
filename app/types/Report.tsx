@@ -1,9 +1,9 @@
 export type Report = {
+  imgpath: string;
   title: string;
   detail: string;
   kind: string;    
   token: string;
-  imgpath: string;
 };
 
 export type comment = {

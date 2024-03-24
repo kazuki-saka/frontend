@@ -2,10 +2,12 @@ import { useNavigation, Link, Form } from "@remix-run/react";
 import { motion, HTMLMotionProps } from "framer-motion";
 import { Report as ReportFormData } from "~/types/Report";
 import { ValidatedForm } from "remix-validated-form";
-import { ReportSchema_step1 } from "~/schemas/newreport";
+import { ReportSchema_step1, ReportSchema_step1Img } from "~/schemas/newreport";
 import TitleInput from "~/components/report/form/TitleInput";
 import DetailInput from "~/components/report/form/DetailInput";
 import { useRef, useState } from "react";
+
+let filename:string;
 
 export function Wrap({ ...props }: HTMLMotionProps<"div">) {
     return (
@@ -50,6 +52,9 @@ export function ImgStep1({ ...props }: Step1Props) {
   const inputFileRef = useRef<HTMLInputElement>(null);
 
   const [previewImage, setPreviewImage] = useState("");
+  if (!filename && ReportFormData.imgpath){
+    filename = ReportFormData.imgpath;
+  }
 
   const handleChangePreview = (ev: React.ChangeEvent<HTMLInputElement>) => {
     if (!ev.target.files) {
@@ -59,10 +64,13 @@ export function ImgStep1({ ...props }: Step1Props) {
     const fileinfo = ev.target.files[0];
     const urlname = URL.createObjectURL(fileinfo);
     setPreviewImage(urlname);
+    //filename = fileinfo.name;
+    filename = urlname;
   };
 
   return (
-    <Form
+    <ValidatedForm
+        validator={ ReportSchema_step1Img } 
         method={ "POST" }
         action={ `?step=1` }
       >
@@ -79,16 +87,24 @@ export function ImgStep1({ ...props }: Step1Props) {
             ref={inputFileRef}
             accept="image/*"
             style={{ display: "none" }}
-            name="report[imgpath]"
           />
-          <button onClick={() => inputFileRef.current?.click()}>
+          <br></br>
+          <button onClick={() => inputFileRef.current?.click()} className="button button--primary">
             画像を選択
           </button>
+          <br></br>
+
+          {filename !== undefined &&
+            <button type={ "submit" } className="button button--secondary">
+              アップロードする
+            </button>
+          }
           <input type={ "hidden" } name={ "step" } value={ 1 }/>
           <input type={ "hidden" } name={ "report[ref]" } value={ "image" }/>
+          <input type={ "hidden" } name={ "report[imgpath]" } value={ filename }/>
         </div>
       </div>
-    </Form>
+    </ValidatedForm>
   );
 }
 
