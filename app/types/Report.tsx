@@ -3,6 +3,7 @@ export type Report = {
   detail: string;
   kind: string;    
   token: string;
+  imgpath: string;
 };
 
 export type comment = {

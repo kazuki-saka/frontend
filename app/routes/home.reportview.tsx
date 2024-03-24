@@ -322,10 +322,8 @@ export default function Page() {
       <AnimatePresence initial={ false }>
         { /* 記事詳細画面 */ }
         <UserFormWrap >
-          { /* コメント送信時再レンダリング不要 */ }
           <Post loaderData={ loaderData } />
           <div className={ "bg-gray-400 w-full h-[1px] mt-4" }/>
-          { /* コメント送信時再レンダリング必要 */ }
           <Comments loaderData={ loaderData } />
         </UserFormWrap>        
       </AnimatePresence>

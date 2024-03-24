@@ -82,10 +82,18 @@ export default function Page() {
           <p className={ "text-20ptr md:text-22ptr text-gray-600 font-semibold" }>{ account.nickname }</p>
         </fieldset>
 
+        <br></br>
         <p>
           <Link to={ "/signout" } className={ "button button--secondary rounded-full" }>サインアウト</Link>
         </p>
+        <br></br>
 
+        { /** 市場関係者の場合のみ生産者登録ボタン表示 */}
+        { Number(account.section) === 4 &&
+          <Link to={ "/home/fishmanuser" } >
+            生産者の登録
+          </Link>
+        }
       </div>
     </>
   );

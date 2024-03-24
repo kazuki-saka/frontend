@@ -43,30 +43,59 @@ interface Step1Props {
     ReportFormData: ReportFormData;
 }
 
-export function Step1({ ...props }: Step1Props) {
+//画像選択部分
+export function ImgStep1({ ...props }: Step1Props) {
 
   const { ReportFormData } = props;
-  const navigation = useNavigation();
   const inputFileRef = useRef<HTMLInputElement>(null);
-  //const handleClickUpload = async () => {
-  //  const fileList = inputFileRef.current?.files;
-  //  if (!fileList) {
-  //      return;
-  //  }
-  //  const file = fileList[0];
-    //const res = await createUploadImage(file);
-    //console.log(res);
-  //};
 
   const [previewImage, setPreviewImage] = useState("");
+
   const handleChangePreview = (ev: React.ChangeEvent<HTMLInputElement>) => {
     if (!ev.target.files) {
       return;
     }
-    const file = ev.target.files[0];
 
-    setPreviewImage(URL.createObjectURL(file));
+    const fileinfo = ev.target.files[0];
+    const urlname = URL.createObjectURL(fileinfo);
+    setPreviewImage(urlname);
   };
+
+  return (
+    <Form
+        method={ "POST" }
+        action={ `?step=1` }
+      >
+      <div className={ "container" }>
+        <h2 className={ "text-gray-600 text-22ptr md:text-28ptr font-bold mb-4" }>画像を投稿</h2>
+        <div>
+          <img
+            alt= "画像が選択されていません。" 
+            src={previewImage}
+          />
+          <input id="imginput"
+            type="file"
+            onChange={handleChangePreview}
+            ref={inputFileRef}
+            accept="image/*"
+            style={{ display: "none" }}
+            name="report[imgpath]"
+          />
+          <button onClick={() => inputFileRef.current?.click()}>
+            画像を選択
+          </button>
+          <input type={ "hidden" } name={ "step" } value={ 1 }/>
+          <input type={ "hidden" } name={ "report[ref]" } value={ "image" }/>
+        </div>
+      </div>
+    </Form>
+  );
+}
+
+//記事のタイトル・本文部分
+export function ReportStep1({ ...props }: Step1Props) {
+
+  const { ReportFormData } = props;
 
   return (
     <ValidatedForm
@@ -75,42 +104,23 @@ export function Step1({ ...props }: Step1Props) {
         action={ `?step=1` }
       >
       <div className={ "container" }>
-        <div className={ "wrap" }>
-          <h2 className={ "text-gray-600 text-22ptr md:text-28ptr font-bold mb-4" }>記事を投稿</h2>
-          <div>
-            <img
-              alt="画像が選択されていません。"
-              src={previewImage}
-            />
-            <input
-              type="file"
-              name="report[imgpath]"
-              onChange={handleChangePreview}
-              ref={inputFileRef}
-              accept="image/*"
-              style={{ display: "none" }}
-            />
-            <button onClick={() => inputFileRef.current?.click()}>
-              投稿する画像を選択して下さい。
-            </button>
-          </div>
-          <p></p>
-          <fieldset>
-            <label>魚種</label>
-            <p className={ "text-22ptr md:text-26ptr text-gray-600 font-semibold font-roboto" }>{ ReportFormData.kind }</p>
-          </fieldset>
-          <TitleInput name={"report[title]"} defaultValue={ ReportFormData.title} />
-          <DetailInput name={"report[detail]"} defaultValue={ ReportFormData.detail} />
-          <input type={ "hidden" } name={ "step" } value={ 1 }/>
-          <div className={ "flex gap-2 md:gap-8" }>
-            <button 
-              type={ "submit" }
-              className={ "button button--primary" }
-            >
-              投稿確認画面へ
-            </button>
-          </div>
-        </div>  
+        <label className={ "text-gray-600 text-22ptr md:text-28ptr font-bold mb-4" }>記事を投稿</label>
+        <fieldset>
+          <label>魚種</label>
+          <p className={ "text-22ptr md:text-26ptr text-gray-600 font-semibold font-roboto" }>{ ReportFormData.kind }</p>
+        </fieldset>
+        <TitleInput name={"report[title]"} defaultValue={ ReportFormData.title} />
+        <DetailInput name={"report[detail]"} defaultValue={ ReportFormData.detail} />
+        <input type={ "hidden" } name={ "step" } value={ 1 }/>
+        <input type={ "hidden" } name={ "report[ref]" } value={ "detail" }/>
+        <div className={ "flex gap-2 md:gap-8" }>
+          <button 
+            type={ "submit" }
+            className={ "button button--primary" }
+          >
+            投稿確認画面へ
+          </button>
+        </div>
       </div>
     </ValidatedForm>
   );
@@ -131,6 +141,12 @@ export function Step2({ ...props }: Step2Props) {
       className={ "confirm-form" }
     >
       <h2 className={ "text-gray-600 text-22ptr md:text-28ptr font-bold mb-4" }>投稿記事の確認</h2>
+      <label>投稿画像</label>
+          <div className={ "text-22ptr md:text-26ptr text-gray-600 font-semibold font-roboto" }>
+            <img
+              src={ReportFormData.imgpath}
+            />
+          </div>
       <fieldset>
           <label>魚種</label>
           <p className={ "text-22ptr md:text-26ptr text-gray-600 font-semibold font-roboto" }>{ ReportFormData.kind }</p>
@@ -151,7 +167,8 @@ export function Step2({ ...props }: Step2Props) {
       </fieldset>
 
       <input type={ "hidden" } name={ "step" } value={ 2 }/>
-      <div className={ "wrap" }>
+      <input type={ "hidden" } name={ "report[ref]" } value={ "detail" }/>
+     <div className={ "wrap" }>
         <Link to={ `/home/newspost?step=1` } className={ "button button--secondary" }>
           前へ
         </Link>

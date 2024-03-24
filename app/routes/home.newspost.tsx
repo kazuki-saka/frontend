@@ -3,7 +3,7 @@ import { json, redirect, useLoaderData } from "@remix-run/react";
 import { getSession, commitSession } from "~/services/session.server";
 import guard from "~/services/guard.user.server";
 import { AnimatePresence } from "framer-motion";
-import { Wrap as ReportFormWrap, Step1 as ReportFormStep1, Step2 as ReportFormStep2 } from "~/components/report/NewReportForm";
+import { Wrap as ReportFormWrap, ImgStep1 as ReportImgFormStep1, ReportStep1 as ReportFormStep1, Step2 as ReportFormStep2 } from "~/components/report/NewReportForm";
 import { Report as ReportUserFormData } from "~/types/Report";
 import { ReportSchema_step1, ReportSchema_step2} from "~/schemas/newreport";
 import FishKindAry from "~/components/FishKind";
@@ -55,8 +55,6 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   // セッションからフォームデータ取得
   const ReportUserData = JSON.parse(session.get("report-rejist-form-data") || "{}") as ReportUserFormData;
   ReportUserData.kind = FishKindAry[kind - 1].name;
-  console.log("ReportUserData.title=", ReportUserData.title); 
-  console.log("ReportUserData.detail=", ReportUserData.detail); 
   console.log("ReportUserData=", ReportUserData);
 
   return json({
@@ -84,11 +82,26 @@ export async function action({ request, context }: ActionFunctionArgs) {
 
   // リクエストからフォームデータ取得
   const formData = await request.formData();
+  const ref = formData.get("report[ref]");
 
   // セッションからフォームデータ取得
   const reportUserData = JSON.parse(session.get("report-rejist-form-data") || "{}") as ReportUserFormData;
   console.log("reportUserData=", reportUserData);
   console.log("step=", formData.get("step"));
+  console.log("ref=", ref);
+
+  if (ref === "image"){
+    // セッションに保存
+    console.log("imgpath=", formData.get("report[imgpath]"));
+    //reportUserData.imgpath = String(formData.get("report[imgpath]"));
+    //console.log("imgpath2=", reportUserData.imgpath);
+    session.set("report-rejist-form-data", JSON.stringify(reportUserData));
+    return json({
+        headers: {
+        "Set-Cookie": await commitSession(session),
+        },
+    });
+  }
 
   if (Number(formData.get("step")) === 1) {
     const Schema_step1 = await ReportSchema_step1.validate(formData);
@@ -124,6 +137,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
     PostFormData.append("report[title]", String(reportUserData.title));
     PostFormData.append("report[kind]", String(session.get("home-report-kind")));
     PostFormData.append("report[detail]", String(reportUserData.detail));
+    PostFormData.append("report[imgpath]", String(reportUserData.imgpath));
 
     // バリデーション
     const ReportValidate_step2 = await ReportSchema_step2.validate(PostFormData);
@@ -139,6 +153,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
     console.log("report[title]=", PostFormData.get("report[title]"));
     console.log("report[kind]=", PostFormData.get("report[kind]"));
     console.log("report[detail]=", PostFormData.get("report[detail]"));
+    console.log("report[imgpath]=", PostFormData.get("report[imgpath]"));
 
     // APIへデータを送信
     const apiResponse = await fetch(`${ context.env.API_URL }/report/add`, { method: "POST", body: PostFormData });
@@ -158,6 +173,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
     //セッション内の投稿内容をクリアする
     reportUserData.title = "";
     reportUserData.detail = "";
+    reportUserData.imgpath = "";
     session.set("report-rejist-form-data", JSON.stringify(reportUserData));
   }
 
@@ -188,7 +204,9 @@ export default function Page() {
         <AnimatePresence initial={ false }>
           { /* フォーム1 */ }
           { Number(step) === 1 &&
+            
             <ReportFormWrap key={ "step1" }>
+              <ReportImgFormStep1 ReportFormData={ ReportUserData }/>
               <ReportFormStep1 ReportFormData={ ReportUserData }/>
             </ReportFormWrap>
           }
