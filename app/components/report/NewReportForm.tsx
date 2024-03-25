@@ -8,6 +8,7 @@ import DetailInput from "~/components/report/form/DetailInput";
 import { useRef, useState } from "react";
 
 let filename:string;
+let urlname:string;
 
 export function Wrap({ ...props }: HTMLMotionProps<"div">) {
     return (
@@ -62,10 +63,10 @@ export function ImgStep1({ ...props }: Step1Props) {
     }
 
     const fileinfo = ev.target.files[0];
-    const urlname = URL.createObjectURL(fileinfo);
-    setPreviewImage(urlname);
-    //filename = fileinfo.name;
-    filename = urlname;
+    const url = URL.createObjectURL(fileinfo);
+    setPreviewImage(url);
+    filename = fileinfo.name;
+    urlname = url;
   };
 
   return (
@@ -102,6 +103,7 @@ export function ImgStep1({ ...props }: Step1Props) {
           <input type={ "hidden" } name={ "step" } value={ 1 }/>
           <input type={ "hidden" } name={ "report[ref]" } value={ "image" }/>
           <input type={ "hidden" } name={ "report[imgpath]" } value={ filename }/>
+          <input type={ "hidden" } name={ "report[url]" } value={ urlname }/>
         </div>
       </div>
     </ValidatedForm>
@@ -160,7 +162,7 @@ export function Step2({ ...props }: Step2Props) {
       <label>投稿画像</label>
           <div className={ "text-22ptr md:text-26ptr text-gray-600 font-semibold font-roboto" }>
             <img
-              src={ReportFormData.imgpath}
+              src={ReportFormData.url}
             />
           </div>
       <fieldset>

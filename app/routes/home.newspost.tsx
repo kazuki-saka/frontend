@@ -49,17 +49,14 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   const step = new URL(request.url).searchParams.get("step") || 1;
   // セッションから魚種を取得
   const kind = session.get("home-report-kind");
-  const imgpath = session.get("report-rejist-form-imgpath");
   console.log("step=", step);
   console.log("kind=", kind);
-  console.log("imgpath=", imgpath);
 
   // セッションからフォームデータ取得
   const ReportUserData = JSON.parse(session.get("report-rejist-form-data") || "{}") as ReportUserFormData;
   ReportUserData.kind = FishKindAry[kind - 1].name;
   //ReportUserData.imgpath = imgpath;
   console.log("ReportUserData=", ReportUserData);
-  console.log("ReportUserData.imgpath=", ReportUserData.imgpath);
 
   return json({
     step: step ? step : 1,
@@ -117,9 +114,24 @@ export async function action({ request, context }: ActionFunctionArgs) {
     */
 
     const imgpath = String(formData.get("report[imgpath]"));
+    const url = String(formData.get("report[url]"));
     console.log("imgpath=", imgpath);
+    console.log("url=", url);
     reportUserData.imgpath = imgpath;
+    reportUserData.url = url;
     session.set("report-rejist-form-data", JSON.stringify(reportUserData));
+
+    // フォームデータ生成
+    const PostFormData = new FormData();
+    PostFormData.append("user[signature]", String(session.get("signin-auth-user-signature")));
+    PostFormData.append("report[title]", String(reportUserData.title));
+    PostFormData.append("report[kind]", String(session.get("home-report-kind")));
+    PostFormData.append("report[detail]", String(reportUserData.detail));
+    PostFormData.append("report[imgpath]", String(reportUserData.imgpath));
+    PostFormData.append("report[url]", String(reportUserData.url));
+    
+    //アップロード
+    const apiResponse = await fetch(`${ context.env.API_URL }/report/add`, { method: "POST", body: PostFormData });
 
     return redirect(`/home/newspost?step=1`, {
       headers: {
@@ -141,12 +153,10 @@ export async function action({ request, context }: ActionFunctionArgs) {
 
     console.log("title=", formData.get("report[title]"));
     console.log("detail=", formData.get("report[detail]"));
-    console.log("imgpath=", formData.get("report[imgpath]"));
 
     // セッションに保存
     reportUserData.title = String(formData.get("report[title]"));
     reportUserData.detail = String(formData.get("report[detail]"));
-    reportUserData.imgpath = String(formData.get("report[imgpath]"));
     session.set("report-rejist-form-data", JSON.stringify(reportUserData));
 
     // STEP2へリダイレクト
@@ -166,6 +176,8 @@ export async function action({ request, context }: ActionFunctionArgs) {
     PostFormData.append("report[kind]", String(session.get("home-report-kind")));
     PostFormData.append("report[detail]", String(reportUserData.detail));
     PostFormData.append("report[imgpath]", String(reportUserData.imgpath));
+    PostFormData.append("report[url]", String(reportUserData.url));
+
 
     // バリデーション
     const ReportValidate_step2 = await ReportSchema_step2.validate(PostFormData);
@@ -182,6 +194,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
     console.log("report[kind]=", PostFormData.get("report[kind]"));
     console.log("report[detail]=", PostFormData.get("report[detail]"));
     console.log("report[imgpath]=", PostFormData.get("report[imgpath]"));
+    console.log("report[url]=", PostFormData.get("report[url]"));
 
     // APIへデータを送信
     const apiResponse = await fetch(`${ context.env.API_URL }/report/add`, { method: "POST", body: PostFormData });
@@ -201,6 +214,8 @@ export async function action({ request, context }: ActionFunctionArgs) {
     //セッション内の投稿内容をクリアする
     reportUserData.title = "";
     reportUserData.detail = "";
+    reportUserData.imgpath = "";
+    reportUserData.url = "";
     reportUserData.imgpath = "";
     session.set("report-rejist-form-data", JSON.stringify(reportUserData));
   }
