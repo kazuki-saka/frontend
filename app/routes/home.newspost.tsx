@@ -124,14 +124,11 @@ export async function action({ request, context }: ActionFunctionArgs) {
     // フォームデータ生成
     const PostFormData = new FormData();
     PostFormData.append("user[signature]", String(session.get("signin-auth-user-signature")));
-    PostFormData.append("report[title]", String(reportUserData.title));
-    PostFormData.append("report[kind]", String(session.get("home-report-kind")));
-    PostFormData.append("report[detail]", String(reportUserData.detail));
     PostFormData.append("report[imgpath]", String(reportUserData.imgpath));
     PostFormData.append("report[url]", String(reportUserData.url));
-    
+
     //アップロード
-    const apiResponse = await fetch(`${ context.env.API_URL }/report/add`, { method: "POST", body: PostFormData });
+    //const apiResponse = await fetch(`${ context.env.API_URL }/report/add`, { method: "POST", body: PostFormData });
 
     return redirect(`/home/newspost?step=1`, {
       headers: {
