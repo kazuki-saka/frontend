@@ -96,7 +96,6 @@ export async function action({ request, context }: ActionFunctionArgs) {
 
   // セッションからフォームデータ取得
   const reportUserData = JSON.parse(session.get("report-rejist-form-data") || "{}") as ReportUserFormData;
-  console.log("reportUserData=", reportUserData);
   console.log("step=", formData.get("step"));
   console.log("ref=", ref);
 
@@ -113,21 +112,24 @@ export async function action({ request, context }: ActionFunctionArgs) {
     });
     */
 
-  
-
     const imgpath = String(formData.get("report[imgpath]"));
     const filedata = String(formData.get("report[imgdata]"));
+    const url = String(formData.get("report[url]"));
     console.log("imgpath=", imgpath);
-    console.log("filedata=", filedata);
-    reportUserData.imgpath = imgpath;
-    session.set("report-rejist-form-data", JSON.stringify(reportUserData));
+    console.log("url=", url);
+    //console.log("filedata=", filedata);
 
     // フォームデータ生成
     const PostFormData = new FormData();
     PostFormData.append("user[signature]", String(session.get("signin-auth-user-signature")));
     PostFormData.append("report[imgpath]", String(reportUserData.imgpath));
-    PostFormData.append("report[imgdata]", filedata.replace(/data:.*\/.*;base64,/, ''));
-    console.log("imgdata=", PostFormData.get("report[imgdata]"));
+    console.log("start");
+    //PostFormData.append("report[imgdata]", filedata.replace(/data:.*\/.*;base64,/, ''));
+    //console.log("imgdata=", PostFormData.get("report[imgdata]"));
+    const findex = filedata.indexOf(',');
+    const fdata = findex === -1 ? filedata : filedata.substring(findex + 1);
+    PostFormData.append("report[imgdata]", fdata);
+    console.log("end");
 
     //アップロードAPI
     const apiResponse = await fetch(`${ context.env.API_URL }/report/addimg`, { method: "POST", body: PostFormData });
@@ -141,6 +143,12 @@ export async function action({ request, context }: ActionFunctionArgs) {
         statusText: jsonData.messages.message,
       });
     }
+
+    //セッションに保存
+    reportUserData.imgpath = imgpath;
+    reportUserData.url = url;
+    reportUserData.uploadflg = true;
+    session.set("report-rejist-form-data", JSON.stringify(reportUserData));
 
     return redirect(`/home/newspost?step=1`, {
       headers: {
@@ -224,6 +232,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
     reportUserData.imgpath = "";
     reportUserData.url = "";
     reportUserData.imgpath = "";
+    reportUserData.uploadflg = false;
     session.set("report-rejist-form-data", JSON.stringify(reportUserData));
   }
 

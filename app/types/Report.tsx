@@ -1,6 +1,7 @@
 export type Report = {
   imgpath: string;
   url: string;
+  uploadflg: boolean;
   title: string;
   detail: string;
   kind: string;    

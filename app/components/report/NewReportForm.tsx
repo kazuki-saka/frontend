@@ -52,12 +52,8 @@ export function ImgStep1({ ...props }: Step1Props) {
 
   const { ReportFormData } = props;
   const inputFileRef = useRef<HTMLInputElement>(null);
-
   const [previewImage, setPreviewImage] = useState("");
-  if (!filename && ReportFormData.imgpath){
-    filename = ReportFormData.imgpath;
-  }
-
+  
   const reader = new FileReader();
   //alert(imgdata);
 
@@ -67,16 +63,18 @@ export function ImgStep1({ ...props }: Step1Props) {
     }
 
     const fileinfo = ev.target.files[0];
-    
-    reader.readAsDataURL(fileinfo);
     const url = URL.createObjectURL(fileinfo);
-    setPreviewImage(url);
+    //setPreviewImage(url);
     filename = fileinfo.name;
     urlname = url;
+    ReportFormData.uploadflg = false;
+    
+    reader.readAsDataURL(fileinfo);
   };
 
   reader.onload = function () {
     imgdata = String(reader.result);
+    setPreviewImage(imgdata);
     //alert(imgdata);
   }
 
@@ -91,7 +89,7 @@ export function ImgStep1({ ...props }: Step1Props) {
         <div>
           <img
             alt= "画像が選択されていません。" 
-            src={previewImage}
+            src={imgdata}
           />
           <input id="imginput"
             type="file"
@@ -107,13 +105,15 @@ export function ImgStep1({ ...props }: Step1Props) {
 
           {filename !== undefined &&
             <button type={ "submit" } className="button button--secondary">
-              アップロードする
+              { ReportFormData.uploadflg ? "アップロード済み" : "アップロードする" }
             </button>
           }
+          
           <input type={ "hidden" } name={ "step" } value={ 1 }/>
           <input type={ "hidden" } name={ "report[ref]" } value={ "image" }/>
           <input type={ "hidden" } name={ "report[imgpath]" } value={ filename }/>
           <input type={ "hidden" } name={ "report[imgdata]" } value={ imgdata }/>
+          <input type={ "hidden" } name={ "report[url]" } value={ urlname }/>
         </div>
       </div>
     </ValidatedForm>
