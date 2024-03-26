@@ -113,29 +113,40 @@ export async function action({ request, context }: ActionFunctionArgs) {
     });
     */
 
+  
+
     const imgpath = String(formData.get("report[imgpath]"));
-    const url = String(formData.get("report[url]"));
+    const filedata = String(formData.get("report[imgdata]"));
     console.log("imgpath=", imgpath);
-    console.log("url=", url);
+    console.log("filedata=", filedata);
     reportUserData.imgpath = imgpath;
-    reportUserData.url = url;
     session.set("report-rejist-form-data", JSON.stringify(reportUserData));
 
     // フォームデータ生成
     const PostFormData = new FormData();
     PostFormData.append("user[signature]", String(session.get("signin-auth-user-signature")));
     PostFormData.append("report[imgpath]", String(reportUserData.imgpath));
-    PostFormData.append("report[url]", String(reportUserData.url));
+    PostFormData.append("report[imgdata]", filedata.replace(/data:.*\/.*;base64,/, ''));
+    console.log("imgdata=", PostFormData.get("report[imgdata]"));
 
-    //アップロード
-    //const apiResponse = await fetch(`${ context.env.API_URL }/report/add`, { method: "POST", body: PostFormData });
+    //アップロードAPI
+    const apiResponse = await fetch(`${ context.env.API_URL }/report/addimg`, { method: "POST", body: PostFormData });
+    // APIからデータを受信
+    const jsonData = await apiResponse.json<ActionApiResponse>();
+    // ステータス200以外はエラー
+    console.log("jsonData=", jsonData);
+    if (jsonData.status !== 200) {
+      throw new Response(null, {
+        status: jsonData.status,
+        statusText: jsonData.messages.message,
+      });
+    }
 
     return redirect(`/home/newspost?step=1`, {
       headers: {
         "Set-Cookie": await commitSession(session),
       },
     });
-      
   }
 
   if (Number(formData.get("step")) === 1) {
@@ -175,7 +186,6 @@ export async function action({ request, context }: ActionFunctionArgs) {
     PostFormData.append("report[imgpath]", String(reportUserData.imgpath));
     PostFormData.append("report[url]", String(reportUserData.url));
 
-
     // バリデーション
     const ReportValidate_step2 = await ReportSchema_step2.validate(PostFormData);
     // バリデーションエラー
@@ -198,8 +208,8 @@ export async function action({ request, context }: ActionFunctionArgs) {
 
     // APIからデータを受信
     const jsonData = await apiResponse.json<ActionApiResponse>();
-    // ステータス200の場合はエラー
 
+    // ステータス200の場合はエラー
     console.log("jsonData=", jsonData);
     if (jsonData.status !== 200) {
       throw new Response(null, {

@@ -9,6 +9,7 @@ import { useRef, useState } from "react";
 
 let filename:string;
 let urlname:string;
+let imgdata:string;
 
 export function Wrap({ ...props }: HTMLMotionProps<"div">) {
     return (
@@ -57,17 +58,27 @@ export function ImgStep1({ ...props }: Step1Props) {
     filename = ReportFormData.imgpath;
   }
 
+  const reader = new FileReader();
+  //alert(imgdata);
+
   const handleChangePreview = (ev: React.ChangeEvent<HTMLInputElement>) => {
     if (!ev.target.files) {
       return;
     }
 
     const fileinfo = ev.target.files[0];
+    
+    reader.readAsDataURL(fileinfo);
     const url = URL.createObjectURL(fileinfo);
     setPreviewImage(url);
     filename = fileinfo.name;
     urlname = url;
   };
+
+  reader.onload = function () {
+    imgdata = String(reader.result);
+    //alert(imgdata);
+  }
 
   return (
     <ValidatedForm
@@ -93,7 +104,6 @@ export function ImgStep1({ ...props }: Step1Props) {
           <button onClick={() => inputFileRef.current?.click()} className="button button--primary">
             画像を選択
           </button>
-          <br></br>
 
           {filename !== undefined &&
             <button type={ "submit" } className="button button--secondary">
@@ -103,7 +113,7 @@ export function ImgStep1({ ...props }: Step1Props) {
           <input type={ "hidden" } name={ "step" } value={ 1 }/>
           <input type={ "hidden" } name={ "report[ref]" } value={ "image" }/>
           <input type={ "hidden" } name={ "report[imgpath]" } value={ filename }/>
-          <input type={ "hidden" } name={ "report[url]" } value={ urlname }/>
+          <input type={ "hidden" } name={ "report[imgdata]" } value={ imgdata }/>
         </div>
       </div>
     </ValidatedForm>
