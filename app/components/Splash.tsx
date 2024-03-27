@@ -23,8 +23,9 @@ const Splash = () => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 2 }}
-          className={ "w-[30%] select-none" } 
+          className={ "w-[30%] select-none bg-transparent mb-4" } 
         />
+        <m.p className={ "text-blue-550 text-12ptr md:text-20ptr lg:text-24ptr xl:text-36ptr font-notoserifjp font-medium" }>ふくいの魚つながるアプリ</m.p>
       </AnimatePresence>
     </LazyMotion>
   );

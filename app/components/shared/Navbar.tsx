@@ -32,12 +32,12 @@ const _Tab = ({ ...props }: IconProps) => {
       ?
       <>
         <img src={ `/assets/images/navbar/${ icon }-blue.svg` } alt={ title } className={ "h-8 md:h-auto w-8" }/>
-        <span className={ "inline-block text-[#003371] text-center font-medium whitespace-nowrap" }>{ title }</span>
+        <span className={ "inline-block text-12ptr md:text-14ptr text-[#003371] text-center font-medium whitespace-nowrap" }>{ title }</span>
       </>
       :
       <>
         <img src={ `/assets/images/navbar/${ icon }-gray.svg` } alt={ title } className={ "h-8 md:h-auto w-8" }/>
-        <span className={ "inline-block text-gray-500 text-center font-medium whitespace-nowrap" }>{ title }</span>
+        <span className={ "inline-block text-12ptr md:text-14ptr text-gray-500 text-center font-medium whitespace-nowrap" }>{ title }</span>
       </>
       }
     </Link>

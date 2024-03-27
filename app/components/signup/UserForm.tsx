@@ -36,6 +36,7 @@ export function Step1({ ...props }: Step1Props) {
       validator={ userSchema_step1 } 
       method={ "POST" }
       action={ `?step=1` }
+      className={ "form-wrap" }
     >
       <h2 className={ "text-gray-600 text-22ptr md:text-28ptr font-bold mb-4" }>STEP1: パスワードを設定してください</h2>
       <fieldset>
@@ -45,10 +46,10 @@ export function Step1({ ...props }: Step1Props) {
       <PassphraseInput name={ "user[passphrase]" }/>
       <PassphraseInput name={ "user[passphraseConfirm]" } isConfirm/>
       <input type={ "hidden" } name={ "step" } value={ 1 }/>
-      <div className={ "" }>
+      <div className={ "mt-4 md:mt-8" }>
         <button 
           type={ "submit" }
-          className={ "button button--primary" }
+          className={ "button button--secondary" }
           //disabled={ navigation.state === "submitting" }
         >
           次へ
@@ -70,17 +71,18 @@ export function Step2({ ...props }: Step2Props) {
       validator={ userSchema_step2 } 
       method={ "POST" }
       action={ `?step=2` }
+      className={ "form-wrap" }
     >
       <h2 className={ "text-gray-600 text-22ptr md:text-28ptr font-bold mb-4" }>STEP2: 利用者区分を設定してください</h2>
       <SectionRadioGroup name={ "user[section]" } defaultValue={ props.signupUserFormData.section } setSection={ setSection }/>
       <input type={ "hidden" } name={ "step" } value={ 2 }/>
-      <div className={ "flex gap-2 md:gap-8" }>
+      <div className={ "flex gap-2 md:gap-8 mt-4 md:mt-8" }>
         <Link to={ `/signup/user?step=1` } className={ "button button--secondary" }>
           前へ
         </Link>
         <button 
           type={ "submit" }
-          className={ "button button--primary" }
+          className={ "button button--secondary" }
           //disabled={ navigation.state === "submitting" }
         >
           次へ
@@ -103,6 +105,7 @@ export function Step3({ ...props }: Step3Props) {
       validator={ userSchema_step3 } 
       method={ "POST" }
       action={ `?step=3` }
+      className={ "form-wrap" }
     >
       <h2 className={ "text-gray-600 text-22ptr md:text-28ptr font-bold mb-4" }>STEP3: 登録情報を設定してください</h2>
       <ShopNameInput name={"user[shopname]"}defaultValue={ signupUserFormData.shopname }/>
@@ -110,13 +113,13 @@ export function Step3({ ...props }: Step3Props) {
       <ViewnameInput name={ "user[viewname]" } defaultValue={ signupUserFormData.viewname }/>
 
       <input type={ "hidden" } name={ "step" } value={ 3 }/>
-      <div className={ "flex gap-2 md:gap-8" }>
+      <div className={ "flex gap-2 md:gap-8 mt-4 md:mt-8" }>
         <Link to={ `/signup/user?step=2` } className={ "button button--secondary" }>
           前へ
         </Link>
         <button 
           type={ "submit" }
-          className={ "button button--primary" }
+          className={ "button button--secondary" }
           //disabled={ navigation.state === "submitting" }
         >
           次へ
@@ -141,7 +144,7 @@ export function Step4({ ...props }: Step4Props) {
     <Form
       method={ "POST" }
       action={ `?step=4` }
-      className={ "confirm-form" }
+      className={ "confirm-form form-wrap" }
     >
       <h2 className={ "text-gray-600 text-22ptr md:text-28ptr font-bold mb-4" }>STEP4: 登録内容の確認</h2>
       <fieldset className={ "border-b-2 border-solid pb-2" }>
@@ -176,7 +179,7 @@ export function Step4({ ...props }: Step4Props) {
 
       
       <input type={ "hidden" } name={ "step" } value={ 4 }/>
-      <div className={ "flex gap-2 md:gap-8" }>
+      <div className={ "flex gap-2 md:gap-8 mt-4 md:mt-8" }>
         <Link to={ `/signup/user?step=3` } className={ "button button--secondary" }>
           前へ
         </Link>
@@ -185,7 +188,7 @@ export function Step4({ ...props }: Step4Props) {
           className={ "button button--primary" }
           //disabled={ navigation.state === "submitting" }
         >
-          上記の内容で送信
+          上記の内容で登録する
         </button>
       </div>
       { /* ローディング */ }

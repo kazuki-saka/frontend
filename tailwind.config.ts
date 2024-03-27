@@ -47,15 +47,9 @@ const config: Config = {
     colors: {
       transparent: "transparent",
       current: "currentColor",
-      error: {
-        DEFAULT: "#a05469",
-        100: "#f3e4e7",
-      },
-      button: {
-        DEFAULT: "#003372",
-      },
       black: colors.black,
       white: colors.white,
+      red: colors.red,
       gray: {
         ...colors.gray,
         100: "#f0f3f5",
@@ -63,10 +57,22 @@ const config: Config = {
       },
       blue: {
         DEFAULT: "#0064be",
-        ...colors.blue
+        ...colors.blue,
+        250: "#dae2ea",
+        550: "#294c81",
+        1000: "#0064be",
       },
-      red: colors.red,
-      yellow: colors.yellow,
+      yellow: {
+        ...colors.yellow,
+        550: "#d6c821",
+      },
+      error: {
+        DEFAULT: "#a05469",
+        100: "#f3e4e7",
+      },
+      button: {
+        DEFAULT: "#003372",
+      },
     },
     extend: {
       fontSize: fontSize,

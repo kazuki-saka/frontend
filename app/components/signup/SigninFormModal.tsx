@@ -46,6 +46,7 @@ const _Body = ({ ...props }: { actionData: SerializeFrom<typeof signupAction> })
       <ValidatedForm
         validator={ signinSchema } 
         method={ "POST" }
+        className={ "form-wrap" }
       >
         <UsernameInput name={ "user[username]" }/>
         <PassphraseInput name={ "user[passphrase]" }/>

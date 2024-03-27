@@ -175,7 +175,10 @@ export default function Page() {
       <>
         <section className={ "container" }>
           <div className={ "wrap" }>
-            <Logo/>
+            <h1 className={ "flex flex-col justify-center items-center py-8 gap-2 md:gap-4" }>
+              <Logo className={ "w-[120px] md:w-[240px] h-auto" }/>
+              <p className={ "text-black/80 text-12ptr md:text-12ptr lg:text-16ptr xl:text-20ptr font-notoserifjp font-medium" }>ふくいの魚つながるアプリ</p>
+            </h1>
           </div>
         </section>
         
@@ -206,7 +209,7 @@ export default function Page() {
         
         <section className={ "container mb-12" }>
           <div className={ "wrap mb-8" }>
-            <h2 className={ "text-28ptr font-semibold whitespace-nowrap" }>生産者の声</h2>
+            <h2 className={ "text-20ptr md:text-28ptr font-semibold whitespace-nowrap" }>生産者の声</h2>
           </div>
           <div className={ "wrap grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-8" }>
             { fishman && fishman.map((repo) => (
@@ -231,7 +234,7 @@ export default function Page() {
         
         <section className={ "container" }>
           <div className={ "wrap mb-8" }>
-            <h2 className={ "text-28ptr font-semibold whitespace-nowrap" }>福井中央卸売市場からのお知らせ</h2>
+            <h2 className={ "text-20ptr md:text-28ptr font-semibold whitespace-nowrap" }>福井市中央卸売市場からのお知らせ</h2>
           </div>
           <div className={ "wrap grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-8" }>
             { market && market.map((repo) => (
@@ -266,41 +269,44 @@ export default function Page() {
     <>
       <section className={ "container" }>
         <div className={ "wrap" }>
-          <Logo/>
+          <h1 className={ "flex flex-col justify-center items-center py-8 gap-2 md:gap-4" }>
+            <Logo className={ "w-[120px] md:w-[240px] h-auto" }/>
+            <p className={ "text-black/80 text-12ptr md:text-12ptr lg:text-16ptr xl:text-20ptr font-notoserifjp font-medium" }>ふくいの魚つながるアプリ</p>
+          </h1>
         </div>
       </section>
       
       <section className={ "mb-4 relative" }>
         <Link to={ "/home/pickup?ref=1" } className={ "block relative" }>
-          <figure className={ "block relative w-full pt-[40.0%] md:pt-[30.0%] bg-black" }>
+          <figure className={ "block relative w-full pt-[50.0%] md:pt-[30.0%] bg-black" }>
             <img src={ "/assets/images/home/salmon.webp" } alt={ "ふくいサーモン" } className={ "absolute top-0 left-0 w-full h-full object-cover opacity-50 group-hover:opacity-70" }/>
           </figure>
-          <div className={ "absolute bottom-0 left-0 bg-black/40 w-full h-28 flex justify-center items-center" }>
-            <span className={ "text-white text-40ptr font-semibold tracking-wide whitespace-nowrap drop-shadow-lg" }>ふくいサーモン</span>
+          <div className={ "absolute bottom-0 left-0 bg-black/40 w-full h-16 md:h-20 xl:h-28 flex justify-center items-center" }>
+            <span className={ "text-white text-24ptr md:text-32ptr lg:text-40ptr font-semibold tracking-wide whitespace-nowrap drop-shadow-lg" }>ふくいサーモン</span>
           </div>
         </Link>
         <Link to={ "/home/pickup?ref=2" } className={ "block relative" }>
-          <figure className={ "block relative w-full pt-[40.0%] md:pt-[30.0%]" }>
+          <figure className={ "block relative w-full pt-[50.0%] md:pt-[30.0%]" }>
             <img src={ "/assets/images/home/fugu.webp" } alt={ "若狭ふぐ" } className={ "absolute top-0 left-0 w-full h-full object-cover" }/>
           </figure>
-          <div className={ "absolute bottom-0 left-0 bg-black/40 w-full h-28 flex justify-center items-center" }>
-            <span className={ "text-white text-40ptr font-semibold tracking-wide whitespace-nowrap drop-shadow-lg" }>若狭ふぐ</span>
+          <div className={ "absolute bottom-0 left-0 bg-black/40 w-full h-16 md:h-20 xl:h-28 flex justify-center items-center" }>
+            <span className={ "text-white text-24ptr md:text-32ptr lg:text-40ptr font-semibold tracking-wide whitespace-nowrap drop-shadow-lg" }>若狭ふぐ</span>
           </div>
         </Link>
         <Link to={ "/home/pickup?ref=3" } className={ "block relative" }>
-          <figure className={ "block relative w-full pt-[40.0%] md:pt-[30.0%]" }>
+          <figure className={ "block relative w-full pt-[50.0%] md:pt-[30.0%]" }>
             <img src={ "/assets/images/home/madai.webp" } alt={ "敦賀真鯛" } className={ "absolute top-0 left-0 w-full h-full object-cover" }/>
           </figure>
-          <div className={ "absolute bottom-0 left-0 bg-black/40 w-full h-28 flex justify-center items-center" }>
-            <span className={ "text-white text-40ptr font-semibold tracking-wide whitespace-nowrap drop-shadow-lg" }>敦賀真鯛</span>
+          <div className={ "absolute bottom-0 left-0 bg-black/40 w-full h-16 md:h-20 xl:h-28 flex justify-center items-center" }>
+            <span className={ "text-white text-24ptr md:text-32ptr lg:text-40ptr font-semibold tracking-wide whitespace-nowrap drop-shadow-lg" }>敦賀真鯛</span>
           </div>
         </Link>
         <Link to={ "/home/pickup?ref=4" } className={ "block relative" }>
-          <figure className={ "block relative w-full pt-[40.0%] md:pt-[30.0%]" }>
+          <figure className={ "block relative w-full pt-[50.0%] md:pt-[30.0%]" }>
             <img src={ "/assets/images/home/mahata.webp" } alt={ "若狭まはた" } className={ "absolute top-0 left-0 w-full h-full object-cover" }/>
           </figure>
-          <div className={ "absolute bottom-0 left-0 bg-black/40 w-full h-28 flex justify-center items-center" }>
-            <span className={ "text-white text-40ptr font-semibold tracking-wide whitespace-nowrap drop-shadow-lg" }>若狭まはた</span>
+          <div className={ "absolute bottom-0 left-0 bg-black/40 w-full h-16 md:h-20 xl:h-28 flex justify-center items-center" }>
+            <span className={ "text-white text-24ptr md:text-32ptr lg:text-40ptr font-semibold tracking-wide whitespace-nowrap drop-shadow-lg" }>若狭まはた</span>
           </div>
         </Link>
       </section>

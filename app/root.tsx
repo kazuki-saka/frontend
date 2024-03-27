@@ -15,8 +15,11 @@ import { cssBundleHref } from "@remix-run/css-bundle";
 import appCssBunbleHref from "~/styles/app.css";
 
 export const links: LinksFunction = () => [
+  { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+  { rel: "preconnect", href: "https://fonts.googleapis.com", crossOrigin: "anonymous" },
   ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
   { rel: "stylesheet", href: appCssBunbleHref },
+  { rel: "manifest", href: "/manifest.json" },
 ];
 
 export default function App() {

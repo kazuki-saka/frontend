@@ -32,7 +32,8 @@
     "react-textarea-autosize": "^8.5.3",
     "remix-auth": "^3.6.0",
     "remix-auth-form": "^1.4.0",
-    "remix-validated-form": "^5.1.5"
+    "remix-validated-form": "^5.1.5",
+    "tailwind-merge": "^2.2.2"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230518.0",

@@ -122,7 +122,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
     // フォームデータ生成
     const PostFormData = new FormData();
     PostFormData.append("user[signature]", String(session.get("signin-auth-user-signature")));
-    PostFormData.append("report[imgpath]", String(reportUserData.imgpath));
+    PostFormData.append("report[imgpath]", imgpath);
     console.log("start");
     //PostFormData.append("report[imgdata]", filedata.replace(/data:.*\/.*;base64,/, ''));
     //console.log("imgdata=", PostFormData.get("report[imgdata]"));

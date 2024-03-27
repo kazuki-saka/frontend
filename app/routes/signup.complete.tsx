@@ -8,7 +8,7 @@ import BrandImage from "~/components/signup/BrandImage";
 export const meta: MetaFunction = () => {
   return [
     { title: "利用者登録完了 | FUKUI BRAND FISH" },
-    { name: "description", content: "FUKUI BRAND FISH" },
+    { name: "description", content: "福井の海で育まれた新鮮な魚介類「FUKUI BRAND FISH」をご紹介します。私たちが厳選した海の恵みを、豊富な種類と鮮度抜群でお届けします。福井の海の味をご家庭でお楽しみいただけるよう、品質にこだわった海産物を提供しています。" },
     { name: "preload", content: "/assets/images/brand/karei.webp" },
     { name: "preload", content: "/assets/images/brand/kani.webp" },
     { name: "preload", content: "/assets/images/brand/sarmon.webp" },
@@ -33,13 +33,13 @@ export default function Page() {
         <BrandImage src="/assets/images/brand/madai.webp" alt="マダイ" key={ 4 }/>
         <BrandImage src="/assets/images/brand/guji.webp" alt="グジ" key={ 5 }/>
         <BrandImage src="/assets/images/brand/mahata.webp" alt="マハタ" key={ 6 }/>
-        <BrandImage src="/assets/images/brand/kaki.webp" alt="カキ" key={ 7 }/>
+        <BrandImage src="/assets/images/brand/kaki.webp" alt="カキ" className={ "hidden lg:block" } key={ 7 }/>
         <BrandImage src="/assets/images/brand/saba.webp" alt="サバ" key={ 8 }/>
       </div>
       <div className={ "container flex flex-col justify-center items-center gap-16 min-h-screen" }>
         <div>
-          <h2 className={ "text-56ptr text-white font-medium whitespace-nowrap mb-4" }>FUKUI BRAND FISHにようこそ</h2>
-          <p className={ "text-24ptr text-white text-center whitespace-nowrap" }>アカウント登録が完了しました。</p>
+          <h2 className={ "text-24ptr md:text-36ptr lg:text-48ptr xl:text-56ptr text-white text-center font-medium whitespace-nowrap mb-4" }>FUKUI BRAND FISHにようこそ</h2>
+          <p className={ "text-16ptr md:text-20ptr lg:text-24ptr text-white text-center whitespace-nowrap" }>アカウント登録が完了しました。</p>
         </div>
         <div className={ "w-full px-[20%]" }>
           <Link to={ "/signup/?ref=signin" } className={ "button button--secondary" }>サインイン</Link>

@@ -45,6 +45,7 @@ const _Body = ({ ...props }: { actionData: SerializeFrom<typeof signupAction> })
         replace
         validator={ preflightSchema } 
         method={ "POST" }
+        className={ "form-wrap" }
       >
         <EmailInput name={ "preflight[email]"} actionData={ actionData }/>
         <input type={ "hidden" } name={ "form" } value={ "preflight" } placeholder={ "" }/>
@@ -55,6 +56,10 @@ const _Body = ({ ...props }: { actionData: SerializeFrom<typeof signupAction> })
         >
           { navigation.state !== "submitting" ? "メールを送信" : "お待ちください" }
         </button>
+        <div>
+          <p className={ "mb-2" }>メール受信許可設定のお願い</p>
+          <p className={ "text-gray-600 text-[90%]" }>携帯電話のドメイン指定受信をご利用されている方は、メールを受信できるよう設定が必要です。<br className={ "hidden md:block" }/><span className={ "font-semibold" }>fukui-sakana.net</span>のドメインからの受信許可の設定にご協力をよろしくお願い申し上げます。</p>
+        </div>
       </ValidatedForm>
       { /* ローディング */ }
       <Submitting state={ navigation.state } />

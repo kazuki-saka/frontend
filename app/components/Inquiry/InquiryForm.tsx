@@ -40,26 +40,25 @@ export function Step1({ ...props }: Step1Props) {
     action={ `?step=1` }
     >
     <div className={ "container" }>
-      <div className={ "wrap" }>
-        <h2 className={ "text-gray-600 text-22ptr md:text-28ptr font-bold mb-4" }>
-          <p>問い合わせたい内容を記入願います。</p>
-          <p>魚種：{FishKindAry[Number(InquiryData.kind) - 1].name}</p>
-        </h2>
-        <ShopNameInput  name={"inquiry[shopname]"} defaultValue={InquiryData.shopname }/>
-        <NameInput  name={"inquiry[rejistname]"} defaultValue={InquiryData.rejistname }/>
-        <PostCodeInput name ={"inquiry[postcode]"} defaultValue={InquiryData.postcode}/>
-        <AdressInput name={"inquiry[address]"} defaultValue={InquiryData.address}/>        
-        <InquiryDetailInput name={"inquiry[detail]"} defaultValue={InquiryData.detail} className={"textarea"} /> 
-        <input type={ "hidden" } name={ "step" } value={ 1 }/>
-        <div className={ "flex gap-2 md:gap-8" }>
-          <button 
-            type={ "submit" }
-            className={ "button button--primary" }
-          >
-            問い合わせ内容確認画面へ
-          </button>
-        </div>
-      </div>  
+      <h2 className={ "text-gray-600 text-18ptr md:text-24ptr font-bold mb-4" }>
+        <p>問い合わせ内容を記入願います。</p>
+        <p>魚種：{FishKindAry[Number(InquiryData.kind) - 1].name}</p>
+      </h2>
+      <ShopNameInput  name={"inquiry[shopname]"} defaultValue={InquiryData.shopname }/>
+      <NameInput  name={"inquiry[rejistname]"} defaultValue={InquiryData.rejistname }/>
+      <PostCodeInput name ={"inquiry[postcode]"} defaultValue={InquiryData.postcode}/>
+      <AdressInput name={"inquiry[address]"} defaultValue={InquiryData.address}/>        
+      <InquiryDetailInput name={"inquiry[detail]"} defaultValue={InquiryData.detail} className={ "w-full" } /> 
+      <input type={ "hidden" } name={ "step" } value={ 1 }/>
+      <br></br>
+      <div className={ "flex gap-2 md:gap-8" }>
+        <button 
+          type={ "submit" }
+          className={ "button button--primary" }
+        >
+          問い合わせ内容確認画面へ
+        </button>
+      </div>
     </div>
     </ValidatedForm>
   );

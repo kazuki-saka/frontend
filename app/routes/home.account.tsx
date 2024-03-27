@@ -48,11 +48,14 @@ export default function Page() {
     <>
       <section className={ "container" }>
         <div className={ "wrap" }>
-          <Logo/>
+          <h1 className={ "flex flex-col justify-center items-center py-8 gap-2 md:gap-4" }>
+            <Logo className={ "w-[120px] md:w-[240px] h-auto" }/>
+            <p className={ "text-black/80 text-12ptr md:text-12ptr lg:text-16ptr xl:text-20ptr font-notoserifjp font-medium" }>ふくいの魚つながるアプリ</p>
+          </h1>
         </div>
       </section>
 
-      <div className={ "wrap" }>
+      <div className={ "container" }>
         <div className={ "wrap flex justify-between md:justify-start items-baseline gap-4 mb-8" }>
           <h2 className={ "text-28ptr font-semibold" }>アカウント情報</h2>
         </div>

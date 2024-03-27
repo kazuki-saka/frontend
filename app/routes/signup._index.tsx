@@ -5,6 +5,7 @@ import PreflightFormModal from "~/components/signup/PreflightFormModal";
 import SigninFormModal from "~/components/signup/SigninFormModal";
 import { useState, useEffect } from "react";
 import { m, domAnimation, LazyMotion, AnimatePresence } from "framer-motion";
+import Logo from "~/components/shared/Logo";
 
 /*
   サインイン前のトップ画面
@@ -145,11 +146,12 @@ export default function Page() {
       </LazyMotion>
       
       <div className={ "container" }>
-        <div className={ "flex justify-center items-center pt-16" }>
-          <img src={ "/assets/images/Logo_Blue.svg" } alt={ "ロゴ" } className={ " w-[30%]" } />
+        <div className={ "flex flex-col justify-center items-center gap-2 md:gap-4 pt-16" }>
+          <Logo className={ "fill-blue-550 w-[40%] md:w-[30%]" }/>
+          <p className={ "text-blue-550 text-16ptr md:text-18ptr lg:text-24ptr xl:text-32ptr font-notoserifjp font-medium" }>ふくいの魚つながるアプリ</p>
         </div>
-        <div className={ "absolute bottom-32 left-0 w-full px-4 md:px-20 mx-auto" }>
-          <div className={ "flex flex-col justify-center items-center gap-4 md:gap-8 w-full md:w-[50%] mx-auto" }>
+        <div className={ "absolute bottom-16 md:bottom-20 left-0 w-full mx-auto" }>
+          <div className={ "flex flex-col justify-center items-center gap-4 md:gap-8 w-[70%] md:w-[60%] lg:w-[50%] xl:w-[40%] mx-auto" }>
             <Link to={ "/signup?ref=preflight" } className={ "button button--primary rounded-full" }>新規登録</Link>
             <Link to={ "/signup?ref=signin" } className={ "button button--secondary rounded-full" }>サインイン</Link>
           </div>
