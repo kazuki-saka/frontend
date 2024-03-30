@@ -6,11 +6,11 @@ export type FishKind = {
   
 const FishKindAry: FishKind[] = [
     {
-        name: "福井サーモン",
+        name: "ふくいサーモン",
         value: 1
     },
     {
-        name: "若狭フグ",
+        name: "若狭ふぐ",
         value: 2
     },
     {

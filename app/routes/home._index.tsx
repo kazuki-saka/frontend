@@ -50,7 +50,14 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   const apiResponse = await fetch(`${ context.env.API_URL }/top/view`, { method: "POST", body: formData });
   // JSONデータを取得
   const jsonDataTopics = await apiResponse.json<LoaderApiResponse>();
-
+  // ステータス200以外の場合はエラー
+  if (jsonDataTopics.status !== 200) {
+    throw new Response(null, {
+      status: jsonDataTopics.status,
+      statusText: jsonDataTopics.messages.message,
+    });
+  }
+  
   return json({
     user, likes, comments,topics: jsonDataTopics.topics, uploads_url: context.env.UPLOADS_URL,
   }, {
@@ -64,6 +71,7 @@ export default function Page() {
   // LOADER
   const loaderData = useLoaderData<typeof loader>();
   // Payloads
+  const { user } = loaderData;
   const { uploads_url } = loaderData;
   const { topics } = loaderData;
   const { likes } = loaderData;
@@ -109,6 +117,14 @@ export default function Page() {
         
       </section>
       <section className={ "container" }>
+        { user.section === 3 &&
+          <div className={ "wrap" }>
+            <Link to={ "/home/postlist" } className={ " button button--primary" }>
+              今までの投稿一覧
+            </Link>
+            <br></br>
+          </div>
+        }
         <div className={ "wrap flex justify-between md:justify-start items-baseline gap-4 mb-8" }>
           <h2 className={ "text-28ptr font-semibold" }>トピックス</h2>
         </div>

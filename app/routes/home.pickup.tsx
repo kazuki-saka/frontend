@@ -143,12 +143,6 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     });  
   }
 
-  console.log("market");
-  jsonDataMarket.MarketReports.forEach(tmp => {
-    console.log("id=", tmp.id);
-    console.log("comment_flg=", tmp.comment_flg);
-  });
-
   return json(
     {
       user,

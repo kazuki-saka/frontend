@@ -100,17 +100,14 @@ export async function action({ request, context }: ActionFunctionArgs) {
   console.log("ref=", ref);
 
   if (ref === "image"){
-    // セッションに保存
-    /*
-    const imgpath = String(formData.get("report[imgpath]"));
-    console.log("imgpath=", imgpath);
-    session.set("report-rejist-form-imgpath", imgpath);
-    return json({
+    //画像アップロード時
+    if (reportUserData.uploadflg === true){
+      return json({
         headers: {
           "Set-Cookie": await commitSession(session),
-        },
-    });
-    */
+        }
+      });   
+    }
 
     const imgpath = String(formData.get("report[imgpath]"));
     const filedata = String(formData.get("report[imgdata]"));
@@ -123,13 +120,11 @@ export async function action({ request, context }: ActionFunctionArgs) {
     const PostFormData = new FormData();
     PostFormData.append("user[signature]", String(session.get("signin-auth-user-signature")));
     PostFormData.append("report[imgpath]", imgpath);
-    console.log("start");
     //PostFormData.append("report[imgdata]", filedata.replace(/data:.*\/.*;base64,/, ''));
     //console.log("imgdata=", PostFormData.get("report[imgdata]"));
     const findex = filedata.indexOf(',');
     const fdata = findex === -1 ? filedata : filedata.substring(findex + 1);
     PostFormData.append("report[imgdata]", fdata);
-    console.log("end");
 
     //アップロードAPI
     const apiResponse = await fetch(`${ context.env.API_URL }/report/addimg`, { method: "POST", body: PostFormData });
@@ -158,6 +153,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
   }
 
   if (Number(formData.get("step")) === 1) {
+
     const Schema_step1 = await ReportSchema_step1.validate(formData);
     // バリデーションエラー
     if (Schema_step1.error) {

@@ -57,7 +57,10 @@ export function ImgStep1({ ...props }: Step1Props) {
   const reader = new FileReader();
   //alert(imgdata);
 
+
+  //画像投稿ボタンを押した時の動作
   const handleChangePreview = (ev: React.ChangeEvent<HTMLInputElement>) => {
+    filename = "";
     if (!ev.target.files) {
       return;
     }
@@ -72,6 +75,7 @@ export function ImgStep1({ ...props }: Step1Props) {
     reader.readAsDataURL(fileinfo);
   };
 
+  //画像読込完了時の動作
   reader.onload = function () {
     imgdata = String(reader.result);
     setPreviewImage(imgdata);
@@ -89,22 +93,24 @@ export function ImgStep1({ ...props }: Step1Props) {
         <div>
           <img
             alt= "画像が選択されていません。" 
-            src={imgdata}
+            src={ imgdata }
           />
           <input id="imginput"
             type="file"
-            onChange={handleChangePreview}
-            ref={inputFileRef}
+            onChange={ handleChangePreview }
+            ref={ inputFileRef }
             accept="image/*"
-            style={{ display: "none" }}
+            style={ { display: "none" } }
           />
           <br></br>
-          <button onClick={() => inputFileRef.current?.click()} className="button button--primary">
+          <button onClick={ () => inputFileRef.current?.click() } className="button button--primary">
             画像を選択
           </button>
 
+          <p><br></br></p>
+          
           {filename !== undefined &&
-            <button type={ "submit" } className="button button--secondary">
+            <button type={ "submit" } className="button button--primary" >
               { ReportFormData.uploadflg ? "アップロード済み" : "アップロードする" }
             </button>
           }
@@ -138,9 +144,10 @@ export function ReportStep1({ ...props }: Step1Props) {
           <p className={ "text-22ptr md:text-26ptr text-gray-600 font-semibold font-roboto" }>{ ReportFormData.kind }</p>
         </fieldset>
         <TitleInput name={"report[title]"} defaultValue={ ReportFormData.title} />
-        <DetailInput name={"report[detail]"} defaultValue={ ReportFormData.detail} />
+        <DetailInput name={"report[detail]"} defaultValue={ ReportFormData.detail} className={ "w-full" } />
         <input type={ "hidden" } name={ "step" } value={ 1 }/>
         <input type={ "hidden" } name={ "report[ref]" } value={ "detail" }/>
+        <p><br></br></p>
         <div className={ "flex gap-2 md:gap-8" }>
           <button 
             type={ "submit" }
@@ -196,15 +203,13 @@ export function Step2({ ...props }: Step2Props) {
 
       <input type={ "hidden" } name={ "step" } value={ 2 }/>
       <input type={ "hidden" } name={ "report[ref]" } value={ "detail" }/>
-     <div className={ "wrap" }>
+      <div className={ "wrap" }>
         <Link to={ `/home/newspost?step=1` } className={ "button button--secondary" }>
           前へ
         </Link>
-        <button 
-            type={ "submit" }
-            className={ "button button--primary" }
-        >
-        この内容で投稿</button>
+        <button type={ "submit" } className={ "button button--primary" }>
+          この内容で投稿
+        </button>
       </div>  
     </Form>
   );

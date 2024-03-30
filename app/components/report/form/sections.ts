@@ -20,5 +20,9 @@ const sectionary: Section[] = [
     name: "卸市場担当者",
     value: 4
   },
+  {
+    name: "協議会関係者",
+    value: 5
+  },
 ];
 export default sectionary;
