@@ -120,8 +120,9 @@ export default function Page() {
         { user.section === 3 &&
           <div className={ "wrap" }>
             <Link to={ "/home/postlist" } className={ " button button--primary" }>
-              今までの投稿一覧
+              あなたの投稿一覧
             </Link>
+            <br></br>
             <br></br>
           </div>
         }

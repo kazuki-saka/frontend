@@ -103,7 +103,7 @@ export function ImgStep1({ ...props }: Step1Props) {
             style={ { display: "none" } }
           />
           <br></br>
-          <button onClick={ () => inputFileRef.current?.click() } className="button button--primary">
+          <button  type={ "button" } onClick={ () => inputFileRef.current?.click() } className="button button--primary">
             画像を選択
           </button>
 
