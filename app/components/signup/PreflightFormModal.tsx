@@ -26,7 +26,6 @@ const _Head = () => {
   const navigate = useNavigate();
   return (
     <>
-      <p>メールアドレス認証</p>
       <a className={ "modal-cancel-button" } onClick={ () => navigate("/signup") }>キャンセル</a>
     </>
   );
@@ -47,6 +46,8 @@ const _Body = ({ ...props }: { actionData: SerializeFrom<typeof signupAction> })
         method={ "POST" }
         className={ "form-wrap" }
       >
+        <p>メールアドレス認証<br></br>
+        アプリに登録するメールアドレスを入力して下さい</p>
         <EmailInput name={ "preflight[email]"} actionData={ actionData }/>
         <input type={ "hidden" } name={ "form" } value={ "preflight" } placeholder={ "" }/>
         <button 
@@ -58,7 +59,8 @@ const _Body = ({ ...props }: { actionData: SerializeFrom<typeof signupAction> })
         </button>
         <div>
           <p className={ "mb-2" }>メール受信許可設定のお願い</p>
-          <p className={ "text-gray-600 text-[90%]" }>携帯電話のドメイン指定受信をご利用されている方は、メールを受信できるよう設定が必要です。<br className={ "hidden md:block" }/><span className={ "font-semibold" }>fukui-sakana.net</span>のドメインからの受信許可の設定にご協力をよろしくお願い申し上げます。</p>
+          <p className={ "text-gray-600 text-[90%]" }>携帯電話のドメイン指定受信をご利用されている方は、メールを受信できるよう設定が必要です。<br className={ "hidden md:block" }/>
+          <span className={ "font-semibold" }>fukui-sakana.net</span>のドメインからの受信許可の設定にご協力をよろしくお願い申し上げます。</p>
         </div>
       </ValidatedForm>
       { /* ローディング */ }

@@ -119,6 +119,7 @@ export function Step2({ ...props }: Step2Props) {
         <Link to={ `/home/Inquiry?step=1` } className={ "button button--secondary" }>
           前へ
         </Link>
+        <br></br>
         <button 
             type={ "submit" }
             className={ "button button--primary" }

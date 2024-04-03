@@ -34,9 +34,10 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
 
   // いいねリストをセッションに保存
   if (likes && likes.length > 0) {
-    console.log("likes=", likes);
+    //console.log("likes=", likes);
     session.set("home-user-like", likes);
   }
+
   // コメントリストをセッションに保存
   if (comments && comments.length > 0) {
     session.set("home-user-comment", comments);
@@ -117,7 +118,7 @@ export default function Page() {
         
       </section>
       <section className={ "container" }>
-        { user.section === 3 &&
+        { user.section == 3 &&
           <div className={ "wrap" }>
             <Link to={ "/home/postlist" } className={ " button button--primary" }>
               あなたの投稿一覧
@@ -127,7 +128,7 @@ export default function Page() {
           </div>
         }
         <div className={ "wrap flex justify-between md:justify-start items-baseline gap-4 mb-8" }>
-          <h2 className={ "text-28ptr font-semibold" }>トピックス</h2>
+          <h2 className={ "text-26ptr font-semibold" }>新着情報</h2>
         </div>
         <div className={ "wrap grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-8" }>
           { topics && topics.map((repo) => (
