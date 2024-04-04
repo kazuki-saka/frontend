@@ -125,6 +125,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
     const findex = filedata.indexOf(',');
     const fdata = findex === -1 ? filedata : filedata.substring(findex + 1);
     PostFormData.append("report[imgdata]", fdata);
+    //console.log("imgdata=", PostFormData.get("report[imgdata]"));
 
     //アップロードAPI
     const apiResponse = await fetch(`${ context.env.API_URL }/report/addimg`, { method: "POST", body: PostFormData });

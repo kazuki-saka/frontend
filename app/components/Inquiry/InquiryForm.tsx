@@ -108,14 +108,14 @@ export function Step2({ ...props }: Step2Props) {
       <fieldset className={ "border-b-2 border-solid pb-2" }>
         <label>問い合わせ内容</label>
         <p className={ "text-20ptr md:text-22ptr text-gray-600 font-semibold font-roboto" }>
-          <div className='break-words whitespace-pre'>
+          <div className='word-break: break-words whitespace-pre '>
             { InquiryData.detail }
           </div>
         </p>
       </fieldset>
 
       <input type={ "hidden" } name={ "step" } value={ 2 }/>
-      <div className={ "wrap" }>
+      <div className={ "flex gap-2 md:gap-8 mt-4 md:mt-8" }>
         <Link to={ `/home/Inquiry?step=1` } className={ "button button--secondary" }>
           前へ
         </Link>

@@ -1,5 +1,5 @@
 import { SerializeFrom } from "@remix-run/cloudflare";
-import { useNavigate, useNavigation } from "@remix-run/react";
+import { useNavigate, useNavigation, Link } from "@remix-run/react";
 import { loader as signupLoader, action as signupAction } from "~/routes/signup._index";
 import { ValidatedForm } from "remix-validated-form";
 import { preflightSchema } from "~/schemas/signup";
@@ -26,7 +26,7 @@ const _Head = () => {
   const navigate = useNavigate();
   return (
     <>
-      <a className={ "modal-cancel-button" } onClick={ () => navigate("/signup") }>キャンセル</a>
+      <p>メールアドレス認証</p>
     </>
   );
 };
@@ -46,10 +46,14 @@ const _Body = ({ ...props }: { actionData: SerializeFrom<typeof signupAction> })
         method={ "POST" }
         className={ "form-wrap" }
       >
-        <p>メールアドレス認証<br></br>
-        アプリに登録するメールアドレスを入力して下さい</p>
+        <p>アプリに登録するメールアドレスを入力して下さい</p>
         <EmailInput name={ "preflight[email]"} actionData={ actionData }/>
         <input type={ "hidden" } name={ "form" } value={ "preflight" } placeholder={ "" }/>
+        <div>
+          <p className={ "mb-2" }>メール受信許可設定のお願い</p>
+          <p className={ "text-gray-600 text-[90%]" }>携帯電話のドメイン指定受信をご利用されている方は、メールを受信できるよう設定が必要です。<br className={ "hidden md:block" }/>
+          <span className={ "font-semibold" }>fukui-sakana.net</span>のドメインからの受信許可の設定にご協力をよろしくお願い申し上げます。</p>
+        </div>
         <button 
           type={ `${ navigation.state === "idle" ? "submit" : "button" }` } 
           className={ "button button--primary" }
@@ -57,11 +61,7 @@ const _Body = ({ ...props }: { actionData: SerializeFrom<typeof signupAction> })
         >
           { navigation.state !== "submitting" ? "メールを送信" : "お待ちください" }
         </button>
-        <div>
-          <p className={ "mb-2" }>メール受信許可設定のお願い</p>
-          <p className={ "text-gray-600 text-[90%]" }>携帯電話のドメイン指定受信をご利用されている方は、メールを受信できるよう設定が必要です。<br className={ "hidden md:block" }/>
-          <span className={ "font-semibold" }>fukui-sakana.net</span>のドメインからの受信許可の設定にご協力をよろしくお願い申し上げます。</p>
-        </div>
+        <Link to={ "/signup" } className={ "button button--secondary" }>閉じる</Link>
       </ValidatedForm>
       { /* ローディング */ }
       <Submitting state={ navigation.state } />

@@ -203,7 +203,7 @@ export function Step2({ ...props }: Step2Props) {
 
       <input type={ "hidden" } name={ "step" } value={ 2 }/>
       <input type={ "hidden" } name={ "report[ref]" } value={ "detail" }/>
-      <div className={ "wrap" }>
+      <div className={ "flex gap-2 md:gap-8 mt-4 md:mt-8" }>
         <Link to={ `/home/newspost?step=1` } className={ "button button--secondary" }>
           前へ
         </Link>
