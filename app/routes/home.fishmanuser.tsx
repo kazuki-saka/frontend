@@ -270,10 +270,10 @@ export async function action({ request, context }: ActionFunctionArgs) {
       });
     }
 
-    // 利用者登録完了画面へリダイレクト
-    return redirect("/signup/complete", {
+    // 生産者登録完了画面へリダイレクト
+    return redirect("/home/fishmancomplete", {
       headers: {
-        "Set-Cookie": await destroySession(session),
+        "Set-Cookie": await commitSession(session),
       },
     });
   }

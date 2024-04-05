@@ -8,7 +8,7 @@ export default function TitleInput ({ ...props }: InputHTMLAttributes<HTMLInputE
       <label>タイトル</label>
       <input 
         type={ "text" } 
-        placeholder={ "ここに記事のタイトルを入力して下さい" }
+        placeholder={ "記事のタイトルを入力して下さい" }
         className={ error.error && "border-error bg-error-100 text-error" }
         { ...props }
       />

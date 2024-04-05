@@ -18,9 +18,11 @@ export default function Page() {
       <div className={ "wrap flex justify-center items-center gap-8 min-h-[100vh]" }>
         <div className={ "text-white" }>
           <h2 className={ "text-24ptr ml-2 font-semibold mb-4" }>投稿しました。</h2>
-          <p>※注意点</p>
-          <p>投稿内容は市場関係者による添削が完了次第、当サイトに反映されます。</p>
-          <p>その為、リアルタイムには反映されない事を予めご了承願います。</p>
+          <div className={ "ml-2" }>
+            <p>※注意点</p>
+            <p>投稿内容は市場関係者による添削が完了次第、当サイトに反映されます。</p>
+            <p>その為、リアルタイムには反映されない事を予めご了承願います。</p>
+          </div>
         </div>
         <Link to={ "/home" } className={ "mr-2 button button--secondary" }>サイトトップに戻る</Link>
       </div>

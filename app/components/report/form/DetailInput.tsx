@@ -9,7 +9,7 @@ export default function DetailInput ({ ...props }: InputHTMLAttributes<HTMLTextA
       <textarea 
         cols={32}
         rows={20}
-        placeholder={ "記事内容をここに入力して下さい。\nYoutube動画をUPしたい場合はここにリンクを張り付けて下さい。" }
+        placeholder={ "記事内容をここに入力して下さい。\nYoutube動画をUPしたい場合はここに共有リンクを張り付けて下さい。" }
         className={ error.error && "border-error bg-error-100 text-error" }
         { ...props }
       />

@@ -101,13 +101,7 @@ export async function action({ request, context }: ActionFunctionArgs) {
 
   if (ref === "image"){
     //画像アップロード時
-    if (reportUserData.uploadflg === true){
-      return json({
-        headers: {
-          "Set-Cookie": await commitSession(session),
-        }
-      });   
-    }
+    reportUserData.uploadflg = false;
 
     const imgpath = String(formData.get("report[imgpath]"));
     const filedata = String(formData.get("report[imgdata]"));
