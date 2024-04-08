@@ -7,10 +7,10 @@ import { User as SignupUserFormData } from "~/types/User";
 import { userSchema_step1, userSchema_step2, userSchema_step3, userSchema_step4 } from "~/schemas/signup";
 import { Wrap as UserFormWrap, Step1 as UserFormStep1, Step2 as UserFormStep2, Step3 as UserFormStep3 } from "~/components/signup/FishmanUserForm";
 
-/*
+/*-----------------------------------------------
   生産者登録画面の処理
-  STEP1～3で本登録を行う
-*/
+  STEP1～3で本登録を行う（メール認証はしない）
+------------------------------------------------*/
 
 /**
  * Meta
@@ -50,91 +50,16 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   const step = new URL(request.url).searchParams.get("step") || 1;
 
   console.log("step=", step);
+  console.log("signupUserFormData=", signupUserFormData);
 
-/*
-  // セッション取得
-  const session = await getSession(request.headers.get("Cookie"));
-  // セッションから認証署名を取得
-  const signature = session.get("fishman-auth-preflight-signature");
-  // 認証署名がない場合はエラー
-  if (!signature) {
-    throw new Response(null, {
-      status: 401,
-      statusText: "署名の検証に失敗しました。",
-    });
-  }
-  
-  // セッションからフォームデータ取得
-  const signupUserFormData = JSON.parse(session.get("fishman-user-form-data") || "{}") as SignupUserFormData;
-  
-  // URLパラメータからstepを取得
-  const step = new URL(request.url).searchParams.get("step") || 1;
-
-  console.log("step=", step);
-  
-  // STEP1
-  if (Number(step) === 1) {
-    // FormData作成
-    const formData = new FormData();
-    formData.append("preflight[signature]", String(signature));
-    // APIへデータを送信
-    const apiResponse = await fetch(`${ context.env.API_URL }/signup/load.preflight`, { method: "POST", body: formData });
-
-    // APIからデータを受信
-    const jsonData = await apiResponse.json<LoaderApiResponse>();
-    console.log("jsonData=", jsonData);
-	    // ステータス200以外の場合はエラー
-    if (jsonData.status !== 200) {
-      throw new Response(null, {
-        status: jsonData.status,
-        statusText: jsonData.messages.message,
-      });
-    }
-  
-    // Preflight取得
-    const preflight = jsonData.preflight;
-    console.log("preflight=", preflight);
-
-    // フォームデータ再構築
-    const _signupUserFormData = {
-      ...signupUserFormData,
-      username: preflight.email // ユーザー名追加
-    }
-    // フォームデータをセッションに保存
-    session.set("signup-user-form-data", JSON.stringify(_signupUserFormData));
-    return json({
+  return json({
       step: step ? step : 1,
-      signupUserFormData: _signupUserFormData,
-    }, {
-      headers: {
-        "Set-Cookie": await commitSession(session),
-      },
-    });
-  }
-  
-  // 確認画面のとき
-  if (Number(step) === 3) {
-    return json({
-      step: 3,
       signupUserFormData: signupUserFormData,
     }, {
       headers: {
         "Set-Cookie": await commitSession(session),
       },
     });
-  }
-*/
-
-console.log("signupUserFormData=", signupUserFormData);
-
-return json({
-    step: step ? step : 1,
-    signupUserFormData: signupUserFormData,
-  }, {
-    headers: {
-      "Set-Cookie": await commitSession(session),
-    },
-  });
 }
 
 /**

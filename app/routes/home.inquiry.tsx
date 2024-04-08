@@ -8,6 +8,10 @@ import { Inquiry as InquiryFormData } from "~/types/Inquiry";
 import { Wrap as UserFormWrap, Step1 as InquiryFormStep1, Step2 as InquiryFormStep2  } from "~/components/Inquiry/InquiryForm";
 import { InquirySchema_step1, InquirySchema_step2} from "~/schemas/inquiry";
 
+/*-----------------------------------------------
+  問い合わせ画面  
+  STEP1～2で問い合わせを行う
+------------------------------------------------*/
 
 export const meta: MetaFunction = () => {
   return [

@@ -7,10 +7,10 @@ import { User as SignupUserFormData } from "~/types/User";
 import { userSchema_step1, userSchema_step2, userSchema_step3, userSchema_step4 } from "~/schemas/signup";
 import { Wrap as UserFormWrap, Step1 as UserFormStep1, Step2 as UserFormStep2, Step3 as UserFormStep3, Step4 as UserFormStep4 } from "~/components/signup/UserForm";
 
-/*
+/*-----------------------------------------------
   本登録画面の処理
   STEP1～4で本登録を行う
-*/
+------------------------------------------------*/
 
 /**
  * Meta

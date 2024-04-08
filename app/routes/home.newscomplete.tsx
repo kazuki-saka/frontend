@@ -1,6 +1,10 @@
 import { json, redirect, MetaFunction } from "@remix-run/cloudflare";
 import { Link } from "@remix-run/react";
 
+/*-----------------------------------------------
+  新規投稿　完了画面   
+------------------------------------------------*/
+
 /**
  * Meta
  */

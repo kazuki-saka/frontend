@@ -6,6 +6,10 @@ import Logo from "~/components/shared/Logo";
 import { reportcostom as ReportCostom } from "~/types/Report";
 import ThumbPost from "~/components/shared/ThumbPost";
 
+/*-----------------------------------------------
+  ほしいねした記事一覧画面   
+------------------------------------------------*/
+
 type LoaderApiResponse = {
   status: number;
   messages: { message: string };

@@ -2,6 +2,10 @@ import { json, redirect, MetaFunction } from "@remix-run/cloudflare";
 import { Link } from "@remix-run/react";
 import BrandImage from "~/components/signup/BrandImage";
 
+/*-----------------------------------------------
+  生産者登録完了画面   
+------------------------------------------------*/
+
 /**
  * Meta
  */
@@ -43,8 +47,7 @@ export default function Page() {
         </div>
         <div className={ "w-full px-[20%]" }>
           <Link to={ "/home" } className={ "button button--secondary" }>サイトトップに戻る</Link>
-        </div>
-        
+        </div>        
       </div>
     </div>
   );

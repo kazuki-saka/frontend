@@ -5,6 +5,10 @@ import guard from "~/services/guard.user.server";
 import Logo from "~/components/shared/Logo"; 
 import sectionary from "~/components/report/form/sections";
   
+/*-----------------------------------------------
+  アカウント情報画面   
+------------------------------------------------*/
+
 
 /**
  * Loader

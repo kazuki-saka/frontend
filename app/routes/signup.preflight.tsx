@@ -6,6 +6,10 @@ import { Preflight } from "~/types/Preflight";
 import AuthcodeInput from "~/components/signup/form/AuthcodeInput";
 import Submitting from "~/components/signup/form/Submitting";
 
+/*-----------------------------------------------
+  仮登録画面  
+------------------------------------------------*/
+
 /**
  * Meta
  */

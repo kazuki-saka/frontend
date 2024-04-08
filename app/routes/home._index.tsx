@@ -6,6 +6,10 @@ import Logo from "~/components/shared/Logo";
 import ThumbPost from "~/components/shared/ThumbPost";
 import { reportcostom as ReportCostom } from "~/types/Report";
 
+/*-----------------------------------------------
+  サインイン後のトップ画面  
+------------------------------------------------*/
+
 export const meta: MetaFunction = () => {
   return [
     { title: "会員トップページ | FUKUI BRAND FISH" },
@@ -59,6 +63,9 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     });
   }
   
+  session.set("home-pickup-fishman-index", 0);
+  
+
   return json({
     user, likes, comments,topics: jsonDataTopics.topics, uploads_url: context.env.UPLOADS_URL,
   }, {

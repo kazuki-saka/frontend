@@ -3,6 +3,10 @@ import { json, useNavigate } from "@remix-run/react";
 import { useEffect } from "react";
 import { getSession, commitSession, destroySession } from "~/services/session.server";
 
+/*-----------------------------------------------
+  サインアウト画面   
+------------------------------------------------*/
+
 /**
  * Meta
  */

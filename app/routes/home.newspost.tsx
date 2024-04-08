@@ -8,6 +8,10 @@ import { Report as ReportUserFormData } from "~/types/Report";
 import { ReportSchema_step1, ReportSchema_step2} from "~/schemas/newreport";
 import FishKindAry from "~/components/FishKind";
 
+/*-----------------------------------------------
+  新規投稿画面   
+------------------------------------------------*/
+
 export const meta: MetaFunction = () => {
   return [
     { title: "投稿ページ | FUKUI BRAND FISH" },
@@ -236,8 +240,6 @@ export async function action({ request, context }: ActionFunctionArgs) {
 }
 
 export default function Page() {
-
-    console.log("======pickup._index  Page======");
 
     // LOADER
     const loaderData = useLoaderData<typeof loader>();

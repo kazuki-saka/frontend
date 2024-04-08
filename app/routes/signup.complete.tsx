@@ -2,6 +2,10 @@ import { json, redirect, MetaFunction } from "@remix-run/cloudflare";
 import { Link } from "@remix-run/react";
 import BrandImage from "~/components/signup/BrandImage";
 
+/*-----------------------------------------------
+  利用者登録完了画面   
+------------------------------------------------*/
+
 /**
  * Meta
  */

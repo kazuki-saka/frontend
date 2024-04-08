@@ -6,6 +6,10 @@ import CommentFormModal from "~/components/report/CommentFormModal";
 import { AnimatePresence } from "framer-motion";
 import { Wrap as UserFormWrap, Comments, Post } from "~/components/report/ReportViewForm";
 
+/*-----------------------------------------------
+  記事詳細画面   
+------------------------------------------------*/
+
 export const meta: MetaFunction = () => {
   return [
     { title: "記事詳細 | FUKUI BRAND FISH" },

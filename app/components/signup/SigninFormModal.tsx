@@ -1,5 +1,5 @@
 import { SerializeFrom } from "@remix-run/cloudflare";
-import { useNavigate, useNavigation } from "@remix-run/react";
+import { useNavigate, useNavigation, Link, Form } from "@remix-run/react";
 import { loader as signupLoader, action as signupAction } from "~/routes/signup._index";
 import { signinSchema } from "~/schemas/signin";
 import { ValidatedForm, useField, useFieldArray } from "remix-validated-form";
@@ -26,10 +26,10 @@ const _Head = () => {
   // Navigate
   const navigate = useNavigate();
   return (
-    <>
+    <Form>
       <p>サインイン</p>
       <a className={ "modal-cancel-button" } onClick={ () => navigate("/signup") }>キャンセル</a>
-    </>
+    </Form>
   );
 };
 
@@ -53,6 +53,7 @@ const _Body = ({ ...props }: { actionData: SerializeFrom<typeof signupAction> })
         { actionData && actionData.error && <p className={ "text-error text-center font-semibold" }>{ actionData.error }</p> }
         <input type={ "hidden" } name={ "form" } value={ "signin" } placeholder={ "" }/>
         <button type={ "submit" } className={ "button button--primary" }>サインイン</button>
+        { /*<Link to={ "/signup" } className={ "button button--secondary" }>閉じる</Link> */}
       </ValidatedForm>
       { /* ローディング */ }
       <Submitting state={ navigation.state } />

@@ -8,20 +8,16 @@ import Logo from "~/components/shared/Logo";
 import ThumbPost from "~/components/shared/ThumbPost";
 import PostCursor from "~/components/shared/PostCursor";
 
+/*-----------------------------------------------
+  魚種別毎の記事一覧画面   
+------------------------------------------------*/
+
 export const meta: MetaFunction = () => {
   return [
     { title: "会員トップページ | FUKUI BRAND FISH" },
     { name: "description", content: "FUKUI BRAND FISHへようこそ" },
   ];
 };
-
-type LoaderApiResponse = {
-    status: number;
-    messages: { message: string };
-    MarketReports: ReportCostom[];
-    FishmanReports: ReportCostom[];
-    topics: topic[];
-}
 
 type LoaderMarketApiResponse = {
   status: number;
@@ -67,12 +63,18 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
   console.log("like=", likeAry);
   console.log("comment=", commentAry);
 
+  //セッションから現在の先頭データのIndexを取得する
+  const index = session.get("home-pickup-fishman-index");
+  console.log("index=", index);
+
   // FormData作成
   const formData = new FormData();
   formData.append("user[signature]", String(session.get("signin-auth-user-signature")));
-  formData.append("user[kind]", String(ref));
+  formData.append("report[kind]", String(ref));
+  formData.append("report[index]", String(index));
   console.log("user[signature]=", formData.get("user[signature]"));
-  console.log("user[kind]=", formData.get("user[kind]"));
+  console.log("report[kind]=", formData.get("report[kind]"));
+  console.log("report[index]=", formData.get("report[index]"));
 
   //魚種にあった記事一覧API呼び出し（生産者）
   const apiResponseFishman = await fetch(`${ context.env.API_URL }/report/fishman.viewlist`, { method: "POST", body: formData });
@@ -128,16 +130,16 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
     commentAry.forEach(tmpid => {
       let lIndex : number;
       
-      console.log("comment.id=", tmpid);
+      //console.log("comment.id=", tmpid);
       lIndex = jsonDataMarket.MarketReports.findIndex(l => l.id == tmpid);
       if (lIndex >= 0){
-        console.log("market comment on");
+        //console.log("market comment on");
         jsonDataMarket.MarketReports[lIndex].comment_flg = true;
       }
   
       lIndex = jsonDataFishman.FishmanReports.findIndex(l => l.id == tmpid);
       if (lIndex >= 0){
-        console.log("fishman comment on");
+        //console.log("fishman comment on");
         jsonDataFishman.FishmanReports[lIndex].comment_flg = true;
       }
     });  
@@ -156,6 +158,42 @@ export async function loader({ request, context }: LoaderFunctionArgs) {
         "Set-Cookie": await commitSession(session),
       }
     });  
+}
+
+/**
+ * Action
+ */
+export async function action({ request, context }: ActionFunctionArgs) {
+  console.log("======pickup._index  ACTION======");
+
+  // セッション取得
+  const session = await getSession(request.headers.get("Cookie"));
+
+  const signature = session.get("signin-auth-user-signature");
+  
+  // 認証処理から認証署名を取得
+  const { user, likes, comments } = await guard({ request: request, context: context });
+  console.log("signature=", signature);
+
+  // 認証署名がない場合はエラー
+  if (!signature) {
+    throw new Response(null, {
+      status: 401,
+      statusText: "署名の検証に失敗しました。",
+    });
+  }
+
+  //セッションから現在の先頭データのIndexを取得する
+  const index = session.get("home-pickup-fishman-index");
+
+  //今回分の20件を足してセッションに保存
+  //session.set("home-pickup-fishman-index", Number(index) + 10);
+
+  return json({
+    headers: {
+      "Set-Cookie": await commitSession(session),
+    }
+  }); 
 }
 
 export default function Page() {
@@ -225,6 +263,13 @@ export default function Page() {
             }
           </div>
         </section>
+        { fishman && fishman.length > 10 &&
+          <div className={"viewmore"}>
+            <button type={ "submit" } className={"mr-2"} name={"FishAdd"} value={"1"}>
+              ＞＞＞さらに表示
+            </button>
+          </div>
+        }
         
         <section className={ "container" }>
           <div className={ "wrap mb-8" }>

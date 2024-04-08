@@ -1,5 +1,9 @@
-import { json, redirect, MetaFunction } from "@remix-run/cloudflare";
+import { MetaFunction } from "@remix-run/cloudflare";
 import { Link } from "@remix-run/react";
+
+/*-----------------------------------------------
+  問い合わせ完了画面   
+------------------------------------------------*/
 
 /**
  * Meta

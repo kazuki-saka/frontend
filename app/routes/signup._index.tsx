@@ -7,10 +7,10 @@ import { useState, useEffect } from "react";
 import { m, domAnimation, LazyMotion, AnimatePresence } from "framer-motion";
 import Logo from "~/components/shared/Logo";
 
-/*
+/*-----------------------------------------------
   サインイン前のトップ画面
   仮登録画面とサイン画面の呼び出しを行う
-*/
+------------------------------------------------*/
 
 /**
  * Meta

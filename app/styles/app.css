@@ -198,4 +198,9 @@
     padding: 0.5rem;
     resize: none;
   }
+
+  .viewmore {
+    display: flex;
+    justify-content: flex-end;
+  }
 }
